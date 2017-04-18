@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'realtydb',
+        'NAME': 'mapedb',
         'USER': 'postgres',
         'PASSWORD': '081011',
         'HOST': 'localhost',
