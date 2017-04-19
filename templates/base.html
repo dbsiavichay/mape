@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Mape | Encuetra eventos a tu alrededor{% endblock %}</title>
+	<!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
+</head>
+<body>
+    <nav>        
+        <div class="nav-wrapper cyan">
+            <a href="#" class="brand-logo center">Mape</a>
+            <ul class="right hide-on-med-and-down">		        
+		        <li><a class="waves-effect waves-light red btn">Iniciar sesión</a></li>		        
+		    </ul>
+        </div>
+    </nav>
+
+    <div class="section container cyan-text">
+        <form action="" method="POST" class="center-align">
+        {% csrf_token %}
+        <div class="form-group input-field col s6">
+            <i class="material-icons prefix cyan-text">account_circle</i>
+            <input id="username" class=" input-text black-text darken-3" type="text"/>
+            <label for="username" class="black-text darken-3">Nombre de usuario</label>
+        </div>
+        <div class="form-group input-field col s6">
+            <i class="material-icons prefix cyan-text">email</i>
+            <input id="email" name="email" class=" black-text darken-3" type="email" />
+            <label for="email" data-error="wrong" data-success="right" class="black-text darken-3">E-mail</label>
+        </div>
+        <div class="form-group input-field col s6">
+            <i class="material-icons prefix cyan-text">vpn_key</i>
+            <input id="password" name="password" class=" black-text darken-3" type="password" />
+            <label for="input_text" class="black-text darken-3">Contraseña</label>
+        </div>
+        <div class="form-group input-field col s6">
+            <i class="material-icons prefix cyan-text">vpn_key</i>
+            <input id="password2" bane="password2" class=" black-text darken-3" type="password" />
+            <label for="password2" class="black-text darken-3">Repita la contraseña</label>
+        </div>
+                        
+            <button class="waves-effect waves-light red darken-1 btn-large"><i class="material-icons right">send</i>Registrarse</button>
+        </form>        
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+</body>
+</html>
