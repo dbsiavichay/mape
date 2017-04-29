@@ -4,52 +4,50 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Mape | Encuetra eventos a tu alrededor{% endblock %}</title>
-	<!--Import Google Icon Font-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
+    <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
+    <link href='https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.css' rel='stylesheet' />
+    {% block css %}{% endblock %}    
 </head>
 <body>
-    <nav>        
+    <nav class="row no-margin no-padding">
         <div class="nav-wrapper cyan">
-            <a href="#" class="brand-logo center">Mape</a>
-            <ul class="right hide-on-med-and-down">		        
-		        <li><a class="waves-effect waves-light red btn">Iniciar sesión</a></li>		        
-		    </ul>
+            <a class="brand-logo center" href="#"><h4>mape</h4></a>
+            <!-- BOTON de menu izquierdo -->
+            <ul id="nav-left" class="" >
+                <li><a class="dropdown-button" data-activates="menu-izq"><i class="material-icons left">view_module</i><b class="hide-on-med-and-down"></b></a></li>
+            </ul>
+            <!-- BOTON de menu izquierdo -->
+            <ul id="nav-right" class="">
+                <li class="right"><a class="dropdown-button" data-activates="menu-der"><i class="material-icons ">perm_identity</i></a></li>
+            </ul>
+            <!-- LISTA de menu izquierdo -->
+            <ul id="menu-izq" class="dropdown-content">
+                <li><a href="#" class="center"> <i class="material-icons">language</i></a></li>
+                <li class="divider"></li>
+                <li><a href="#" class="center"> <i class="material-icons">explicit</i>Eventos<span class="new badge cyan ">4</span></a></li>
+            </ul>
+            <!-- LISTA de menu derecho -->
+            <ul id="menu-der" class="dropdown-content">
+                <!-- Links genericos para cuentas comerciales -->
+                {% if user_commertial %}
+                <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
+                {% endif %}
+                <li class="divider"></li>
+                <li><a href="#" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
+                <li><a href="#" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
+            </ul>
         </div>
-    </nav>
-
-    <div class="section container cyan-text">
-        <form action="" method="POST" class="center-align">
-        {% csrf_token %}
-        <div class="form-group input-field col s6">
-            <i class="material-icons prefix cyan-text">account_circle</i>
-            <input id="username" class=" input-text black-text darken-3" type="text"/>
-            <label for="username" class="black-text darken-3">Nombre de usuario</label>
-        </div>
-        <div class="form-group input-field col s6">
-            <i class="material-icons prefix cyan-text">email</i>
-            <input id="email" name="email" class=" black-text darken-3" type="email" />
-            <label for="email" data-error="wrong" data-success="right" class="black-text darken-3">E-mail</label>
-        </div>
-        <div class="form-group input-field col s6">
-            <i class="material-icons prefix cyan-text">vpn_key</i>
-            <input id="password" name="password" class=" black-text darken-3" type="password" />
-            <label for="input_text" class="black-text darken-3">Contraseña</label>
-        </div>
-        <div class="form-group input-field col s6">
-            <i class="material-icons prefix cyan-text">vpn_key</i>
-            <input id="password2" bane="password2" class=" black-text darken-3" type="password" />
-            <label for="password2" class="black-text darken-3">Repita la contraseña</label>
-        </div>
-                        
-            <button class="waves-effect waves-light red darken-1 btn-large"><i class="material-icons right">send</i>Registrarse</button>
-        </form>        
-    </div>
+    </nav>    
     
+    {% block content %}{% endblock %}
+   
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js'></script>
+    {% block js %}{% endblock %}
 </body>
 </html>
