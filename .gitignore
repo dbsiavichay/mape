@@ -3,3 +3,4 @@
 *.pyc
 media/
 social/migrations/
+showcase/migrations/

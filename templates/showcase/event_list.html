@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block css %}
+	{% load staticfiles %}
+	<link href="{% static 'showcase/css/mape.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="map"></div>
+
+<div id="event-modal" class="modal">
+    <div class="modal-content center">
+        <h4> Opciones de mapa </h4>
+        <p>Asegúrese de que ha seleccionado la ubicación exácta si desea registrar:</p>
+        
+        <a href="#" id="btn-event-register" class="btn cyan">
+        	<i class="material-icons left">room</i>
+        	Registrar un Evento
+        </a>
+        
+        <div class="modal-footer">
+            <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block js %}
+	{% load staticfiles %}
+	<script src="{% static 'showcase/js/event.js' %}"></script>
+{% endblock %}

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'social',
+    'showcase',
 ]
 
 MIDDLEWARE = [
@@ -136,5 +137,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Login config
-#LOGIN_REDIRECT_URL = '/user/article/'
+LOGIN_REDIRECT_URL = '/mape/'
 LOGIN_URL = '/login/'
