@@ -13,13 +13,14 @@ class Event(models.Model):
 	)	 	
 	latitude = models.FloatField()
 	longitude = models.FloatField(default=0)
-	when = models.DateTimeField(verbose_name='Inicio', auto_now_add=True)
+	when = models.DateTimeField(verbose_name='Inicio')
 	ends = models.DateTimeField(blank=True, null=True)	
 	cover = models.DecimalField(
 		decimal_places=2, max_digits=8, 
 		blank=True, null=True,
 		verbose_name = 'precio de entrada'
 	)
+	is_public = models.BooleanField(default=False)
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)	
 	published_by = models.ForeignKey(User)

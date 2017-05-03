@@ -7,13 +7,14 @@ from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView
 from .models import *
+from .forms import *
 
 class EventListView(ListView):
-	model = Event
+	model = Event	
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.all()
+			object_list = self.model.objects.filter(published_by=request.user)
 			
 			events = []
 
@@ -31,7 +32,7 @@ class EventListView(ListView):
 
 class EventCreateView(CreateView):
 	model = Event
-	fields = '__all__'	
+	fields = '__all__'
 	success_url = '/events/'
 
 	def get_form_kwargs(self):	    

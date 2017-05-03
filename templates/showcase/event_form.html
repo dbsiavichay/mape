@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block css %}
-	{% load staticfiles %}
-	<link href="{% static 'showcase/css/mape.css' %}" rel="stylesheet">
+	{% load staticfiles %}    
+    <link href="{% static 'showcase/css/mape.css' %}" rel="stylesheet">    
+    <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -11,7 +12,17 @@
 {{ form.errors }}
 
 <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
+    {% csrf_token %}    
+    
+    <div class="input-field col s6">
+        <input type="date" name="" class="datepicker">
+        <label for="{{ form.when.id_for_label }}">{{ form.when.label }}</label>
+    </div>
+    <div class="input-field col s6">
+        <input type="time" name="" class="timepicker">
+        <label for="{{ form.when.id_for_label }}">{{ form.when.label }}</label>
+    </div>
+
     <div class="input-field col s12">
         {{ form.name|add_class:"validate" }}
         <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -20,11 +31,11 @@
         {{ form.description|add_class:"materialize-textarea validate" }}
         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
     </div>
-    <div class="input-field col s12">
+    <div class="input-field col s6">
         {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
         <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
     </div>
-    <div class="input-field col s12">
+    <div class="input-field col s6">
         {{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
         <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
     </div>
@@ -42,6 +53,7 @@
 {% endblock %}
 
 {% block js %}
-	{% load staticfiles %}
-	
+	{% load staticfiles %}    
+    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>   
+    <script src="{% static 'showcase/js/event.js' %}"></script>
 {% endblock %}
