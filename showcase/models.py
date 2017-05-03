@@ -13,7 +13,7 @@ class Event(models.Model):
 	)	 	
 	latitude = models.FloatField()
 	longitude = models.FloatField(default=0)
-	when = models.DateTimeField(verbose_name='Inicio')
+	start = models.DateTimeField()
 	ends = models.DateTimeField(blank=True, null=True)	
 	cover = models.DecimalField(
 		decimal_places=2, max_digits=8, 

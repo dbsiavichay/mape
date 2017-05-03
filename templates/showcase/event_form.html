@@ -2,7 +2,7 @@
 
 {% block css %}
 	{% load staticfiles %}    
-    <link href="{% static 'showcase/css/mape.css' %}" rel="stylesheet">    
+    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
     <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -12,17 +12,7 @@
 {{ form.errors }}
 
 <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}    
-    
-    <div class="input-field col s6">
-        <input type="date" name="" class="datepicker">
-        <label for="{{ form.when.id_for_label }}">{{ form.when.label }}</label>
-    </div>
-    <div class="input-field col s6">
-        <input type="time" name="" class="timepicker">
-        <label for="{{ form.when.id_for_label }}">{{ form.when.label }}</label>
-    </div>
-
+    {% csrf_token %}
     <div class="input-field col s12">
         {{ form.name|add_class:"validate" }}
         <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -31,6 +21,26 @@
         {{ form.description|add_class:"materialize-textarea validate" }}
         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
     </div>
+    <div class="input-field col s6">
+        {{ form.start_0|add_class:"datepicker" }}
+        <label for="{{ form.start_0.id_for_label }}">{{ form.start_0.label }}</label>
+    </div>
+
+    <div class="input-field col s6">
+        {{ form.start_1|add_class:"timepicker" }}
+        <label for="{{ form.start_1.id_for_label }}">{{ form.start_1.label }}</label>
+    </div>
+
+    <div class="input-field col s6">
+        {{ form.ends_0|add_class:"datepicker" }}
+        <label for="{{ form.ends_0.id_for_label }}">{{ form.ends_0.label }}</label>
+    </div>
+
+    <div class="input-field col s6">
+        {{ form.ends_1|add_class:"timepicker" }}
+        <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
+    </div>
+
     <div class="input-field col s6">
         {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
         <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
@@ -54,6 +64,5 @@
 
 {% block js %}
 	{% load staticfiles %}    
-    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>   
-    <script src="{% static 'showcase/js/event.js' %}"></script>
+    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
 {% endblock %}

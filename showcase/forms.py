@@ -6,9 +6,24 @@ from .models import *
 class EventForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		fields = '__all__'
-
-	when = forms.DateTimeField(
-		input_formats=['%d/%m/%Y %H:%M:%S'], 
-		widget=forms.DateTimeInput(format='%d/%m/%Y %H:%M:%S')
+		exclude = ('start',)
+	
+	start_0 = forms.DateField(
+		label = 'Fecha de inicio'
 	)
+
+	start_1 = forms.TimeField(
+		label = 'Hora de inicio'
+	)
+
+	ends_0 = forms.DateField(
+		label = 'Fecha de finalización',
+		required = False
+	)
+
+	ends_1 = forms.TimeField(
+		label = 'Hora de finalización',
+		required = False
+	)
+
+

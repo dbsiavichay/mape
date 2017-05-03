@@ -1,6 +1,4 @@
 $(function () {
-	$('.modal').modal();
-
 	//Funcionalidad para API Geolocation
 	navigator.geolocation.getCurrentPosition(success, error);
 
@@ -39,18 +37,6 @@ $(function () {
 		lat = $(this).attr('lat');
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/event/add/?lat='+lat+'&lng='+lng);
-	});
-
-	//Material datetimepicker
-	$('.datepicker').pickadate({
-	    selectMonths: true, // Creates a dropdown to control month
-	    selectYears: 15 // Creates a dropdown of 15 years to control year
-	});
-
-	 $('.timepicker').pickatime({
-    autoclose: false,
-    twelvehour: false,
-    default: '14:20:00'
-  });
+	});	
 });
 
