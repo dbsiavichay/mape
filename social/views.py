@@ -37,3 +37,37 @@ class LoginView(FormView):
 def logout(request):
 	auth_logout(request)
 	return redirect('/login/')
+
+class ProfileUpdateView(UpdateView):
+	model = User
+	fields = ('username', 'first_name', 'last_name', 'email')	
+	template_name = 'social/profile_form.html'	
+
+	def get_context_data(self, **kwargs):
+		context = super(ProfileUpdateView, self).get_context_data(**kwargs)		
+		context['profile_form'] = self.get_profile_form()
+		success = self.request.GET.get('success') or kwargs.get('success') or None
+		if success is not None: context['success'] = success
+		return context
+
+	def form_valid(self, form):
+		profile_form = self.get_profile_form()
+		if profile_form.is_valid():
+			self.object = form.save()
+			profile_form.save()
+			self.success_url = '/profiles/%s/?success=true' % (self.request.user.username)
+			return super(ProfileUpdateView, self).form_valid(form)			
+			
+		return self.form_invalid(form)
+
+	def get_profile_form(self):
+		profile = self.request.user.profile
+		form = ProfileForm(instance=profile)
+
+		if self.request.method == 'POST':
+			form = ProfileForm(self.request.POST, self.request.FILES, instance=profile)
+
+		return form
+		
+	def get_object(self, queryset=None):
+		return self.request.user

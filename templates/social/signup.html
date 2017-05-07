@@ -21,27 +21,9 @@
         </div>
     </nav>
 
-    <div class="section container cyan-text">         
+    <div class="section container cyan-text">
 
-        {% if form.errors %}
-        <div class="row">
-            <div class="col s12">
-                <div class="card-panel red white-text">
-                    {% for field in form %}  
-                    {% if field.errors %}
-                    <strong>{{ field.label }}</strong>
-                    <ul>
-                        {% for error in field.errors %}
-                        <li>* {{ error }}</li>
-                        {% endfor %}
-                    </ul>
-
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
+        {% include "includes/errors.html" %}        
 
         {% load widget_tweaks %}        
         <form action="" method="POST" class="center-align" novalidate>

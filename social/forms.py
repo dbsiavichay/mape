@@ -44,3 +44,46 @@ class UserCreationForm(forms.ModelForm):
             user.save()
             Profile.objects.create(user=user)
         return user
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+    def clean_charter(self):        
+        import math
+
+        charter = self.data.get('charter')
+
+        if not charter:
+            return charter
+
+        if not charter.isnumeric:
+            raise forms.ValidationError('Ingrese una cédula válida.')
+
+        if len(charter) != 10:
+            raise forms.ValidationError('Ingrese una cédula válida.')
+
+        total = 0
+        digit = (int(charter[9])*1)
+
+        for i in range(len(charter) - 2):
+            mult = 0;
+            if ( i%2 ) != 0:
+                total = total + ( int(charter[i]) * 1 )
+            else:
+                mult = int(charter[i]) * 2
+                if mult > 9:
+                    total = total + ( mult - 9 )
+                else: 
+                    total = total + mult;
+
+        decena = total / 10
+        decena = math.floor( decena )
+        decena = ( decena + 1 ) * 10
+        final = decena - total
+
+        if ( final == 10 and digit == 0 ) or ( final or digit ):
+            return charter
+        
+        raise forms.ValidationError('Ingrese una cédula válida.')
