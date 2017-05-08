@@ -1,6 +1,4 @@
 $(function () {
-	$('.modal').modal();
-
 	//Funcionalidad para API Geolocation
 	navigator.geolocation.getCurrentPosition(success, error);
 
@@ -44,6 +42,6 @@ $(function () {
 		lat = $(this).attr('lat');
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/event/add/?lat='+lat+'&lng='+lng);
-	});
+	});	
 });
 
