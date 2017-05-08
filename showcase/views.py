@@ -22,10 +22,10 @@ class EventListView(ListView):
 
 			for event in object_list:
 				events.append({
-					'name': event.name,
-					'description': event.description,
-					'latitude': event.latitude,
-					'longitude': event.longitude
+					'event_name': event.name,
+					'event_description': event.description,
+					'event_latitude': event.latitude,
+					'event_longitude': event.longitude
 				})
 
 			return JsonResponse(events, safe=False)

@@ -11,7 +11,7 @@ from .forms import *
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
-	success_url = '/'
+	success_url = '/login'
 	template_name= 'social/signup.html'
 
 	#def form_valid(self, form):	   
