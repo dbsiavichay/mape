@@ -13,12 +13,17 @@ $(function () {
 			for (index in data)  {				
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
-				        'marker-color': '#9c89cc'
+				    	'marker-size': 'large',
+				    	'marker-symbol': 'bus',
+		                'marker-color': '#fa0'
 				    })
 				})		
 				.addTo(map);
-			}
-		});
+				marker.bindPopup(
+                    '<h5 class="Cyan-text"> ' + [data[index].event_name]+ '<h5> <br> Descripcion: ' + 
+                    [data[index].event_description]).openPopup();
+                };
+			});
 
 		map.on('contextmenu', function(e) {		  	
 		  	$('#btn-event-register').attr('lat', e.latlng.lat);
