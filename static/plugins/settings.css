@@ -1,0 +1,9 @@
+.signup img {
+	width: 75px;
+	margin: 40px 0;
+}
+
+.signup-panel {
+	border-radius: 5px;
+	padding: 20px 15px 20px 5px !important;
+}

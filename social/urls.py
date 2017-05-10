@@ -3,7 +3,10 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from .views import *
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
+	#url(r'^$', TemplateView.as_view(template_name='social/home.html'), name='home'),
     url(r'^$', UserCreateView.as_view(), name='signup'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', login_required(logout), name='logout'),

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block css %}
+    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
+    <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="parallax-container">
+    <div class="parallax"><img src="{% static 'showcase/img/event-header.jpg' %}"></div>
+</div>
+<div class="section white">
+    <div class="row container">
+        <h2 class="header">{{ object.name }}</h2>
+        <p class="grey-text text-darken-3 lighten-3">{{ object.description }}</p>
+        <p class="grey-text text-darken-3 lighten-3">Inicia: {{ object.start }}</p>
+        <p class="grey-text text-darken-3 lighten-3">Finaliza: {{ object.ends }}</p>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
+{% endblock %}

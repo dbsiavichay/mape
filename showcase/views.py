@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import *
 from .forms import *
 
@@ -22,10 +22,11 @@ class EventListView(ListView):
 
 			for event in object_list:
 				events.append({
-					'event_name': event.name,
-					'event_description': event.description,
-					'event_latitude': event.latitude,
-					'event_longitude': event.longitude
+					'id': event.id,
+					'name': event.name,
+					'description': event.description,
+					'latitude': event.latitude,
+					'longitude': event.longitude
 				})
 
 			return JsonResponse(events, safe=False)
@@ -63,3 +64,5 @@ class EventCreateView(CreateView):
 		kwargs.update({'initial': initial})
 		return kwargs
 
+class EventDetailView(DetailView):
+	model = Event

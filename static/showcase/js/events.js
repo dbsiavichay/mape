@@ -9,7 +9,7 @@ $(function () {
 		L.mapbox.accessToken = token;
 		var map = L.mapbox.map('map', 'mapbox.light').setView([point.latitude,point.longitude], 15);		
 
-		$.get('/events/', function(data) {
+		$.get('/events/', function(data) {			
 			for (index in data)  {				
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
@@ -19,11 +19,16 @@ $(function () {
 				    })
 				})		
 				.addTo(map);
-				marker.bindPopup(
-                    '<h5 class="Cyan-text"> ' + [data[index].event_name]+ '<h5> <br> Descripcion: ' + 
-                    [data[index].event_description]).openPopup();
-                };
-			});
+
+				var content = '<h3 class="cyan-text text-darken-4">' + data[index].name+ '</h3>' +
+					'<strong>Descripcion: </strong>' + data[index].description +					
+					'<a href="/event/'+data[index].id+'/" class="white-text waves-effect waves-light btn">'+
+					'<i class="material-icons right">search</i>Ver'+
+					'</a>';
+
+				marker.bindPopup(content);
+            }
+		});
 
 		map.on('contextmenu', function(e) {		  	
 		  	$('#btn-event-register').attr('lat', e.latlng.lat);

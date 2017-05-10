@@ -1,6 +1,7 @@
 $(function () {
 	//Initialize modals
 	$('.modal').modal();
+	$('.parallax').parallax();
 	
 	//Material datetimepicker
 	datepickers = $('.datepicker');

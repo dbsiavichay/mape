@@ -42,8 +42,10 @@ html {
 .filme-med{
   opacity: 0.8;
    }
-.parallax-container {
-  height: 140px; }
+
+/*.parallax-container {
+  height: 140px; 
+}*/
 /* colores del boton de posisionamiento */
 .leaflet-container a:hover, .leaflet-container.dark a {
     color: #00e5ff !important; 
@@ -160,10 +162,12 @@ color: #80deea;}
    .input-field .prefix.active {
      color: #b2ebf2 ;
    }
+   
    /* Parallax height */
     .parallax-container {
-      height: 270 px;
+      height: 350px;
     }
+
 .indeterminate{
   color: #00bcd4;
 }
