@@ -138,4 +138,4 @@ MEDIA_URL = '/media/'
 
 # Login config
 LOGIN_REDIRECT_URL = '/events/'
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'

@@ -11,7 +11,7 @@ from .forms import *
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
-	success_url = '/login'
+	success_url = '/'
 	template_name= 'social/signup.html'
 
 	#def form_valid(self, form):	   
@@ -36,7 +36,7 @@ class LoginView(FormView):
 
 def logout(request):
 	auth_logout(request)
-	return redirect('/login/')
+	return redirect('/')
 
 class ProfileUpdateView(UpdateView):
 	model = User
