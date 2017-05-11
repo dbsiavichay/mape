@@ -34,8 +34,6 @@ class Category(models.Model):
 	def __unicode__(self):
 		return unicode(self.name)
 
-	is_owner = models.BooleanField(default=False)
-
 class Locality(models.Model):
 	name = models.CharField(max_length=45)
 	description = models.TextField(blank=True, null=True)
