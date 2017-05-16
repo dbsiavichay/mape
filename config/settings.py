@@ -137,5 +137,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Login config
-LOGIN_REDIRECT_URL = '/events/'
 LOGIN_URL = '/'

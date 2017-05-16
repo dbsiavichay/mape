@@ -22,7 +22,7 @@ class UserCreateView(CreateView):
 class LoginView(FormView):
 	template_name= 'social/login.html'
 	form_class = AuthenticationForm
-	success_url = '/events/'
+	success_url = '/map/'
 
 	def form_valid(self, form):
 		auth_login(self.request, form.get_user())

@@ -2,6 +2,11 @@ $(function () {
 	//Initialize modals
 	$('.modal').modal();
 	$('.parallax').parallax();
+
+	//Selects
+	$(document).ready(function() {
+	    $('select').material_select();
+	});
 	
 	//Material datetimepicker
 	datepickers = $('.datepicker');

@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+from django.contrib.contenttypes.models import ContentType
+
 class Event(models.Model):
 	name = models.CharField(max_length=64, verbose_name='nombre')
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
@@ -32,25 +34,20 @@ class Category(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 
 	def __unicode__(self):
-		return unicode(self.name)
+		return self.name
 
 class Locality(models.Model):
-	name = models.CharField(max_length=45)
-	description = models.TextField(blank=True, null=True)
+	name = models.CharField(max_length=45, verbose_name='nombre')
+	description = models.TextField(blank=True, null=True, verbose_name='descripción')
 	front_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)
-	latitude = models.FloatField()
-	longitude = models.FloatField()
+	latitude = models.FloatField(verbose_name='latitud')
+	longitude = models.FloatField(verbose_name='longitud')
 	date_joined = models.DateField(auto_now_add=True)	
-	categories = models.ManyToManyField(Category)
-	subscribers = models.ManyToManyField(User, through='LocalitySubscriber')	
+	owner = models.ForeignKey(User)	
+	categories = models.ManyToManyField(Category, verbose_name='categorias')
 
 	def __unicode__(self):
 		return self.name
-
-class LocalitySubscriber(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	locality = models.ForeignKey(Locality, on_delete=models.CASCADE)
-	is_owner = models.BooleanField(default=False)
 
 class Commercial(models.Model):	
 	ruc = models.CharField(max_length=13)
@@ -81,7 +78,6 @@ class Offer(models.Model):
 	def __unicode__(self):
 		return unicode(self.name)
 
-
-
-
-
+class Subscriber(models.Model):
+	contentyype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)	

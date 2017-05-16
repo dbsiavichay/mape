@@ -3,4 +3,9 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+class CategoryAdmin(admin.ModelAdmin):
+    model = Category
+
+admin.site.register(Category, CategoryAdmin)

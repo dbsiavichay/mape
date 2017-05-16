@@ -36,7 +36,7 @@ class EventListView(ListView):
 class EventCreateView(CreateView):
 	model = Event
 	form_class = EventForm
-	success_url = '/events/'
+	success_url = '/map/'
 
 	def form_valid(self, form):
 		start = datetime.datetime.combine(
@@ -66,3 +66,46 @@ class EventCreateView(CreateView):
 
 class EventDetailView(DetailView):
 	model = Event
+
+
+class LocalityListView(ListView):
+	model = Locality
+
+	def get(self, request, *args, **kwargs):
+		if request.is_ajax():
+			object_list = self.model.objects.filter(owner=request.user)
+			
+			localities = []
+
+			for locality in object_list:
+				localities.append({
+					'id': locality.id,
+					'name': locality.name,
+					'description': locality.description,
+					'latitude': locality.latitude,
+					'longitude': locality.longitude
+				})
+
+			return JsonResponse(localities, safe=False)
+		else:
+			return super(LocalityListView, self).get(request, *args, **kwargs)
+
+class LocalityCreateView(CreateView):
+	model = Locality
+	fields = '__all__'
+	success_url = '/map/'
+
+	def get_form_kwargs(self):	    
+		kwargs = super(LocalityCreateView, self).get_form_kwargs()
+
+		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
+		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None		
+
+		initial = {
+			'latitude' : lat,
+			'longitude': lng			
+		}
+
+		kwargs.update({'initial': initial})
+		return kwargs
+
