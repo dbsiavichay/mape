@@ -42,6 +42,7 @@ class Locality(models.Model):
 	front_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)
 	latitude = models.FloatField(verbose_name='latitud')
 	longitude = models.FloatField(verbose_name='longitud')
+	is_public = models.BooleanField(default=False)
 	date_joined = models.DateField(auto_now_add=True)	
 	owner = models.ForeignKey(User)	
 	categories = models.ManyToManyField(Category, verbose_name='categorias')
@@ -49,9 +50,9 @@ class Locality(models.Model):
 	def __unicode__(self):
 		return self.name
 
-class Commercial(models.Model):	
+class Commercial(models.Model):
 	ruc = models.CharField(max_length=13)
-	locality = models.OneToOneField(Locality, on_delete=models.CASCADE)			
+	locality = models.OneToOneField(Locality, on_delete=models.CASCADE)		
 	
 	def __unicode__(self):
 		return self.locality.name
