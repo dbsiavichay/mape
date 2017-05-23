@@ -1,18 +1,34 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %} 
+
 {% block css %}
-	{% load staticfiles %}    
-    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
-    <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
+    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet"> 
 {% endblock %}
 
 {% block content %}
 {% load widget_tweaks %}
 
 {{ form.errors }}
+{{ commercial_form.errors }}
 
 <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
+    <div class="col s6">
+        {{ form.is_commercial }}        
+        <label for="{{ form.is_commercial.id_for_label }}">{{ form.is_commercial.label }}</label>
+    </div>
+
+    <div class="col s6">
+        {{ form.is_public }}        
+        <label for="{{ form.is_public.id_for_label }}">{{ form.is_public.label }}</label>
+    </div>
+    
+    <div class="input-field col s12 commercial">
+        {{ commercial_form.ruc|add_class:"validate" }}
+        <label for="{{ commercial_form.ruc.id_for_label }}">{{ commercial_form.ruc.label }}</label>
+    </div>    
+
     <div class="input-field col s12">
         {{ form.name|add_class:"validate" }}
         <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -33,7 +49,7 @@
     <div class="input-field col s12">
         {{ form.categories|add_class:"validate" }}
         <label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>
-    </div>
+    </div>    
 
     <input type="hidden" name="owner" value="{{ user.id }}">
     <div class="col s12 center">
@@ -44,7 +60,6 @@
 </form>
 {% endblock %}
 
-{% block js %}
-	{% load staticfiles %}    
-    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
+{% block js %}	
+    <script src="{% static 'showcase/js/locality.js' %}"></script>   
 {% endblock %}

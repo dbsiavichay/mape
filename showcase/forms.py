@@ -26,4 +26,15 @@ class EventForm(forms.ModelForm):
 		required = False
 	)
 
+class LocalityForm(forms.ModelForm):
+	class Meta:
+		model = Locality
+		fields = '__all__'
 
+	is_commercial = forms.BooleanField(
+		label='Es localidad comercial',
+		required = False
+	)
+
+
+CommercialForm = forms.modelform_factory(Commercial, fields=('ruc',))
