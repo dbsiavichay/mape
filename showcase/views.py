@@ -6,7 +6,11 @@ import datetime
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
-from django.shortcuts import render
+from django.db.models import Q
+
+from django.contrib.contenttypes.models import ContentType
+
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import *
 from .forms import *
@@ -16,7 +20,7 @@ class EventListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.filter(published_by=request.user)
+			object_list = self.model.objects.filter(Q(published_by=request.user) | Q(is_public=True))
 			
 			events = []
 
@@ -73,7 +77,7 @@ class LocalityListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.filter(owner=request.user)
+			object_list = self.model.objects.filter(Q(owner=request.user) | Q(is_public=True))
 			
 			localities = []
 
@@ -139,4 +143,32 @@ class LocalityCreateView(CreateView):
 
 		kwargs.update({'initial': initial})
 		return kwargs
+
+class LocalityDetailView(DetailView):
+	model = Locality
+
+	def get_context_data(self, **kwargs):
+		context = super(LocalityDetailView, self).get_context_data(**kwargs)
+		contenttype = ContentType.objects.get_for_model(Locality)
+
+		try:
+			subscriber = Subscriber.objects.get(contenttype=contenttype, user=self.request.user)
+		except Subscriber.DoesNotExist:
+			subscriber = None
+
+		context.update({
+			'contenttype': contenttype,
+			'is_subscribed': True if subscriber is not None else False
+		})
+
+		return context
+
+def add_subscriber(request):
+	if request.method == 'POST':
+		form = SubscriberForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect(form.data.get('next'))
+		else:
+			print form.errors
 

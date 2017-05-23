@@ -38,3 +38,5 @@ class LocalityForm(forms.ModelForm):
 
 
 CommercialForm = forms.modelform_factory(Commercial, fields=('ruc',))
+
+SubscriberForm = forms.modelform_factory(Subscriber, fields='__all__')

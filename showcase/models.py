@@ -80,5 +80,5 @@ class Offer(models.Model):
 		return unicode(self.name)
 
 class Subscriber(models.Model):
-	contentyype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)	

@@ -12,5 +12,8 @@ urlpatterns = [
     url(r'^event/(?P<pk>\d+)/$', login_required(EventDetailView.as_view()), name='event_detail'),
     url(r'^localities/$', login_required(LocalityListView.as_view()), name='locality_list'),
     url(r'^locality/add/$', login_required(LocalityCreateView.as_view()), name='locality_create'),
+    url(r'^locality/(?P<pk>\d+)/$', login_required(LocalityDetailView.as_view()), name='locality_detail'),
+
+    url(r'^subscriber/add/$', login_required(add_subscriber), name='subscriber_create'),
     #url(r'^user/change-avatar/$', change_user_avatar),
 ]
