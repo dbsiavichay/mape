@@ -43,9 +43,6 @@ html {
   opacity: 0.8;
    }
 
-/*.parallax-container {
-  height: 140px; 
-}*/
 /* colores del boton de posisionamiento */
 .leaflet-container a:hover, .leaflet-container.dark a {
     color: #00e5ff !important; 
@@ -165,7 +162,7 @@ color: #80deea;}
    
    /* Parallax height */
     .parallax-container {
-      height: 350px;
+      height: 275px;
     }
 
 .indeterminate{
@@ -174,4 +171,41 @@ color: #80deea;}
 
 .opacado{
   opacity: 0.7;
+}
+/* Activation, focus, valid texts */
+input.valid:not([type]), input.valid:focus:not([type]), input.valid[type="text"], input.valid[type="text"]:focus, input.valid[type="password"], input.valid[type="password"]:focus, input.valid[type="email"], input.valid[type="email"]:focus, input.valid[type="url"], input.valid[type="url"]:focus, input.valid[type="time"], input.valid[type="time"]:focus, input.valid[type="date"], input.valid[type="date"]:focus, input.valid[type="datetime"], input.valid[type="datetime"]:focus, input.valid[type="datetime-local"], input.valid[type="datetime-local"]:focus, input.valid[type="tel"], input.valid[type="tel"]:focus, input.valid[type="number"], input.valid[type="number"]:focus, input.valid[type="search"], input.valid[type="search"]:focus, textarea.materialize-textarea.valid, textarea.materialize-textarea.valid:focus {
+    border-bottom: 1px solid #84ffff;
+    box-shadow: 0 1px 0 0 #84ffff;
+}
+ /* Font filled */
+ .slides .shadow {
+color: white !important;
+letter-spacing: 2px;
+text-shadow: 3px 3px 3px #000;
+}
+.slides .host a{
+color: #263238 !important;
+letter-spacing: 2px;
+text-shadow: -3px -3px 3px #fff , 3px -3px 3px #fff , -3px 3px 3px #fff , 3px 3px 3px #fff;
+}
+.slider .slides li img.circle{ 
+  height: 20% !important;
+  width: 20% !important;
+}
+
+.slider .slides li h2{
+  margin: 0;
+}
+
+.mape-large{
+  width: 120px;
+}
+.mape-tiny{
+  width: 20px;
+}
+.mape-medium{
+  width: 25px;
+}
+.slider .indicators .indicator-item.active{
+  background-color: #114847 !important;
 }

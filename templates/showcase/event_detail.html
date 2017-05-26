@@ -3,27 +3,255 @@
 {% load staticfiles %}
 
 {% block css %}
-    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
+    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">    
     <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block nav-left %}
+<a href="{% url 'map' %}" data-activates="menu-izq"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a>
+{%endblock%}
+
+{% block nav-right %}
+<a class="dropdown-button" data-activates="menu-der"> <i class="material-icons ">settings</i></a>
+{%endblock%}
+
+{% block nav-center %}
+<!-- Boton de Busqueda -->
+  <div class="input-field">
+      <i class="material-icons prefix ">search</i>
+      <input id="search2" type="search" class="validate no-padding">
+      <label for="search2"><i class="material-icons prefix">buscar</i><label>
+  </div>
+{%endblock%}
+
+{% block dropDown-content-right %}
+<!-- Links genericos para cuentas comerciales -->
+{% if user_commertial %}
+<li class="divider"></li>
+<li><a href="" class="center"> <i class="material-icons">assignment_ind</i>Auspiciar</a></li>
+{% endif %}
+<li class="divider"></li>
+<li><a href="" class="center"> <i class="material-icons">erase</i>Editar</a></li>
+<li><a href="" class="center"> <i class="material-icons">erase</i>Suspender evento</a></li>
+{% endblock%}
+
+
 {% block content %}
+<!-- Boton de opciones -->
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">group_work</i></a>
+    <ul>
+      <li><!-- Switch -->
+        <div class="switch">
+          <label>
+            Asistir
+            <input type="checkbox">
+            <span class="lever"></span>
+          </label>
+        </div> 
+      </li>
+      <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+      <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+      <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+    </ul>
+  </div>
+  
+
 <div class="parallax-container">
     <div class="parallax"><img src="{% static 'showcase/img/event-header.jpg' %}"></div>
 </div>
 <div class="section white">
     <div class="row container">
-        <h2 class="header">{{ object.name }}</h2>
-        <p class="grey-text text-darken-3 lighten-3">{{ object.description }}</p>
-        <p class="grey-text text-darken-3 lighten-3">Inicia: {{ object.start }}</p>
-        <p class="grey-text text-darken-3 lighten-3">Finaliza: {{ object.ends }}</p>
+      <!-- Titulo de seccion -->
+      <div class="col s12 center-align">
+        <h2>{{ object.name }}</h2>
+      </div>
+      <!-- Tarjeta de evento -->
+      <div class="section col s12 m12 l6">
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light center-align">
+              {% if not objects.front_image %}
+              <img class="activator" src="{% static 'showcase/img/event-header.jpg' %}">{%else%}
+               <i class="activator material-icons large">perm_media</i>
+               {%endif%}
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">{{ object.name }}<i class="material-icons right">more_vert</i></span>
+              <p> De:
+                <!-- Chip para el creador del evento -->
+                <div class="chip">
+                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                    <a href="#">Jane Do </a>
+                </div></p>
+            </div>
+            <!-- Contenido de la tarjeta -->
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">Informaci&oacute;n:<i class="material-icons right">close</i></span>
+              <p class="grey-text text-darken-3 lighten-3">{{ object.description }}</p>
+              <p class="grey-text text-darken-3 lighten-3">Inicia: {{ object.start }}</p>
+              {% if objects.end %}
+              <p class="grey-text text-darken-3 lighten-3">Finaliza: {{ object.ends }}</p> {%endif%}
+              <!-- Info -->
+                <div class="grey lighten-3 col s12 right-align">
+                    {% if object.is_public%}
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">Public</p> 
+                    {% else %} 
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">Privado</p> 
+                    {%endif%}
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">980 Invitados</p> 
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">300 Asistir&aacute;n</p>
+                    {% if not object.cover %}
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">&#x2605;Gratuito</p> 
+                    {% else%}
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">Cover: {{ object.cover }}</p> 
+                    {% endif %}
+                    <p class="grey-text text-darken-3 lighten-3 no-margin">12 Personas te invitaron</p> 
+                </div>
+            </div>
+        </div>              
+      </div>
+        <!-- Imagen -->
+      <div class="section col l6 m12 s12">
+        <div class="carousel carousel-slider ">
+          <a class="carousel-item" href="{% static 'showcase/img/event-header.jpg' %}"><img src="{% static 'showcase/img/event-header.jpg' %}"></a>
+          <a class="carousel-item" href="{% static 'showcase/img/jj.jpg' %}"><img src="{% static 'showcase/img/jj.jpg' %}"></a>
+          <a class="carousel-item" href="#three!"><img src="{% static 'showcase/img/mar.jpg' %}"></a>
+          <a class="carousel-item" href="#four!"><img src="{% static 'showcase/img/rihana.jpg' %}"></a>
+        </div>
+      </div>
+      <!-- Cuenta regresiva, Plataforma -->
+      <div class="section col s12 m5 l5 ">
+        <div class="card blue-amber darken-1">
+          <div class="card-content grey-text">
+            <span class="card-title">{{ object.start }}</span>
+            <p><h2> En: 3 D&iacute;as </h2></p>
+            {% if object.link %}
+            <p><H2> {{object.link}}</H2></p>
+            {% endif %}
+          </div>
+          <div class="card-action">
+            <a href="#">Asistir</a>
+            <a href="{{object.link}}"> Ver </a>
+          </div>
+        </div>
+      </div>
+      <!-- Comentarios -->
+      <div class="section col s12 m7 l7 offset-l2">
+          <ul class="collection ">
+            <b>Comentarios</b>
+            <!-- Estructura de comentario -->
+              <li class="collection-item">
+                  <div class="chip">
+                      <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                      <a href="#">Jane Do </a>
+                  </div>
+                  {%if owner%}
+                  <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a> 
+                  <p> Mensaje eviado por Jane asoinascodnaodnfaoidnfo aijdoiasdf nasodfia osdi foasdinf</p>
+                  {%endif%}
+                  <!-- Dropdown Structure -->
+                    <ul id='dropdown1' class='dropdown-content'>
+                      <li><a href="#!"><i class=" material-icons">mode_edit</i>Editar</a></li>
+                      <li><a href="#!"><i class=" material-icons">delete</i>Eliminar</a></li>
+                    </ul>   
+              </li>
+              <li class="collection-item"><div class="chip">
+                      <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                      <a href="#">Jane Do </a>
+                  </div> 
+                  <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a>
+                  <img class="materialboxed" data-caption="mensaje del usuario con la images. lasidaosnd aosindoaisndoa sidoaisndo9 ainsdoiamsodn" src="{% static 'showcase/img/event-header.jpg' %}" width="300" alt="Event image">  
+              </li>
+              <li class="collection-item">
+                  <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                      <div class="input-field">
+                        <input placeholder="Mensaje" id="comment" type="text" class="validate">
+                        <label for="comment"> + Comentario</label>
+                      </div>
+
+                      <div class="file-field input-field">
+                        <div class="btn cyan accent-3">
+                          <span>Imagen </span>
+                        </div>
+                        <div class="file-path-wrapper">
+                          <input class="file-path validate" type="text">
+                        </div>
+                      </div>
+
+                      <button type="submit" class="waves-effect waves-light cyan darken-3 btn right marginado">
+                          <i class="material-icons right">send</i>
+                          Enviar
+                      </button>
+                  </form>     
+              </li>
+          </ul>
+      </div>
+      <!-- Slides -->
+      <div class="section slider col m8 l8 s12 ">
+          <ul class="slides">
+            <!-- Host account -->
+            <li class="cyan">
+              <img src="{% static 'showcase/img/mar.jpg' %}"> 
+              <div class="caption center-align">
+                  <h5 class="white-text shadow"> Un evento de:</h5>
+                  <div class="host">
+                    <a href="#"><img class="circle" src="{% static 'showcase/img/rihana.jpg' %}" ><h2>Jane Do </h2></a>
+                  </div>
+              </div>
+            </li>
+            <!-- Sponsors slides  -->
+            <li class="cyan">
+              <img src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"> 
+              <div class="caption center-align">
+                <h5 class="white-text shadow"> Con el auspicio de:</h5>
+                <div class="host">
+                  <a href="#"><h2>Mape </h2></a>
+                </div>
+              </div>
+            </li>
+          </ul>
+      </div>
+      <!-- Chips para Patrocinadores -->
+      <div class="section col m4 l4 s12">
+          <div class="chip">
+              <img src="{% static 'showcase/img/mar.jpg' %}" alt="Contact Person">
+              <a href="#">Jane Do </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/jj.jpg' %}" alt="Contact Person">
+              <a href="#">Carlangas Pothography </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/edicielo.jpg' %}" alt="Contact Person">
+              <a href="#">World Trade Center </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/fiesta.jpg' %}" alt="Contact Person">
+              <a href="#">Don Guiña </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/tea.jpg' %}" alt="Contact Person">
+              <a href="#">Don Tuco Lopez </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+              <a href="#">Mape </a>
+          </div>
+          <div class="chip">
+              <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+              <a href="#">Jane Do </a>
+          </div>
+      </div>
     </div>
+  </div>
+  
+{% include "includes/footer.html" %}
 </div>
-
-
-
 {% endblock %}
 
 {% block js %}
     <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
+    <!-- Rango  jquery materialize para mape -->
+    <script src="{% static 'showcase/js/rango-jquery.js' %}"></script>
 {% endblock %}

@@ -16,33 +16,28 @@
 <body>
     <nav class="row no-margin no-padding">
         <div class="nav-wrapper cyan">            
-            <a class="brand-logo center" href="#"><h4>mape</h4></a>
+            <!-- <a class="brand-logo center" href="{%url 'map' %}"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}" ></a> -->
             <!-- BOTON de menu izquierdo -->
             <ul id="nav-left" class="" >
-                <li><a class="dropdown-button" data-activates="menu-izq"><i class="material-icons left">view_module</i><b class="hide-on-med-and-down"></b></a></li>
+                <li class="row">{% block nav-left %}{% endblock %}</li>
+            </ul>
+            <ul class="row brand-logo center no-margin">
+                {% block nav-center %}{% endblock %}
             </ul>
             <!-- BOTON de menu izquierdo -->
             <ul id="nav-right" class="">
-                <li class="right"><a class="dropdown-button" data-activates="menu-der"><i class="material-icons ">perm_identity</i></a></li>
+                <li class="right">{% block nav-right %}{% endblock %}</li>
             </ul>
             <!-- LISTA de menu izquierdo -->
-            <ul id="menu-izq" class="dropdown-content">
-                <li><a href="#" class="center"> <i class="material-icons">language</i></a></li>
-                <li class="divider"></li>
-                <li><a href="#" class="center"> <i class="material-icons">explicit</i>Eventos<span class="new badge cyan ">4</span></a></li>
+            <ul id="menu-izq" class="row dropdown-content">
+                {% block dropDown-content-left %}{% endblock %}
             </ul>
             <!-- LISTA de menu derecho -->
-            <ul id="menu-der" class="dropdown-content">
-                <!-- Links genericos para cuentas comerciales -->
-                {% if user_commertial %}
-                <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
-                {% endif %}
-                <li class="divider"></li>
-                <li><a href="/profiles/{{ user.username }}/" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
-                <li><a href="/logout/" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
+            <ul id="menu-der" class="row dropdown-content">
+                {% block dropDown-content-right %}{% endblock %}
             </ul>
         </div>
-    </nav>    
+    </nav>     
     
     {% block content %}{% endblock %}
    
