@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Comfortaa:400,700,300">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="{% static 'showcase/css/materialize.min.css' %}" media="screen,projection">
-    <link rel="stylesheet" href="{% static 'showcase/css/mape.css' %}">
+    <link rel="stylesheet" href="{% static 'showcase/css/map.css' %}">
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
 </head>
@@ -123,27 +123,7 @@
         <div class="parallax"><img src="{% static 'showcase/img/paisaje.jpeg' %}"></div>
     </div>
 
-    <footer class="footer-container">
-        <div class="container">
-            <div class="row">
-                <div class="col l4 s12">
-                    <H5 class="cyan-text lighten-2"> Ayudanos a crecer</H5>
-                    <p> La aplicaci&oacute;n continuar&aacute; evolucionando tan pronto como se disponga de los recursos necesarios, si quieres ser parte de nuestro crecimiento accede al siguiente link. </p> <a class="btn blue waves-effects" href="#"> Donar</a>
-                    <a class="btn blue waves-effects" href="#"> Acerca de</a>
-                </div>
-
-                <div class="col l4 s12">
-                    <H5 class="cyan-text lighten-2"> Contactanos </H5>
-                    <p> Si necesitas ponerte en contacto con el equipo de desarrollo puedes escribirnos.</p> 
-                    <a href="" class="btn blue waves-effect"> Escribir</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright right-align">
-            "© 2017-2020 Mape, All rights reserved."
-        </div>
-        <a class="grey-text text-lighten-4 right" href="https://github.com/Dogfalo/materialize/blob/master/LICENSE">MIT License</a>
-    </footer>
+    {% include 'includes/footer.html' %}
     <!-- Jquery -->
 	<script type="text/javascript" src="{% static 'showcase/js/jquery.js' %}"></script>
     <!-- Materialize jss -->

@@ -17,4 +17,6 @@ $(document).ready(function() {
 	    }
 	});
 	$('.slider').slider({full_width: true});
+    $('.chips').material_chip();
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
 });
