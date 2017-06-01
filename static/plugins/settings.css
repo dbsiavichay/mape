@@ -1,3 +1,9 @@
+@import url(http://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
+
+html {
+  font-family: Comfortaa, sans-serif;
+}
+
 .signup img {
 	width: 75px;
 	margin: 40px 0;
@@ -6,4 +12,9 @@
 .signup-panel {
 	border-radius: 5px;
 	padding: 20px 15px 20px 5px !important;
+}
+
+.form-panel {
+	border-radius: 10px;
+	border: 2px solid #00BCD4;	
 }

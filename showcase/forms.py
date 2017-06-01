@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
 
+from django.contrib.gis.geos import Point
+
 from .models import *
 
 class EventForm(forms.ModelForm):
@@ -35,6 +37,14 @@ class LocalityForm(forms.ModelForm):
 		label='Es localidad comercial',
 		required = False
 	)
+
+	def save(self, commit=True):
+		obj = super(LocalityForm, self).save(commit=False)
+		obj.point = Point(obj.longitude, obj.latitude)
+		
+		if commit:
+			obj.save()
+		return obj
 
 
 CommercialForm = forms.modelform_factory(Commercial, fields=('ruc',))

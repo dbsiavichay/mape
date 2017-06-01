@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
 from django.db.models import Q
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -41,6 +43,23 @@ class EventCreateView(CreateView):
 	model = Event
 	form_class = EventForm
 	success_url = '/map/'
+
+	def get_context_data(self, **kwargs):
+		context = super(EventCreateView, self).get_context_data(**kwargs)
+
+		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None	
+		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
+
+		localities = Locality.objects.filter(owner=self.request.user)
+		reference = Point(float(lng), float(lat))
+		close = Locality.objects.filter(point__distance_lte=(reference, D(m=1000)))
+
+		context.update({
+			'localities': localities,
+			'close':close
+		})
+
+		return context
 
 	def form_valid(self, form):
 		start = datetime.datetime.combine(
@@ -81,13 +100,13 @@ class LocalityListView(ListView):
 			
 			localities = []
 
-			for locality in object_list:
+			for locality in object_list:				
 				localities.append({
 					'id': locality.id,
 					'name': locality.name,
 					'description': locality.description,
-					'latitude': locality.latitude,
-					'longitude': locality.longitude
+					'longitude': locality.point.x,
+					'latitude': locality.point.y,
 				})
 
 			return JsonResponse(localities, safe=False)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
-from django.db import models
+from django.contrib.gis.db import models
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -42,6 +42,7 @@ class Locality(models.Model):
 	front_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)
 	latitude = models.FloatField(verbose_name='latitud')
 	longitude = models.FloatField(verbose_name='longitud')
+	point = models.PointField(null=True, blank=True)
 	is_public = models.BooleanField(default=False, verbose_name='visible a todos?')
 	date_joined = models.DateTimeField(auto_now_add=True)	
 	owner = models.ForeignKey(User)	

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}        
+
 {% block css %}
-	{% load staticfiles %}    
-    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
     <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -11,58 +11,84 @@
 
 {{ form.errors }}
 
-<form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    <div class="input-field col s12">
-        {{ form.name|add_class:"validate" }}
-        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-    </div>
-    <div class="input-field col s12">        
-        {{ form.description|add_class:"materialize-textarea validate" }}
-        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-    </div>
-    <div class="input-field col s6">
-        {{ form.start_0|add_class:"datepicker" }}
-        <label for="{{ form.start_0.id_for_label }}">{{ form.start_0.label }}</label>
-    </div>
+<div class="row container">
+    <div class="col s12 m8 form-panel">
+        <h4 class="center">Cuentanos de tu evento</h4>
+        <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="input-field col s12">
+                {{ form.name|add_class:"validate" }}
+                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            </div>
+            <div class="input-field col s12">        
+                {{ form.description|add_class:"materialize-textarea validate" }}
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            </div>
+            <div class="input-field col s6">
+                {{ form.start_0|add_class:"datepicker" }}
+                <label for="{{ form.start_0.id_for_label }}">{{ form.start_0.label }}</label>
+            </div>
 
-    <div class="input-field col s6">
-        {{ form.start_1|add_class:"timepicker" }}
-        <label for="{{ form.start_1.id_for_label }}">{{ form.start_1.label }}</label>
-    </div>
+            <div class="input-field col s6">
+                {{ form.start_1|add_class:"timepicker" }}
+                <label for="{{ form.start_1.id_for_label }}">{{ form.start_1.label }}</label>
+            </div>
 
-    <div class="input-field col s6">
-        {{ form.ends_0|add_class:"datepicker" }}
-        <label for="{{ form.ends_0.id_for_label }}">{{ form.ends_0.label }}</label>
-    </div>
+            <!-- 
+            <div class="input-field col s6">
+                {{ form.ends_0|add_class:"datepicker" }}
+                <label for="{{ form.ends_0.id_for_label }}">{{ form.ends_0.label }}</label>
+            </div>
 
-    <div class="input-field col s6">
-        {{ form.ends_1|add_class:"timepicker" }}
-        <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
-    </div>
+            <div class="input-field col s6">
+                {{ form.ends_1|add_class:"timepicker" }}
+                <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
+            </div> -->
 
-    <div class="input-field col s6">
-        {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
-        <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+            <div class="input-field col s6">
+                {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
+                <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+            </div>
+            <div class="input-field col s6">
+                {{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
+                <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+            </div>
+           
+            <div class="input-field col s12">        
+                {{ form.cover|add_class:"validate" }}
+                <label for="{{ form.cover.id_for_label }}">{{ form.cover.label }}</label>
+            </div>
+            <input type="hidden" name="published_by" value="{{ user.id }}">
+            <div class="col s12 center">
+                <button class="btn waves-effect waves-light red" type="submit" name="action">Guardar
+                    <i class="material-icons right">send</i>
+                </button>        
+            </div>
+        </form>    
     </div>
-    <div class="input-field col s6">
-        {{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
-        <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+    <div class="col s12 m4 form-panel">
+        {% if localities %}
+        <h5 class="center">Mis lugares</h5>
+        <div id="localities" class="collection">
+            {% for locality in localities %}
+            <a href="#!" x="{{ locality.point.x }}" y="{{ locality.point.y }}" class="collection-item">{{ locality.name }}</a>
+            {% endfor %}            
+        </div>
+        {% endif %}
+        {% if close %}
+        <h5 class="center">Lugares cerca</h5>
+        <div id="close" class="collection">
+            {% for locality in close %}
+            <a href="#!" x="{{ locality.point.x }}" y="{{ locality.point.y }}" class="collection-item">{{ locality.name }}</a>
+            {% endfor %}            
+        </div>
+        {% endif %}
     </div>
-    <div class="input-field col s12">        
-        {{ form.cover|add_class:"validate" }}
-        <label for="{{ form.cover.id_for_label }}">{{ form.cover.label }}</label>
-    </div>
-    <input type="hidden" name="published_by" value="{{ user.id }}">
-    <div class="col s12 center">
-        <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
-            <i class="material-icons right">send</i>
-        </button>        
-    </div>
-</form>
+</div>
+
 {% endblock %}
 
-{% block js %}
-	{% load staticfiles %}    
-    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
+{% block js %}	
+    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>
+    <script src="{% static 'showcase/js/event.js' %}"></script>    
 {% endblock %}
