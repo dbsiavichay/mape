@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.db.models import Q
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.views.generic import CreateView, UpdateView, DetailView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
 from .models import *
 from .forms import *
 
@@ -71,3 +74,41 @@ class ProfileUpdateView(UpdateView):
 		
 	def get_object(self, queryset=None):
 		return self.request.user
+
+class RelationshipListView(ListView):
+	model = Profile
+	template_name = 'social/relationship.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(RelationshipListView, self).get_context_data(**kwargs)
+
+		keyword = self.request.GET.get('keyword') or self.kwargs.get('keyword') or None
+
+		if keyword is not None:
+			profiles = []
+			objects = Profile.objects.filter(
+				Q(user__first_name__icontains=keyword) |
+				Q(user__last_name__icontains=keyword) |
+				Q(user__username__icontains=keyword)
+			)
+
+			for profile in objects:
+				is_friend = profile.get_relationship(self.request.user.profile, 2)
+				have_request = profile.get_relationship(self.request.user.profile, 1)
+
+				if is_friend:
+					text = 'Son amigos'
+				elif have_request:
+					text = 'Solicitud enviada'
+				else:
+					text = 'Enviale una solicitud'
+				 
+				can_do_request = not is_friend and not have_request
+
+				profiles.append((text, can_do_request,profile))
+
+			context.update({
+				'profiles': profiles
+			})
+
+		return context		

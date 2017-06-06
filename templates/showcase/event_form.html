@@ -34,6 +34,17 @@
                 <label for="{{ form.start_1.id_for_label }}">{{ form.start_1.label }}</label>
             </div>
 
+
+            <div class="file-field input-field col s12">
+                <div class="btn">
+                    <span>Imagen</span>
+                    {{ form.front_image }}
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+
             <!-- 
             <div class="input-field col s6">
                 {{ form.ends_0|add_class:"datepicker" }}

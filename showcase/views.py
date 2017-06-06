@@ -69,7 +69,9 @@ class EventCreateView(CreateView):
 
 		self.object = form.save(commit=False)
 		self.object.start = start
-		self.object.save()		
+		self.object.save()
+
+		self.success_url = '/event/%s/edit/' % (self.object.id)		
 		
 		return super(EventCreateView, self).form_valid(form)
 

@@ -197,9 +197,7 @@ text-shadow: -3px -3px 3px #fff , 3px -3px 3px #fff , -3px 3px 3px #fff , 3px 3p
 .mape-tiny{
   width: 20px;
 }
-.mape-medium{
-  width: 25px;
-}
+
 .slider .indicators .indicator-item.active{
   background-color: #114847 !important;
 }

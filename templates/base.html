@@ -14,31 +14,23 @@
     <link rel="stylesheet" href="{% static 'plugins/settings.css' %}">
     {% block css %}{% endblock %}    
 </head>
-<body>
-    <nav class="row no-margin no-padding">
-        <div class="nav-wrapper cyan">            
-            <!-- <a class="brand-logo center" href="{%url 'map' %}"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}" ></a> -->
-            <!-- BOTON de menu izquierdo -->
-            <ul id="nav-left" class="" >
-                <li class="row">{% block nav-left %}{% endblock %}</li>
-            </ul>
-            <ul class="row brand-logo center no-margin">
-                {% block nav-center %}{% endblock %}
-            </ul>
-            <!-- BOTON de menu izquierdo -->
-            <ul id="nav-right" class="">
-                <li class="right">{% block nav-right %}{% endblock %}</li>
-            </ul>
-            <!-- LISTA de menu izquierdo -->
-            <ul id="menu-izq" class="row dropdown-content">
-                {% block dropDown-content-left %}{% endblock %}
-            </ul>
-            <!-- LISTA de menu derecho -->
-            <ul id="menu-der" class="row dropdown-content">
-                {% block dropDown-content-right %}{% endblock %}
-            </ul>
+<body>    
+
+    <nav>
+        <div class="nav-wrapper cyan">
+          <a href="{% url 'map' %}" class="brand-logo left">
+              <img src="{% static 'showcase/img/Proy_Mape-01-01.png' %}">              
+          </a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/profiles/{{ user.username }}/">Cuenta</a></li>
+            <li><a href="/logout/">Salir</a></li>            
+          </ul>
         </div>
-    </nav>     
+    </nav>
+
+
+
+   
     
     {% block content %}{% endblock %}
    

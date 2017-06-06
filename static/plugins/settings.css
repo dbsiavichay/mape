@@ -18,3 +18,21 @@ html {
 	border-radius: 10px;
 	border: 2px solid #00BCD4;	
 }
+
+.brand-logo img{
+  width: 25px;
+  margin-top: 13px;
+}
+
+/*Custom materialize clases */
+
+.container {
+	padding-top: 15px;
+}
+
+.btn .badge {
+	margin: 7px 10px;
+    background-color: white;
+    border-radius: 5px;
+}
+/*Custom materialize clases */

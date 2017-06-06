@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'social/css/relationship.css' %}">
+{% endblock %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+
+<div class="container">    
+    <div class="row">
+        <div class="col m5">
+            <h5>Buscar amigos</h5>
+            <div class="search">
+              <div class="search-wrapper card">
+                <input id="search"><i class="material-icons">search</i>
+                <div class="search-results">
+                </div>
+              </div>
+            </div>
+
+
+            <ul class="collection">
+                {% for text, can_do_request, profile in profiles %}
+                <li class="collection-item avatar">
+                    {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="" class="circle">
+                    {% else %}
+                    <i class="material-icons circle">perm_identity</i>
+                    {% endif %}
+                    <span class="title">{{ profile.user.get_full_name }}</span>
+                    <p>{{ profile.user.username }} <br>
+                        {{ text }}
+                    </p>
+                    {% if can_do_request %}
+                    <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
+                    {% endif %}
+                </li>
+                {% endfor %}                
+            </ul>
+
+            
+        </div>
+        <div class="col m7">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#friends">Amigos</a></li>
+                        <li class="tab col s3"><a href="#sent">Enviados</a></li>
+                        <li class="tab col s3"><a href="#received">Recibidos</a></li>                        
+                    </ul>
+                </div>
+                <div id="friends" class="col s12">No tienes amigos aun.</div>
+                <div id="sent" class="col s12">Test 2</div>
+                <div id="received" class="col s12">Test 3</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'social/js/relationship.js' %}"></script>
+{% endblock %}
