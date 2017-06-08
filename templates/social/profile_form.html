@@ -18,11 +18,12 @@
     </div>
     {% endif %}
 
-    {% if user.profile.avatar %}
     <div class="row center">
+        {% if user.profile.avatar %}
         <div class="col s12">                                
             <img src="{{ user.profile.avatar.url }}" class="circle" width="100">
         </div>
+        {% endif %}
         <div class="col s12">                                
             <h5>{{ user.get_full_name }}</h5>
         </div>
@@ -31,7 +32,7 @@
             <span class="badge">{{ user.profile.get_friends_count }}</span>
         </a>
     </div>
-    {% endif %}
+
 
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}

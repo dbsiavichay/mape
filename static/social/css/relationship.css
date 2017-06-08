@@ -39,3 +39,15 @@
     white-space: nowrap;
     display: block;
 }
+
+.actions {
+	position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 12px;
+}
+
+.actions a {
+	display: block;
+}

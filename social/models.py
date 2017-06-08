@@ -14,7 +14,12 @@ class Profile(models.Model):
 	friends = models.ManyToManyField('self', through='Friendship', symmetrical=False)
 
 	def get_friends_count(self):
-		return len(self.friends.filter(relationship__status=2))
+		queryset = Friendship.objects.filter(
+			models.Q(from_profile=self) |
+			models.Q(to_profile=self)
+		).filter(status=2)
+
+		return len(queryset)
 
 	def get_relationship(self, profile, status):
 		f = Friendship.objects.filter(from_profile=self, to_profile=profile, status=status)
@@ -28,9 +33,19 @@ class Profile(models.Model):
 			return False		
 
 	def send_request(self, friend):
-		self.friends.add(friend)
+		Friendship.objects.create(
+			from_profile = self,
+			to_profile = friend
+		)
 
+	def accept_request(self, profile):
+		friendship = Friendship.objects.filter(from_profile=profile, to_profile=self)[0]
+		friendship.status = 2
+		friendship.save()
 
+	def reject_request(self, profile):
+		friendship = Friendship.objects.filter(from_profile=profile, to_profile=self)[0]
+		friendship.delete()		
 
 	def save(self, *args, **kwargs):
 		super(Profile, self).save(*args, **kwargs)

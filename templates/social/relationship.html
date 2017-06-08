@@ -22,7 +22,7 @@
               </div>
             </div>
 
-
+            {% if profiles %}
             <ul class="collection">
                 {% for text, can_do_request, profile in profiles %}
                 <li class="collection-item avatar">
@@ -36,11 +36,12 @@
                         {{ text }}
                     </p>
                     {% if can_do_request %}
-                    <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
+                    <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">send</i></a>
                     {% endif %}
                 </li>
                 {% endfor %}                
             </ul>
+            {% endif %}
 
             
         </div>
@@ -53,9 +54,50 @@
                         <li class="tab col s3"><a href="#received">Recibidos</a></li>                        
                     </ul>
                 </div>
-                <div id="friends" class="col s12">No tienes amigos aun.</div>
+                <div id="friends" class="col s12">
+                    {% if friends %}
+                    <ul class="collection">
+                        {% for profile in friends %}
+                        <li class="collection-item avatar">
+                            {% if profile.from_profile.avatar %}
+                            <img src="{{ profile.from_profile.avatar.url }}" alt="" class="circle">
+                            {% else %}
+                            <i class="material-icons circle">perm_identity</i>
+                            {% endif %}
+                            <span class="title">{{ profile.from_profile.user.get_full_name }}</span>
+                            <p>{{ profile.from_profile.user.username }}</p>
+                            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">call_missed</i></a>
+                            
+                        </li>
+                        {% endfor %}                
+                    </ul>
+                    {% endif %}
+                </div>
                 <div id="sent" class="col s12">Test 2</div>
-                <div id="received" class="col s12">Test 3</div>
+                <div id="received" class="col s12">
+                    
+                    {% if received %}
+                    <ul class="collection">
+                        {% for profile in received %}
+                        <li class="collection-item avatar">
+                            {% if profile.from_profile.avatar %}
+                            <img src="{{ profile.from_profile.avatar.url }}" alt="" class="circle">
+                            {% else %}
+                            <i class="material-icons circle">perm_identity</i>
+                            {% endif %}
+                            <span class="title">{{ profile.from_profile.user.get_full_name }}</span>
+                            <p>{{ profile.from_profile.user.username }}</p>
+                            <div class="actions">
+                                <a href="/profiles/request/accept/{{ profile.from_profile.id }}/"><i class="material-icons">done</i></a>
+                                <a href="/profiles/request/reject/{{ profile.from_profile.id }}/"><i class="material-icons">call_missed</i></a>
+                            </div>
+                            
+                        </li>
+                        {% endfor %}                
+                    </ul>
+                    {% endif %}
+
+                </div>
             </div>
         </div>
     </div>
