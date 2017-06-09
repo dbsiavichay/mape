@@ -93,52 +93,28 @@ class RelationshipListView(ListView):
 			).exclude(user=self.request.user)
 
 			for profile in objects:
-				is_friend = profile.get_relationship(self.request.user.profile, 2)
-				have_request = profile.get_relationship(self.request.user.profile, 1)
-
-				if is_friend:
-					text = 'Son amigos'
-				elif have_request:
-					text = 'Solicitud enviada'
-				else:
-					text = 'Enviale una solicitud'
-				 
-				can_do_request = not is_friend and not have_request
-
-				profiles.append((text, can_do_request,profile))			
+				text = Friendship.objects.check_status(self.request.user.profile, profile)
+				profiles.append((text, profile))			
 
 			context.update({
 				'profiles': profiles,				
 			})
-
-
-		friends = Friendship.objects.filter(
-			Q(from_profile=self.request.user.profile) |
-			Q(to_profile=self.request.user.profile)
-		).filter(status=2)
-
-		received = Friendship.objects.filter(to_profile=self.request.user.profile, status=1)			
-
-		context.update({			
-			'received': received,
-			'friends': friends
-		})
 
 		return context	
 
 
 def send_request(request, target):
 	target = Profile.objects.get(pk=target)
-	request.user.profile.send_request(target)
-	keyword = request.GET.get('keyword', '')
+	Friendship.objects.send_request(request.user.profile, target)
 
+	keyword = request.GET.get('keyword', '')
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
 
 def accept_request(request, target):
-	target = Profile.objects.get(pk=target)
-	request.user.profile.accept_request(target)
-	keyword = request.GET.get('keyword', '')
+	target = Profile.objects.get(pk=target)	
+	Friendship.objects.accept(target, request.user.profile)
 
+	keyword = request.GET.get('keyword', '')
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
 
 def reject_request(request, target):
