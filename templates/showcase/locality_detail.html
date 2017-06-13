@@ -3,41 +3,398 @@
 {% load staticfiles %}
 
 {% block css %}
-    <link href="{% static 'showcase/css/events.css' %}" rel="stylesheet">    
+    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">    
     <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block nav-left %}
+<a href="{% url 'map' %}" data-activates="menu-izq"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a>
+{%endblock%}
+
+{% block nav-right %}
+<a class="dropdown-button" data-activates="menu-der"> <i class="material-icons ">settings</i></a>
+{%endblock%}
+
+{% block nav-center %}
+<!-- Boton de Busqueda -->
+  <div class="input-field">
+      <i class="material-icons prefix ">search</i>
+      <input id="search2" type="search" class="validate no-padding">
+      <label for="search2"><i class="material-icons prefix">buscar</i><label>
+  </div>
+{%endblock%}
+
+{% block dropDown-content-right %}
+<!-- Links genericos para cuentas comerciales -->
+{% if user_commertial %}
+<li class="divider"></li>
+<li><a href="" class="center"> <i class="material-icons">assignment_ind</i>Auspiciar</a></li>
+{% endif %}
+<li class="divider"></li>
+<li><a href="" class="center"> <i class="material-icons">erase</i>Editar</a></li>
+<li><a href="" class="center"> <i class="material-icons">erase</i>Suspender evento</a></li>
+{% endblock%}
+
 {% block content %}
-<div class="parallax-container">
-    <div class="parallax"><img src="{% static 'showcase/img/event-header.jpg' %}"></div>
+<!-- Informacion extra -->
+<div class="franja right-align">
+  Categoria  &#8226;
+  <!-- si es publico o privado -->
+  {% if object.is_piblic %}
+  Publico &#8226; 
+  {% else %}
+  Privado  &#8226;
+  {%endif%}
+  <!-- si esta abierto -->
+  Abierto  &#8226;
+  <!-- Si esta verificado-->
+  <i class="tiny material-icons">done</i>Verificado
 </div>
-<div class="section white">
-    <div class="row container">
-        <h2 class="header">{{ object.name }}</h2>
-
-        {% if is_subscribed %}
-        <button type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Subscrito</button>    
-        {% else %}
-        <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
-            {% csrf_token %}
-            <input type="hidden" name="user" value="{{ user.id }}">
-            <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
-            <input type="hidden" name="next" value="/locality/{{ object.id }}/">
-            <button type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Subscribirse</button>    
-        </form>
-        {% endif %}
-                
-
-        <p class="grey-text text-darken-3 lighten-3">{{ object.description }}</p>
-        <p class="grey-text text-darken-3 lighten-3">Inicia: {{ object.start }}</p>
-        <p class="grey-text text-darken-3 lighten-3">Finaliza: {{ object.ends }}</p>
+<!-- Parallax -->
+<div class="parallax-container no-padding">
+    <div class="parallax"><img src="{% static 'showcase/img/alcaldia_morona_portada.jpg' %}"></div>
+</div>
+<!-- Seccion central -->
+<div class="section white no-padding row">
+  <!-- Container -->
+  <div class="container">
+    <div class="card">
+      <!-- Cabecera de la localidad -->
+      <div class="card-content row">
+        <div class="col s12 m12 l6 ">
+          {% if not object.is_public %}
+          <h2 class="col header">{{ object.name }}</h2>
+          {% else %}
+          <div class="col s6 offset-l3 offset-s3">
+            <img class="responsive-img circle" width="200"src="{% static 'showcase/img/alcaldia_morona.png' %}">
+          </div>
+          <h3 class="header col s12">{{ object.name }}</h3>
+          {% endif %}
+          <h4 class="col s12 grey-text"> #{{ object.name }} </h4>
+          <div class="horizontal col s12 m12 l12">
+            {% if is_subscribed %}
+            <button class="btn amber darken-3 right" type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Suscrito</button>
+            {% else %}
+            <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="user" value="{{ user.id }}">
+              <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
+              <input type="hidden" name="next" value="/locality/{{ object.id }}/">
+              <button type="submit" class="waves-effect waves-light btn col right"><i class="material-icons right">grade</i>Subscribirse</button>    
+            </form>
+            {% endif %}
+            <!-- Contador de suscriptores -->
+            <b class="col right flow-text"> 350.521 Suscriptores</b>  
+          </div>
+        </div>
+        <!-- Imagenes -->
+        <i class="material-icons right">code</i><span>Fotos en el sitio:</span>
+        <div class="carousel col s12 m12 l6">
+            <a class="carousel-item" href="{% static 'showcase/img/event-header.jpg' %}"><img src="{% static 'showcase/img/event-header.jpg' %}"></a>
+            <a class="carousel-item" href="{% static 'showcase/img/jj.jpg' %}"><img src="{% static 'showcase/img/jj.jpg' %}"></a>
+            <a class="carousel-item" href="#three!"><img src="{% static 'showcase/img/mar.jpg' %}"></a>
+            <a class="carousel-item" href="#four!"><img src="{% static 'showcase/img/rihana.jpg' %}"></a>
+        </div>
+      </div>
+      <!-- Tabs de la tarjeta -->
+      <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width">
+          <li class="tab"><a href="#description">Descripci&oacute;n</a></li>
+          <!-- El "tab" Media debe ir activo al momento de cargar la pagina debido a un bug -->
+          <li class="tab"><a href="#media">Media</a></li>
+          <li class="tab"><a class="active" href="#events">Eventos</a></li>
+        </ul>
+      </div>
+      <!-- Contenido de los tabs -->
+      <div class="card-content row grey lighten-4">
+        <!-- Información-->
+        <div id="description">
+          <!-- Descripcion -->
+          <div class="card-panel ">
+            <span class="card-title">{{ object.name }}</span>
+            <p align="justify"><span>Lorem ipsum dolor sit amet,</span></p>
+          </div>
+          <!-- Grupo de colacoracion en la localidad -->
+          <div class="card-panel grey lighten-2">
+            <span class="card-title grey-text">En colaboraci&oacute;n con:</span>
+            <div class="chip">
+                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                <a href="">Denis Siavichay</a>
+            </div>
+            <div class="chip">
+                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                <a href="">Pepe Lucho</a>
+            </div>
+            <div class="chip amber lighten-2">
+                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                <a href="">Alcaldia de Morona</a>
+            </div>
+          </div>
+          <!-- Informacion de Contacto -->
+          <div class="col s12 row">
+            <div class="col s12 m4 l4"><h5>Direcci&oacute;n:</h5>
+              <p> Don bosco y Riobamba </p></div>
+            <div class="col s12 m4 l4"><h5>Pagina web:</h5>
+              <p> www.pagina.com </p>
+            </div>
+            <div clas="col s12 m4 l4">
+              <h5>Telefonos:</h5>
+              <p>123123423541234{{ user.cellphone }}</p></div>
+          </div>
+        </div>
+        <!-- Media -->
+        <div id="photos" class="row">
+            <div class="col s12 ">
+              
+            </div>
+        </div>
+        <!-- Eventos de la Localidad -->
+        <div id="events" class="row">
+          <div class="section col s12 m12 l6 offset-l3">
+            <!-- Tarjeta de evento -->
+            <div class="card">
+              <!-- Imagen de la tarjeta -->
+              <div class="card-image z-depth-3 waves-effect waves-block waves-light ">
+                {% if not objects.front_image %}
+                <img class="activator" src="{% static 'showcase/img/event-header.jpg' %}">{%else%}
+                <i class="activator material-icons large">perm_media</i>
+                 {%endif%}
+              </div>
+              <!-- Cabecera de la tarjeta -->
+              <div class="card-content row event-card no-margin">
+                <!-- Lista de franja -->
+                <div class="franja right-align col s12">
+                  <!-- Estados de proximidad: 
+                    1.- 1 mes de anticipacion: "Próximamente"
+                    2.- 2 semanas: "Próxima semana" -->
+                  Pr&oacute;ximamente &#8226;
+                  <!-- Estados de Evento: 
+                    1.- Publico
+                    2.- Privado -->
+                  Evento Publico &#8226;
+                  <!-- Gratuito -->
+                  Gratuito &#8226;
+                  <!-- Numero total de invitados. (nos reservamos los contadores de [Asistentes, Me gusta]) -->
+                  300 Invitados &#8226;
+                </div>
+                <!-- Activador-Nombre del Evento -->
+                <span class="card-title activator grey-text text-darken-4">
+                  <a href="">{{ object.name }}</a>
+                  <i class="material-icons right">more_vert</i>
+                </span>
+                <!-- Fecha del evento -->
+                <div class="col s6 card comentario-izq grey lighten-2">
+                  <i class="material-icons medium">today</i>
+                  <p class="card-title">Sabado 21 de Mayo, 2017 a las 16H20</p>
+                  {% if object.link %}
+                    <p><H2> {{object.link}}</H2></p>
+                  {% endif %}
+                </div>
+                <!-- Event Place -->
+                <div class="col s6 card comentario-der grey lighten-2">
+                  <i class="material-icons medium">location_on</i>
+                  <p>En:
+                  <div class="chip">
+                      <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                      <a href="">Parque Recreacional</a>
+                  </div>
+                  <p><a href="">Ver en el mapa</a>
+                  </p>
+                </div>
+              </div>
+              <!-- Card content -->
+              <div class="card-reveal">
+                <!-- Info -->
+                <span class="card-title grey-text text-darken-4">Informaci&oacute;n:<i class="material-icons right">close</i></span>
+                <div class="card-panel gray lighten-3">
+                  <p align="justify" class="grey-text text-darken-3 lighten-3">{{ object.description }}</p>
+                  <!-- Boton hacia la pagina detalle del evento -->
+                  <a href="" class="btn cyan waves-light right"> <i class="material-icons right">visibility</i>Ver m&aacute;s</a>
+                </div>
+                <!-- Date -->
+                <div class="row">
+                  <div class="col s2 "><i class="material-icons cyan-text large ">today</i></div><H5 class="col s10">Fecha: Sabado 21 a las 21H00</H5>
+                  {% if true %}
+                  <div class="col s3 "><i class="material-icons cyan-text large right">shopping_basket</i></div>
+                  <h5 class="col s9">Precio: 23,50 </h5> 
+                  {% else %}
+                  <div class="col s3 right "><i class="material-icons cyan-text large ">stars</i></div>
+                  <h5 class="col s9 right-align">Gratuito</h5> 
+                  {% endif %}
+                  {% if true %}
+                  <div class="col s3 "><i class="material-icons cyan-text large ">assignment_ind</i></div>
+                  <h5 class="col s9">{{ object.name }}</h5>
+                  {%else%}
+                  <img class="materialboxed col s3 circle" src="{% static 'showcase/img/alcaldia_morona.png' %}" >
+                  <h5 class="col s9">Organizado por: {{ object.name }}</h5>
+                  {%endif%}
+                </div>
+                <!-- Chips de Hashtags: Ofertas para el evento -->
+                <div class="col s12 grey lighten-3 comentario-izq">
+                  <h3><b class="cyan-text col s1">#</b></h3>
+                  <div class"col s11">
+                    <div class="chip">
+                      <a href="">#RioUpano</a>
+                    </div>
+                    <div class="chip">
+                      <a href="">#Balneario</a>
+                    </div>
+                    <div class="chip">
+                      <img src="{% static 'showcase/img/chumpi.jpg' %}">
+                      <a href="">#Chumpi</a>
+                    </div>
+                    <div class="chip">
+                      <a href="">#Comida_italiana</a>
+                    </div>
+                    
+                  </div>
+                </div>
+                <!-- Chips de invitaciones recibidas -->
+                <div class="col s12">
+                  <p>Te invita:  </p>
+                  <div class="chip">
+                    <img src="{{ user.profile.avatar.url }}" alt="Contact Person">
+                    <a href="">@{{ user.profile.user }}</a>
+                  </div>
+                  <div class="chip amber lighten-2">
+                    <img src="{% static 'showcase/img/alcaldia_morona.png' %} " alt="Contact {{object.name}}">
+                    <a href="">@Alcaldia_Morona</a>
+                  </div>
+                  <div class="chip amber lighten-2">
+                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                    <a href="">@{{object.name}}</a>
+                  </div>
+                  <div class="chip">
+                    <img src="{{ user.profile.avatar.url }}" alt="Contact Person">
+                    <a href="">@Carlos_Echeverry</a>
+                  </div>
+                </div> 
+                <ul class="col s12 collapsible" data-collapsible="accordion">
+                  <li>
+                    <div class="collapsible-header"><i class="material-icons">perm_data_setting</i>Mas opciones</div>
+                    <div class="collapsible-body row no-margin">
+                      <a href="#Auspiciar" class="btn col s6 cyan waves-light"> <i class="material-icons right">trending_up</i>Auspiciar</a>
+                      <a href="#Denunciar-modal" class="btn col s6 amber-text text-darken-4 red darken-2 waves-light"> <i class="material-icons right">not_interested</i>Denunciar</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <!-- Card Actions -->      
+              <div class="card-action row">
+                <a href="" class="btn cyan waves-light col s4 "> <i class="material-icons right">thumb_up</i>Me Gusta</a>
+                <a href="" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">done</i>Asistir </a>
+                <a href="#Invitar" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">supervisor_account</i>Invitar </a>
+              </div> 
+              <!-- Modal Invite -->
+              <div id="Invitar" class="modal">
+                <div class="modal-content">
+                  <h4>Invitaci&oacute;n</h4>
+                  <p>Modal para seleccionar invitados</p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+              </div>
+              <!-- Modal Denunciar -->
+              <div id="Denunciar-modal" class="modal">
+                <div class="modal-content">
+                  <h4>Motivo de la denuncia:</h4>
+                  <div class="input-field col s12">
+                    <select multiple>
+                      <optgroup label="team 1">
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                      </optgroup>
+                      <optgroup label="team 2">
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                      </optgroup>
+                    </select>
+                    <label>Optgroups</label>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+              </div>  
+              <!-- Modal Invite -->
+              <div id="Auspiciar" class="modal">
+                <div class="modal-content">
+                  <h4>Auspicio</h4>
+                  <p>Modal para confirmar auspicio</p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+              </div>  
+            </div>
+          </div>
+        </div> 
+      </div><!-- Fin tarjeta evento -->
+      </div>
     </div>
+    <!-- Comentarios -->
+    <div class="section col s12 m8 l8 offset-m2 offset-l2">
+      <ul class="collection ">
+        <b>Comentarios</b>
+        <!-- Estructura de comentario -->
+        <li class="collection-item">
+          <div class="chip">
+              <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+              <a href="#">Jane Do </a>
+          </div>
+          <div class="card-panel comentario-izq"> Hasta cuando venden las entradas?</div>
+          {%if owner%}
+          <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a> 
+          <p> Mensaje eviado por Jane asoinascodnaodnfaoidnfo aijdoiasdf nasodfia osdi foasdinf</p>
+          {%endif%}
+          <!-- Dropdown Structure -->
+          <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="#!"><i class=" material-icons">mode_edit</i>Editar</a></li>
+            <li><a href="#!"><i class=" material-icons">delete</i>Eliminar</a></li>
+          </ul>   
+        </li>
+        <li class="collection-item">
+          <div class="chip">
+              <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+              <a href="#">Jane Do </a>
+          </div> 
+          <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a>
+          <div class="card-panel comentario-izq">
+            <img class="materialboxed" data-caption="mensaje del usuario con la images. lasidaosnd aosindoaisndoa sidoaisndo9 ainsdoiamsodn" src="{% static 'showcase/img/event-header.jpg' %}" width="300" alt="Event image">  
+          </div>
+        </li>
+        <li class="collection-item">
+          <form action="" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="input-field">
+              <input placeholder="Mensaje" id="comment" type="text" class="validate">
+              <label for="comment"> Comentario: </label>
+            </div>
+            <div class="file-field input-field">
+              <div class="btn cyan accent-3">
+                <span>Imagen </span>
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+            </div>
+            <button type="submit" class="waves-effect waves-light cyan darken-3 btn right marginado">
+                <i class="material-icons right">send</i>
+                Enviar
+            </button>
+          </form>     
+        </li>
+      </ul>
+    </div>
+  </div>
+  {% include 'includes/footer.html'%}
 </div>
-
-
 
 {% endblock %}
 
 {% block js %}
-    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>    
+    <script src="{% static 'plugins/clockpicker/clockpicker.js' %}"></script>   
+    <!-- Rango  jquery materialize para mape -->
+    <script src="{% static 'showcase/js/rango-jquery.js' %}"></script> 
 {% endblock %}
