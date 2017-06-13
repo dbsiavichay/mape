@@ -22,7 +22,14 @@
               <img src="{% static 'showcase/img/Proy_Mape-01-01.png' %}">              
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="">Notificaciones<span class="new badge">4</span></a></li>
+            <li>
+                <a href="">
+                    Notificaciones
+                    {% if profile_requests %}
+                    <span class="new badge">{{ profile_requests|length }}</span>
+                    {% endif %}
+                </a>
+            </li>
             <li><a href="/profiles/{{ user.username }}/">Cuenta</a></li>
             <li><a href="/logout/">Salir</a></li>            
           </ul>

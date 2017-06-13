@@ -25,13 +25,13 @@ class Event(models.Model):
 	is_public = models.BooleanField(default=False)
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)		
-	guests = models.ManyToManyField(User, through='Guest')
+	guests = models.ManyToManyField(User, through='Guest', blank=True)
 
 	def __unicode__(self):
 		return self.name
 
 	def get_organizer(self):
-		organizers = self.guests.filter(guests__is_organizer=True)
+		organizers = self.guests.filter(guest__is_organizer=True)
 				
 		if len(organizers) > 0:
 			return organizers[0]
@@ -39,21 +39,29 @@ class Event(models.Model):
 
 
 class Guest(models.Model):
+	INVITED = 1
+	ATTEND = 2
+	LIKE = 3
+	MAYBE_ATTEND = 4
+	NOT_ATTEND = 5
+
+
+	STATE_CHOICES = (
+		(INVITED, 'Invitado'),
+		(ATTEND, 'Asistirá'),
+		(LIKE, 'Me gusta'),
+		(MAYBE_ATTEND, 'Talvez asista'),
+		(NOT_ATTEND, 'No asistirá')
+	)
+
 	class Meta:
 		unique_together = (('user', 'event'),)
 
-	STATE_CHOICES = (
-		(1, 'Invitado'),
-		(2, 'Asistirá'),
-		(3, 'Talvez asista'),
-		(4, 'No asistirá')
-	)
-
-	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='guests')
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 	is_creator = models.BooleanField(default=False)
 	is_organizer = models.BooleanField(default=False)
-	state = models.PositiveSmallIntegerField(default = 1, choices = STATE_CHOICES) 
+	status = models.PositiveSmallIntegerField(default = INVITED, choices = STATE_CHOICES) 
 	date = models.DateTimeField(auto_now_add=True)
 
 	def attend(self, action=True):

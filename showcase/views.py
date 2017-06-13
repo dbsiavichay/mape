@@ -22,11 +22,14 @@ class EventListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.filter(Q(published_by=request.user) | Q(is_public=True))
+			self.object_list = self.model.objects.filter(
+				Q(guest__user=request.user, guest__is_creator=True) | 
+				Q(is_public=True)
+			)			
 			
 			events = []
 
-			for event in object_list:
+			for event in self.object_list:
 				events.append({
 					'id': event.id,
 					'name': event.name,
@@ -70,6 +73,15 @@ class EventCreateView(CreateView):
 		self.object = form.save(commit=False)
 		self.object.start = start
 		self.object.save()
+
+		Guest.objects.create(
+			user = self.request.user,
+			event = self.object,
+			is_creator = True,
+			is_organizer = True,
+			status = Guest.ATTEND
+		)
+
 
 		self.success_url = '/event/%s/edit/' % (self.object.id)		
 		

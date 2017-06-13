@@ -8,7 +8,7 @@ from .models import *
 class EventForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		exclude = ('start',)
+		exclude = ('start','guests')
 	
 	start_0 = forms.DateField(
 		label = 'Fecha de inicio'
