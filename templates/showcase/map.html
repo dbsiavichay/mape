@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block css %}
-    
     <link href='https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.css' rel='stylesheet' />
     <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block nav-left %}
-<a class="col l4" href="{% url 'map' %}"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a>
-<a class="dropdown-button col l4" data-activates="menu-izq"> <i class="material-icons ">settings</i></a>
+<a class="" href="{% url 'map' %}"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a>
 {%endblock%}
 
 {% block nav-right %}
-<a class="dropdown-button" data-activates="menu-der"> <i class="material-icons ">settings</i></a>
+{%if user.profile.avatar %}
+<a class="dropdown-button" data-activates="menu-1"><img class=" responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a>
+{%else%}
+<a class="dropdown-button" data-activates="menu-1"> <i class="material-icons medium">person_pin</i></a>
+{%endif%}
+{%endblock%}
+
+{% block nav-right2 %}
+<a class="dropdown-button " data-activates="menu-2"> <i class="material-icons ">info</i></a>
 {%endblock%}
 
 {% block nav-center %}
@@ -24,13 +30,13 @@
   </div>
 {%endblock%}
 
-{% block dropDown-content-left %}
+{% block dropDown-content-2 %}
 <!-- Links genericos para cuentas comerciales -->
     <li><a href="/profiles/{{ user.username }}/" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
     <li><a href="/logout/" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
 {% endblock%}
 
-{% block dropDown-content-right %}
+{% block dropDown-content-1 %}
 <!-- Links genericos para cuentas comerciales -->
     {% if user_commertial %}
     <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
