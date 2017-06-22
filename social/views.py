@@ -29,6 +29,9 @@ class LoginView(FormView):
 
 	def form_valid(self, form):
 		auth_login(self.request, form.get_user())
+		next_param = self.request.GET.get('next') or kwargs.get('next') or None
+		if next_param is not None:
+			self.success_url = next_param
 		return super(LoginView, self).form_valid(form)		
 
 	def get(self, request, *args, **kwargs):
@@ -119,7 +122,7 @@ def accept_request(request, target):
 
 def reject_request(request, target):
 	target = Profile.objects.get(pk=target)
-	target.reject_request(request.user.profile)
+	Friendship.objects.reject(target, request.user.profile)
 	keyword = request.GET.get('keyword', '')
 
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))

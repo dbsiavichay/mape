@@ -11,14 +11,14 @@
 
 
 
-.title {
+.front-image .title {
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	left: 0;
 }
 
-.title h3 {
+.front-image .title h3 {
 	display: inline-block;
 	margin: 0;
 	padding: 25px 30px;
@@ -33,4 +33,12 @@
 
 .timeuntil h2 {
 	margin: 0;
+}
+
+.collection-item.small {
+	min-height: 65px!important;
+}
+
+.select-friend:hover {
+	cursor:pointer; 
 }

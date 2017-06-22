@@ -92,7 +92,7 @@ class FriendshipManager(models.Manager):
 		return True
 
 	def reject(self, from_profile, to_profile):
-		friendships = Friendship.objects.filter(from_profile=profile, to_profile=to_profile)
+		friendships = Friendship.objects.filter(from_profile=from_profile, to_profile=to_profile)
 		if len(friendships) != 1:
 			raise ValidationError('Error de integridad')
 
