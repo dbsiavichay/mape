@@ -17,6 +17,9 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import *
 from .forms import *
 
+from notifications.models import Notification
+from social.models import Profile
+
 class EventListView(ListView):
 	model = Event	
 
@@ -83,7 +86,7 @@ class EventCreateView(CreateView):
 		)
 
 
-		self.success_url = '/event/%s/edit/' % (self.object.id)		
+		self.success_url = '/event/%s/' % (self.object.id)		
 		
 		return super(EventCreateView, self).form_valid(form)
 
@@ -101,8 +104,75 @@ class EventCreateView(CreateView):
 		kwargs.update({'initial': initial})
 		return kwargs
 
+class EventUpdateView(UpdateView):
+	model = Event
+	form_class = EventForm
+	success_url = '/map/'
+
+	def get_context_data(self, **kwargs):
+		context = super(EventUpdateView, self).get_context_data(**kwargs)
+
+		lng = self.object.latitude	
+		lat = self.object.longitude
+
+		localities = Locality.objects.filter(owner=self.request.user)
+		reference = Point(lng, lat)
+		close = Locality.objects.filter(point__distance_lte=(reference, D(m=1000)))
+
+		context.update({
+			'localities': localities,
+			'close':close
+		})
+
+		return context
+
+	def form_valid(self, form):
+		start = datetime.datetime.combine(
+			form.cleaned_data['start_0'],
+			form.cleaned_data['start_1']
+		)
+
+		self.object = form.save(commit=False)
+		self.object.start = start
+		self.object.save()
+
+		self.success_url = '/event/%s/' % (self.object.id)		
+		
+		return redirect(self.success_url)
+
+	def get_form_kwargs(self):
+		kwargs = super(EventUpdateView, self).get_form_kwargs()	    
+		initial = {
+			'start_0': self.object.start.date(),
+			'start_1': self.object.start.time()			
+		}
+
+		kwargs.update({'initial': initial})
+		return kwargs
+
 class EventDetailView(DetailView):
 	model = Event
+
+	def get_context_data(self, **kwargs):
+		context = super(EventDetailView, self).get_context_data(**kwargs)
+		organizers = self.object.guests.filter(guest__user=self.request.user, guest__is_organizer=True)
+
+		context.update({
+			'guests': context['event'].guests.filter(guest__status=1),
+			'is_organizer': True if len(organizers) > 0 else False
+		})
+
+		return context
+
+	def get(self, request, *args, **kwargs):
+		#Redirecciona si no es invitado
+		self.object = self.get_object()		
+		invited = self.object.guests.filter(guest__user=request.user)
+
+		if len(invited) <= 0:
+			return redirect('/map/')
+
+		return super(EventDetailView, self).get(request, *args, **kwargs)
 
 
 class LocalityListView(ListView):
@@ -196,6 +266,8 @@ class LocalityDetailView(DetailView):
 
 		return context
 
+###FUNCTION VIEWS###
+
 def add_subscriber(request):
 	if request.method == 'POST':
 		form = SubscriberForm(request.POST)
@@ -204,4 +276,26 @@ def add_subscriber(request):
 			return redirect(form.data.get('next'))
 		else:
 			print form.errors
+
+def send_invitation(request, event):
+	if request.is_ajax() and request.method == 'POST':				
+		friends = request.POST.getlist('friends[]')
+
+		for profile_id in friends:
+
+			profile = Profile.objects.get(pk=profile_id)
+			Notification.objects.create(
+				from_profile = request.user.profile,
+				to_profile = profile,				
+				type = 3
+			)
+
+			Guest.objects.create(
+				user=profile.user,
+				event_id = event
+			)
+
+		return JsonResponse({})
+	else:
+		pass
 

@@ -8,16 +8,7 @@
 {% endblock %}
 
 {% block content %}
-
-
-<!-- Boton de opciones -->
-<div class="fixed-action-btn">
-    <a href="#guests_modal" class="btn-floating btn-large waves-effect waves-light red">
-        <i class="material-icons">send</i>
-    </a>  
-</div>
-
-
+<span class="hidden" id="event-info" event-id="{{ event.id }}"></span>
   
 
 <div class="front-image">        
@@ -31,14 +22,23 @@
     </div>
 </div>
 
+{% if is_organizer %}
 <div class="center">
-    <a class="waves-effect waves-teal btn-flat">Editar</a>
+    <a href="/event/{{ event.id }}/update/" class="waves-effect waves-teal btn-flat">Editar</a>
     <a class="waves-effect waves-teal btn-flat">Publicar</a>
 </div>
+{% endif %}
 
 <div class="red center timeuntil">
     <h2>En {{ event.start|timeuntil }}</h2>
-     <a class="waves-effect waves-light btn">Asistir</a>
+    {% if is_organizer %}
+    <a href="#guests_modal" class="waves-effect waves-light btn">Invitar</a>
+    {% else %}
+    <a class="waves-effect waves-light btn">Me gusta</a>
+    <a class="waves-effect waves-light btn">Asistiré</a>
+    <a class="waves-effect waves-light btn">Talvez asista</a>
+    <a class="waves-effect waves-light btn">No asistiré</a>
+    {% endif %}
 </div>
 
 <div class="row">
@@ -55,14 +55,14 @@
                 <div class="card">
                     <p>Organizado por</p>
                     <div class="chip">                        
-                        {% if event.get_organizer %}
-                        {% if event.get_organizer.profile.avatar %}
-                        <img src="{{ event.get_organizer.profile.avatar.url }}" alt="Contact Person">
+                        {% for organizer in event.get_organizers %}
+                        {% if organizer.profile.avatar %}
+                        <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
                         {% else %}
                         <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
                         {% endif %}
-                        <a href="/profiles/{{ event.get_organizer.username }}/">{{ event.get_organizer.get_full_name }}</a>
-                        {% endif %}
+                        <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
+                        {% endfor %}
                     </div>                    
                 </div>
 
@@ -76,12 +76,7 @@
                 </div>                
             </div>
 
-            <div class="collection">
-                <a href="#!" class="collection-item"><span class="badge">254</span>Invitados</a>
-                <a href="#!" class="collection-item"><span class="badge">197</span>Asistirán</a>                
-                <a href="#!" class="collection-item"><span class="badge">41</span>Talvez asistan</a>                
-                <a href="#!" class="collection-item"><span class="badge">14</span>No asistirán</a>
-            </div>
+            <strong>{{ event.get_information }}</strong>
         </div>
     </div>
 
@@ -232,15 +227,7 @@
           <div class="chip">
               <img src="{% static 'showcase/img/mar.jpg' %}" alt="Contact Person">
               <a href="#">Jane Do </a>
-          </div>
-          <div class="chip">
-              <img src="{% static 'showcase/img/jj.jpg' %}" alt="Contact Person">
-              <a href="#">Carlangas Pothography </a>
-          </div>
-          <div class="chip">
-              <img src="{% static 'showcase/img/edicielo.jpg' %}" alt="Contact Person">
-              <a href="#">World Trade Center </a>
-          </div>
+          </div>          
           <div class="chip">
               <img src="{% static 'showcase/img/fiesta.jpg' %}" alt="Contact Person">
               <a href="#">Don Guiña </a>

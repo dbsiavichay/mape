@@ -30,12 +30,15 @@ class Event(models.Model):
 	def __unicode__(self):
 		return self.name
 
-	def get_organizer(self):
-		organizers = self.guests.filter(guest__is_organizer=True)
-				
-		if len(organizers) > 0:
-			return organizers[0]
-		return None
+	def get_organizers(self):
+		return self.guests.filter(guest__is_organizer=True)
+
+	def get_information(self):
+		invited = self.guests.filter(guest__status=Guest.INVITED)
+		attend = self.guests.filter(guest__status=Guest.ATTEND)
+		liked = self.guests.filter(guest__status=Guest.LIKE)		
+
+		return '%s invitados * %s asistirán * %s les gusta' % (len(invited), len(attend), len(liked))
 
 
 class Guest(models.Model):
