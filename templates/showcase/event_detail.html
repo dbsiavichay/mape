@@ -81,58 +81,43 @@
     </div>
 
     <div id="comments" class="col s12">
-        <ul class="collection ">
+        
+        <ul class="collection">
+            {% for comment in object.comments %}
             <li class="collection-item">
-                <div class="chip">
+                <div class="chip">                        
+                    {% if comment.profile.avatar %}
+                    <img src="{{ comment.profile.avatar.url }}" alt="Contact Person">
+                    {% else %}
                     <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                      <a href="#">Jane Do </a>
-                </div>
-                {%if owner%}
-                <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a> 
-                <p> Mensaje eviado por Jane asoinascodnaodnfaoidnfo aijdoiasdf nasodfia osdi foasdinf</p>
-                {%endif%}
-                <!-- Dropdown Structure -->
-                <ul id='dropdown1' class='dropdown-content'>
-                    <li>
-                        <a href="#!"><i class=" material-icons">mode_edit</i>Editar</a>
-                    </li>
-                    <li>
-                        <a href="#!"><i class=" material-icons">delete</i>Eliminar</a>
-                    </li>
-                </ul>   
+                    {% endif %}
+                    <a href="/profiles/{{ comment.profile.user.username }}/">{{ comment.profile.user.get_full_name }}</a>
+                </div>                
+                <p>{{ comment.text }}</p>
+                <i>Hace {{ comment.date_joined|timesince }}</i>
             </li>
+            {% empty %}
             <li class="collection-item">
-                <div class="chip">
-                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                    <a href="#">Jane Do </a>
-                </div> 
-                <a class='secondary-content dropdown-button btn grey lighten-4 grey-text' href='#' data-activates='dropdown1'>...</a>
-                <img class="materialboxed" data-caption="mensaje del usuario con la images. lasidaosnd aosindoaisndoa sidoaisndo9 ainsdoiamsodn" src="{% static 'showcase/img/event-header.jpg' %}" width="300" alt="Event image">  
-            </li>
+                No comments yet.
+            </li>   
+            {% endfor %}         
             <li class="collection-item">
-                <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                <form action="/event/add/comment/" method="POST" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
+
+                    <input type="hidden" name="event" value="{{ object.id }}">
                     <div class="input-field">
-                        <input placeholder="Mensaje" id="comment" type="text" class="validate">
-                        <label for="comment"> + Comentario</label>
+                        <input placeholder="Mensaje" id="comment" name="text" type="text" class="validate">
+                        <label for="comment">Comenta algo</label>
                     </div>
-
-                    <div class="file-field input-field">
-                        <div class="btn cyan accent-3">
-                          <span>Imagen </span>
-                        </div>
-                        <div class="file-path-wrapper">
-                          <input class="file-path validate" type="text">
-                        </div>
-                    </div>
-
+                    
                     <button type="submit" class="waves-effect waves-light cyan darken-3 btn right marginado">
                         <i class="material-icons right">send</i>
                         Enviar
                     </button>
                 </form>     
             </li>
-        </ul> 
+        </ul>
     </div>
     <div id="pictures" class="col s12">
         <div class="row">

@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+from django.contrib.contenttypes.models import ContentType
+
 from PIL import Image
 
 class Profile(models.Model):
@@ -118,8 +120,6 @@ class FriendshipManager(models.Manager):
 		else:
 			return 'Bloqueado'
 
-
-
 class Friendship(models.Model):
 	FRIENDSHIP_REQUEST = 1
 	FRIENDSHIP_FRIEND = 2
@@ -138,7 +138,14 @@ class Friendship(models.Model):
 
 	objects = FriendshipManager()
 
-def process_image(image_field, size):		
+class Comment(models.Model):
+	text = models.TextField()
+	profile = models.ForeignKey(Profile)
+	object_id = models.IntegerField()
+	date_joined = models.DateTimeField(auto_now_add=True)
+	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+
+def process_image(image_field, size):
 	image = Image.open(image_field)
 	width, height = image.size
 	box = (0,0,width, height)

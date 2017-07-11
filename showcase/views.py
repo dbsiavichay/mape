@@ -268,6 +268,19 @@ class LocalityDetailView(DetailView):
 
 ###FUNCTION VIEWS###
 
+def add_event_comment(request):
+	if request.method != 'POST':
+		return redirect('/map/')
+
+	contenttype = ContentType.objects.get_for_model(Event)
+	object_id = request.POST.get('event')
+	text = request.POST.get('text') or ''
+	profile = request.user.profile
+
+	Comment.objects.create(text = text, profile = profile, object_id = object_id, contenttype = contenttype)
+
+	return redirect('/event/%s/' % object_id)
+
 def add_subscriber(request):
 	if request.method == 'POST':
 		form = SubscriberForm(request.POST)

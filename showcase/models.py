@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 
 from django.contrib.contenttypes.models import ContentType
+from social.models import Comment
 
 class Event(models.Model):
 	name = models.CharField(max_length=64, verbose_name='nombre')
@@ -39,6 +40,11 @@ class Event(models.Model):
 		liked = self.guests.filter(guest__status=Guest.LIKE)		
 
 		return '%s invitados * %s asistirán * %s les gusta' % (len(invited), len(attend), len(liked))
+
+	def comments(self):
+		contenttype = ContentType.objects.get_for_model(Event)
+		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
+		return comments
 
 
 class Guest(models.Model):

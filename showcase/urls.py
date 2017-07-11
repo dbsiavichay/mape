@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^event/add/$', login_required(EventCreateView.as_view()), name='event_create'),
     url(r'^event/(?P<pk>\d+)/update/$', login_required(EventUpdateView.as_view()), name='event_update'),
     url(r'^event/(?P<pk>\d+)/$', login_required(EventDetailView.as_view()), name='event_detail'),
+    url(r'^event/add/comment/$', login_required(add_event_comment), name='add_event_comment'),
+
     url(r'^localities/$', login_required(LocalityListView.as_view()), name='locality_list'),
     url(r'^locality/add/$', login_required(LocalityCreateView.as_view()), name='locality_create'),
     url(r'^locality/(?P<pk>\d+)/$', login_required(LocalityDetailView.as_view()), name='locality_detail'),
