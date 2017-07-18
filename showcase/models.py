@@ -35,11 +35,11 @@ class Event(models.Model):
 		return self.guests.filter(guest__is_organizer=True)
 
 	def get_information(self):
-		invited = self.guests.filter(guest__status=Guest.INVITED)
+		invited = self.guests.all()
 		attend = self.guests.filter(guest__status=Guest.ATTEND)
 		liked = self.guests.filter(guest__status=Guest.LIKE)		
 
-		return '%s invitados * %s asistirán * %s les gusta' % (len(invited), len(attend), len(liked))
+		return '%s invitados * %s asistirán * %s les gusta' % (len(invited) - 1, len(attend), len(liked))
 
 	def comments(self):
 		contenttype = ContentType.objects.get_for_model(Event)

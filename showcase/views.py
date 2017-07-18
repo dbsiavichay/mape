@@ -268,16 +268,45 @@ class LocalityDetailView(DetailView):
 
 ###FUNCTION VIEWS###
 
+def event_like(request, pk):
+	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation.status = Guest.LIKE
+	invitation.save()
+
+	return redirect('/event/%s/' % pk)
+
+def event_attend(request, pk):
+	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation.status = Guest.ATTEND
+	invitation.save()
+
+	return redirect('/event/%s/' % pk)
+
+def event_maybe_attend(request, pk):
+	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation.status = Guest.MAYBE_ATTEND
+	invitation.save()
+
+	return redirect('/event/%s/' % pk)
+
+def event_not_attend(request, pk):
+	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation.status = Guest.NOT_ATTEND
+	invitation.save()
+
+	return redirect('/event/%s/' % pk)
+
 def add_event_comment(request):
 	if request.method != 'POST':
 		return redirect('/map/')
 
 	contenttype = ContentType.objects.get_for_model(Event)
 	object_id = request.POST.get('event')
-	text = request.POST.get('text') or ''
+	text = request.POST.get('text', '') 
+	image = request.FILES.get('image', None)
 	profile = request.user.profile
 
-	Comment.objects.create(text = text, profile = profile, object_id = object_id, contenttype = contenttype)
+	Comment.objects.create(text = text, image=image,profile = profile, object_id = object_id, contenttype = contenttype)
 
 	return redirect('/event/%s/' % object_id)
 

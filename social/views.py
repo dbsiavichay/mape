@@ -29,7 +29,7 @@ class LoginView(FormView):
 
 	def form_valid(self, form):
 		auth_login(self.request, form.get_user())
-		next_param = self.request.GET.get('next') or kwargs.get('next') or None
+		next_param = self.request.GET.get('next') or self.kwargs.get('next') or None
 		if next_param is not None:
 			self.success_url = next_param
 		return super(LoginView, self).form_valid(form)		
