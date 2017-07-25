@@ -12,52 +12,58 @@
 {{ form.errors }}
 {{ commercial_form.errors }}
 
-<form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    <div class="col s6">
-        {{ form.is_commercial }}        
-        <label for="{{ form.is_commercial.id_for_label }}">{{ form.is_commercial.label }}</label>
-    </div>
+<div class="row container">
+    <div class="col s12 form-panel">
+        <h4 class="center">Cuentanos de tu localidad</h4>
+        <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+           <!--  <div class="col s6">
+                {{ form.is_commercial }}        
+                <label for="{{ form.is_commercial.id_for_label }}">{{ form.is_commercial.label }}</label>
+            </div>
 
-    <div class="col s6">
-        {{ form.is_public }}        
-        <label for="{{ form.is_public.id_for_label }}">{{ form.is_public.label }}</label>
-    </div>
-    
-    <div class="input-field col s12 commercial">
-        {{ commercial_form.ruc|add_class:"validate" }}
-        <label for="{{ commercial_form.ruc.id_for_label }}">{{ commercial_form.ruc.label }}</label>
-    </div>    
+            <div class="col s6">
+                {{ form.is_public }}        
+                <label for="{{ form.is_public.id_for_label }}">{{ form.is_public.label }}</label>
+            </div> -->
+            
+            <div class="input-field col s12 commercial">
+                {{ commercial_form.ruc|add_class:"validate" }}
+                <label for="{{ commercial_form.ruc.id_for_label }}">{{ commercial_form.ruc.label }}</label>
+            </div>    
 
-    <div class="input-field col s12">
-        {{ form.name|add_class:"validate" }}
-        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-    </div>
-    <div class="input-field col s12">        
-        {{ form.description|add_class:"materialize-textarea validate" }}
-        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-    </div>
+            <div class="input-field col s12">
+                {{ form.name|add_class:"validate" }}
+                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            </div>
+            <div class="input-field col s12">        
+                {{ form.description|add_class:"materialize-textarea validate" }}
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            </div>
 
-    <div class="input-field col s6">
-        {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
-        <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
-    </div>
-    <div class="input-field col s6">
-        {{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
-        <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
-    </div>
-    <div class="input-field col s12">
-        {{ form.categories|add_class:"validate" }}
-        <label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>
-    </div>    
+            <div class="input-field col s6">
+                {{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
+                <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label>
+            </div>
+            <div class="input-field col s6">
+                {{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
+                <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label>
+            </div>
+            <div class="input-field col s12">
+                {{ form.categories|add_class:"validate" }}
+                <label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>
+            </div>    
 
-    <input type="hidden" name="owner" value="{{ user.id }}">
-    <div class="col s12 center">
-        <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
-            <i class="material-icons right">send</i>
-        </button>        
+            <input type="hidden" name="owner" value="{{ user.id }}">
+            <div class="col s12 center">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
+                    <i class="material-icons right">send</i>
+                </button>        
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
 {% endblock %}
 
 {% block js %}	

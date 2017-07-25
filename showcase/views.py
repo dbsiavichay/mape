@@ -26,7 +26,7 @@ class EventListView(ListView):
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
 			self.object_list = self.model.objects.filter(
-				Q(guest__user=request.user, guest__is_creator=True) | 
+				Q(guest__user=request.user) | 
 				Q(is_public=True)
 			)			
 			
@@ -158,7 +158,7 @@ class EventDetailView(DetailView):
 		organizers = self.object.guests.filter(guest__user=self.request.user, guest__is_organizer=True)
 
 		context.update({
-			'guests': context['event'].guests.filter(guest__status=1),
+			'guests': context['event'].guests.filter(guest__is_creator=False),
 			'is_organizer': True if len(organizers) > 0 else False
 		})
 
@@ -199,7 +199,7 @@ class LocalityListView(ListView):
 
 class LocalityCreateView(CreateView):
 	model = Locality
-	form_class = LocalityForm
+	fields = '__all__'
 	success_url = '/map/'
 
 	def get_context_data(self, **kwargs):
@@ -212,17 +212,48 @@ class LocalityCreateView(CreateView):
 		return context
 
 	def form_valid(self, form):
+		# commercial_form = self.get_commercial_form()
+
+		# if form.cleaned_data.get('is_commercial') and commercial_form.is_valid():
+		# 	self.object = form.save()
+		# 	comm = commercial_form.save(commit=False)
+		# 	comm.locality = self.object
+		# 	comm.save()
+		self.object = form.save()
+		return redirect('/locality/%s/' % self.object.id)
+
+	def get_commercial_form(self):
+		if self.request.method == 'POST':
+			commercial_form = CommercialForm(self.request.POST)
+		else:
+			commercial_form = CommercialForm()
+
+		return commercial_form
+
+class LocalityUpdateView(UpdateView):
+	model = Locality
+	fields = '__all__'
+	success_url = '/map/'
+
+	def get_context_data(self, **kwargs):
+		context = super(LocalityUpdateView, self).get_context_data(**kwargs)
+
 		commercial_form = self.get_commercial_form()
 
-		print form.cleaned_data.get('is_commercial')
+		context.update({'commercial_form': commercial_form})
 
-		if form.cleaned_data.get('is_commercial') and commercial_form.is_valid():
-			self.object = form.save()
-			comm = commercial_form.save(commit=False)
-			comm.locality = self.object
-			comm.save()
-		
-		return super(LocalityCreateView, self).form_valid(form)
+		return context
+
+	def form_valid(self, form):
+		# commercial_form = self.get_commercial_form()
+
+		# if form.cleaned_data.get('is_commercial') and commercial_form.is_valid():
+		# 	self.object = form.save()
+		# 	comm = commercial_form.save(commit=False)
+		# 	comm.locality = self.object
+		# 	comm.save()
+		self.object = form.save()
+		return redirect('/locality/%s/' % self.object.id)
 
 	def get_commercial_form(self):
 		if self.request.method == 'POST':
@@ -233,20 +264,6 @@ class LocalityCreateView(CreateView):
 		return commercial_form
 
 
-	def get_form_kwargs(self):	    
-		kwargs = super(LocalityCreateView, self).get_form_kwargs()
-
-		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
-		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None		
-
-		initial = {
-			'latitude' : lat,
-			'longitude': lng			
-		}
-
-		kwargs.update({'initial': initial})
-		return kwargs
-
 class LocalityDetailView(DetailView):
 	model = Locality
 
@@ -255,7 +272,9 @@ class LocalityDetailView(DetailView):
 		contenttype = ContentType.objects.get_for_model(Locality)
 
 		try:
-			subscriber = Subscriber.objects.get(contenttype=contenttype, user=self.request.user)
+			subscriber = Subscriber.objects.get(
+				contenttype=contenttype, profile=self.request.user.profile, object_id=self.object.id
+			)
 		except Subscriber.DoesNotExist:
 			subscriber = None
 
@@ -310,9 +329,23 @@ def add_event_comment(request):
 
 	return redirect('/event/%s/' % object_id)
 
-def add_subscriber(request):
-	if request.method == 'POST':
-		form = SubscriberForm(request.POST)
+def add_locality_comment(request):
+	if request.method != 'POST':
+		return redirect('/map/')
+
+	contenttype = ContentType.objects.get_for_model(Locality)
+	object_id = request.POST.get('locality')
+	text = request.POST.get('text', '') 
+	image = request.FILES.get('image', None)
+	profile = request.user.profile
+
+	Comment.objects.create(text = text, image=image,profile = profile, object_id = object_id, contenttype = contenttype)
+
+	return redirect('/locality/%s/' % object_id)
+
+def add_subscriber(request):	
+	if request.method == 'POST':		
+		form = SubscriberForm(request.POST)		
 		if form.is_valid():
 			form.save()
 			return redirect(form.data.get('next'))

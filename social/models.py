@@ -152,6 +152,11 @@ class Comment(models.Model):
 		if self.image:
 			process_image(self.image, 1500)
 
+class Subscriber(models.Model):
+	object_id = models.IntegerField()
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)	
+
 def process_image(image_field, size):
 	image = Image.open(image_field)
 	width, height = image.size
