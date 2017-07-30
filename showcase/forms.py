@@ -10,6 +10,9 @@ class EventForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		exclude = ('start','guests')
+		widgets = {
+			'locality': forms.HiddenInput
+		}
 	
 	start_0 = forms.DateField(
 		label = 'Fecha de inicio'
@@ -27,7 +30,7 @@ class EventForm(forms.ModelForm):
 	ends_1 = forms.TimeField(
 		label = 'Hora de finalización',
 		required = False
-	)
+	)	
 
 class LocalityForm(forms.ModelForm):
 	class Meta:

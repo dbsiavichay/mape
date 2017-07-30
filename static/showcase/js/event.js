@@ -10,6 +10,7 @@ $(function () {
 		$(this).addClass('active');
 		$('#id_longitude').val($(this).attr('x').replace(',','.'))
 		$('#id_latitude').val($(this).attr('y').replace(',','.'))
+		$('#id_locality').val($(this).attr('pk'))
 	});
 
 	list2.on('click', function (e) {
@@ -19,6 +20,7 @@ $(function () {
 		$(this).addClass('active');
 		$('#id_longitude').val($(this).attr('x').replace(',','.'))
 		$('#id_latitude').val($(this).attr('y').replace(',','.'))
+		$('#id_locality').val($(this).attr('pk'))
 	});
 
 

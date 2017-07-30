@@ -92,7 +92,7 @@ class Event(models.Model):
 	ends = models.DateTimeField(blank=True, null=True)	
 	cover = models.DecimalField(
 		decimal_places=2, max_digits=8, 
-		blank=True, null=True,
+		default=0,
 		verbose_name = 'precio de entrada'
 	)
 	is_public = models.BooleanField(default=False)
@@ -103,6 +103,12 @@ class Event(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	def invited_count(self):
+		return self.guests.all().count() - 1
+
+	def is_free(self):
+		return False if self.cover > 0 else True
 
 	def get_organizers(self):
 		return self.guests.filter(guest__is_organizer=True)

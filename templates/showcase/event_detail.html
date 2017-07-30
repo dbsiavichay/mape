@@ -80,57 +80,8 @@
         </div>
     </div>
 
-    <div id="comments" class="col s12">
-        
-        <ul class="collection">
-            {% for comment in object.comments %}
-            <li class="collection-item">
-                <div class="chip">                        
-                    {% if comment.profile.avatar %}
-                    <img src="{{ comment.profile.avatar.url }}" alt="Contact Person">
-                    {% else %}
-                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                    {% endif %}
-                    <a href="/profiles/{{ comment.profile.user.username }}/">{{ comment.profile.user.get_full_name }}</a>
-                </div>                
-                <p>{{ comment.text }}</p>
-                {% if comment.image %}
-                <img src="{{ comment.image.url }}" width="200">
-                {% endif %}
-                <p>Hace <strong>{{ comment.date_joined|timesince }}</strong></p>
-            </li>
-            {% empty %}
-            <li class="collection-item">
-                No comments yet.
-            </li>   
-            {% endfor %}         
-            <li class="collection-item">
-                <form action="/event/add/comment/" method="POST" enctype="multipart/form-data" novalidate>
-                    {% csrf_token %}
-
-                    <input type="hidden" name="event" value="{{ object.id }}">
-                    <div class="input-field">
-                        <input placeholder="Mensaje" id="comment" name="text" type="text" class="validate">
-                        <label for="comment">Comenta algo</label>
-                    </div>
-
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <span>Imagen</span>
-                            <input id="image" name="image" type="file">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="waves-effect waves-light cyan darken-3 btn right marginado">
-                        <i class="material-icons right">send</i>
-                        Enviar
-                    </button>
-                </form>     
-            </li>
-        </ul>
+    <div id="comments" class="col s12">       
+      {% include 'includes/comments.html' with comments=object.comments model_name="event" model_id=object.id %}
     </div>
     <div id="pictures" class="col s12">
         <div class="row">
