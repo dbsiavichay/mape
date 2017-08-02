@@ -6,7 +6,7 @@
     <title>{% block title %}Mape | Mapa de eventos{% endblock %}</title>
     <!-- Icono -->
     <link rel="shortcut icon" href="{% static 'showcase/img/Mape-icon.ico' %}" />  
-	<!--Import Google Icon Font-->
+    <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import Google Comfortaa Font-->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Comfortaa:400,700,300">
@@ -16,91 +16,49 @@
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
 </head>
-<body>
-    <!-- Parallax1 -->
-    <div class="parallax-container" >
-        <div class="parallax "><img src="{% static 'showcase/img/paisaje.jpeg' %}" ></div>
-    </div>
-
-    <div class="cyan section row no-margin no-padding">
-        <!-- Slides -->
-        <div class="slider opacado cyan accent-3 col l6 s12 ">
-            <ul class="slides">
-              <li>
-                <img src="{% static 'showcase/img/mar.jpg' %}"> <!-- random image -->
-                <div class="caption center-align">
-                  <h3 class="cyan-text text-darken-4"> No te pierdas de nada en la ciudad!</h3>
-                  <h5 class="light gray-text text-lighten-2">Todos los mejores eventos y lugares en el mapa</h5>
-                </div>
-              </li>
-              <li>
-                <img src="{% static 'showcase/img/atardecell.jpg' %}"> <!-- random image -->
-                <div class="caption left-align">
-                  <h3 class="gray-text text-darken-4">Conoces un lugar genial?!</h3>
-                  <h5 class="light grey-text text-lighten-3"> Puedes marcar lugares y eventos en el mapa.</h5>
-                </div>
-              </li>
-              <li>
-                <img src="{% static 'showcase/img/fiesta.jpg' %}"> <!-- random image -->
-                <div class="caption right-align">
-                  <h3 class="gray-text text-darken-4">Necesitas encontrarte con tus panas?</h3>
-                  <h5 class="light grey-text text-lighten-3">Inv&iacute;talos a cualquier evento.</h5>
-                </div>
-              </li>
-              <li>
-                <img src="{% static 'showcase/img/tea.jpg' %}"> <!-- random image -->
-                <div class="caption center-align">
-                  <h3>Llega a todas partes!</h3>
-                  <h5 class="light grey-text text-lighten-3">Si eres dueño de un negocio comercial puedes suscribirte para recibir beneficios.</h5>
-                </div>
-              </li>
-            </ul>
+<body class="cyan">
+    <!-- Login -->
+    <div class="center-align row marginado">
+        <!--  logo -->
+        <div class="col s12">
+            <a href=""><img src="{% static 'showcase/img/logo_mape.png' %}" width="120"></a>
+            
         </div>
-        <!-- Login -->
-        <div class="col l6 s12 center-align row -no-margin">
-            <!--  logo -->
-            <div class="col l6 s12">
-                <img src="{% static 'showcase/img/Proy_Mape-01-01.png' %}" width="120">
-                <h1 class="white-text"> Mape </h1>
-            </div>
-            <strong class="white-text center-align col l6 s12"> Iniciar sesión</strong>
-            <!-- Errors -->
-            {% if form.errors %}
-            <div class="row">
-                <div class="col s12">
-                    <div class="card-panel red white-text">
-                        Usuario o contraseña incorrectos.
-                    </div>
+        
+        <!-- Errors -->
+        {% if form.errors %}
+        <div class="row">
+            <div class="col s6">
+                <div class="card-panel red white-text">
+                    Usuario o contraseña incorrectos.
                 </div>
             </div>
-            {% endif %}
-            {% load widget_tweaks %}        
-            <form action="" method="POST" class="center" novalidate>
-                {% csrf_token %}
-                <div class="form-group input-field col col s12 m6 l6">
-                    <i class="material-icons prefix cyan-text">account_circle</i>            
-                    {{ form.username|add_class:"input-text white-text"}}
-                    <label class="white-text darken-3" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>                
-                </div>
-                
-                <div class="form-group input-field col s12 m6 l6">
-                    <i class="material-icons prefix cyan-text">vpn_key</i>
-                    {{ form.password|add_class:"input-text white-text"}}
-                    <label class="white-text darken-3" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-                </div>
-                                
-                <button type="submit" class="waves-effect waves-light amber darken-3 btn">
-                    <i class="material-icons right">send</i>
-                    Enviar
-                </button>
-            </form>   
-            <!-- Boton para contraseña olvidad -->
-            <a href="#modal-forgotpass" class="center modal-trigger cyan-text text-darken-4"> Olvidé mi contraseña</a>
-                <!-- Trigger del modal de registro -->
-            <div class="col s12 center-align">
-                <a class="btn cyan darken-1 " href="{% url 'signup' %}"><i class="material-icons">perm_identity</i> <strong>Registrarse</strong></a> 
+        </div>
+        {% endif %}
+        {% load widget_tweaks %}        
+        <form action="" method="POST" class="center offset-l4 offset-m2 col l4 m8 s12" novalidate>
+            {% csrf_token %}
+            <div class="form-group input-field ">
+                <i class="material-icons prefix white-text">account_circle</i>            
+                {{ form.username|add_class:"input-text white-text"}}
+                <label class="white-text darken-3" for="{{ form.username.id_for_label }}">Usuario, email o n&uacute;mero celular</label>                
             </div>
-        </div>     
+            
+            <div class="form-group input-field ">
+                <i class="material-icons prefix white-text">vpn_key</i>
+                {{ form.password|add_class:"input-text white-text"}}
+                <label class="white-text darken-3" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+            </div>
+                            
+            <button type="submit" class="waves-effect waves-light amber darken-3 btn">
+                <i class="material-icons right">send</i>
+                Enviar
+            </button>
+        </form>   
+        <!-- Boton para contraseña olvidad -->
+        <a href="#modal-forgotpass" class="col s12 center modal-trigger cyan-text text-darken-4"> Olvidé mi contraseña</a>
+        <a href="" class="col s12 center modal-trigger cyan-text text-darken-4"> Ingresar como invitado </a>
+    </div>     
     </div>
     <!-- Modal Recuperacion de contraseña -->
     <div id="modal-forgotpass" class="modal">
@@ -118,12 +76,7 @@
           <a href="#!" class=" modal-close waves-effect waves-green btn-flat">Cancelar</a>
         </div>
     </div>
-    <!-- Parallax2 -->
-    <div class="parallax-container">
-        <div class="parallax"><img src="{% static 'showcase/img/paisaje.jpeg' %}"></div>
-    </div>
-
-    {% include 'includes/footer.html' %}
+    
     <!-- Jquery -->
 	<script type="text/javascript" src="{% static 'showcase/js/jquery.js' %}"></script>
     <!-- Materialize jss -->

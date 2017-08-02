@@ -7,6 +7,12 @@ and open the template in the editor.
     Created on : 11/08/2015, 22:46:10
     Author     : Juan
 */
+@import url(http://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
+
+html {
+  font-family: Comfortaa, sans-serif;
+}
+
 #map { 
   position:fixed; 
   width:100%; 
@@ -100,13 +106,14 @@ color: #80deea;}
   }
 
 /* Tamaño de fuente del dialogo helper*/
-  .material-tooltip {
-    font-size: 0.7em; }
+.material-tooltip {
+  font-size: 0.7em; }
 
 
 .slider .indicators .indicator-item.active{
-  background-color: #80deea !important; 
+  background-color: white !important; 
 }
+
 
 .frente {position:relative; z-index: 1;}
 
@@ -156,7 +163,7 @@ color: #80deea;}
    
    /* Parallax height */
     .parallax-container {
-      height: 275px;
+      height: 320px;
     }
 
 .indeterminate{
@@ -192,34 +199,19 @@ text-shadow: -3px -3px 3px #fff , 3px -3px 3px #fff , -3px 3px 3px #fff , 3px 3p
 }
 
 .mape-large{
-  width: 120px;
+  width: 200px;
+}
+.mape-medium{
+  width: 80px;
 }
 .mape-tiny{
-  width: 20px;
+  width: 42px;
 }
 
-.slider .indicators .indicator-item.active{
-  background-color: #114847 !important;
-}
-.horizontal{
-  display: inline-flex;
+.tiny-text{
+  font-size: 0.7rem;
 }
 
-.franja {
-  height: 20px;
-  background-color: #e6e6e6;
-  color: #868686;
-  font-size: 12px;
-  border-radius: 0px 0px 10px 10px;
-}
-
-.comentario-izq{
-  border-radius: 0px 25px 5px 25px;
-}
-.comentario-der{
-  border-radius: 25px 0px 25px 5px;
-}
-
-.card-content .event-card{
-  padding-top: 0px;  
+.nav-large{
+  height: 150% !important;
 }
