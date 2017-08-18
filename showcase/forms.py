@@ -37,11 +37,6 @@ class LocalityForm(forms.ModelForm):
 		model = Locality
 		fields = '__all__'
 
-	is_commercial = forms.BooleanField(
-		label='Es localidad comercial',
-		required = False
-	)
-
 	def save(self, commit=True):
 		obj = super(LocalityForm, self).save(commit=False)
 		obj.point = Point(obj.longitude, obj.latitude)
@@ -50,7 +45,18 @@ class LocalityForm(forms.ModelForm):
 			obj.save()
 		return obj
 
+class CommercialForm(forms.ModelForm):
+	class Meta:
+		model = Commercial
+		fields = '__all__'
 
-CommercialForm = forms.modelform_factory(Commercial, fields=('ruc',))
+	def __init__(self, *args, **kwargs):
+		user = kwargs.pop('user')
+		
+		super(CommercialForm, self).__init__(*args, **kwargs)
+
+		self.fields['locality'] = forms.ModelChoiceField(
+			queryset = Locality.objects.filter(owner=user)
+		)
 
 SubscriberForm = forms.modelform_factory(Subscriber, fields='__all__')

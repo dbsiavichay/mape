@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+{% include "includes/errors.html" %}
+
+<div class="container">
+    {{ commercial_form.errors }}
+
+    <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}        
+        <div class="col s12">                                
+            <h5>Datos de perfil</h5>
+        </div>        
+
+        <div class="input-field col m6 s12">
+            {{ form.first_name|add_class:"validate" }}
+            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ form.last_name|add_class:"validate" }}
+            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ form.charter|add_class:"validate" }}
+            <label for="{{ form.charter.id_for_label }}">{{ form.charter.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ form.cellphone|add_class:"validate" }}
+            <label for="{{ form.cellphone.id_for_label }}">{{ form.cellphone.label }}</label>
+        </div>    
+        
+
+        <input type="hidden" name="user" value="{{ user.id }}">
+
+        <div class="col s12">                                
+            <h5>Asocia una localidad a tu cuenta comercial</h5>
+        </div>
+
+        <div class="input-field col s12">
+            {{ commercial_form.locality|add_class:"validate" }}
+            <label for="{{ commercial_form.locality.id_for_label }}">{{ commercial_form.locality.label }}</label>
+        </div>
+
+        <div class="col s12">                                
+            <h5>Datos de negocio</h5>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ commercial_form.ruc|add_class:"validate" }}
+            <label for="{{ commercial_form.ruc.id_for_label }}">{{ commercial_form.ruc.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ commercial_form.address|add_class:"validate" }}
+            <label for="{{ commercial_form.address.id_for_label }}">{{ commercial_form.address.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ commercial_form.telephone|add_class:"validate" }}
+            <label for="{{ commercial_form.telephone.id_for_label }}">{{ commercial_form.telephone.label }}</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+            {{ commercial_form.webpage|add_class:"validate" }}
+            <label for="{{ commercial_form.webpage.id_for_label }}">{{ commercial_form.webpage.label }}</label>
+        </div>
+
+
+        <div class="col s12 center">
+            <button class="btn btn-large waves-effect waves-light red" type="submit" name="action">Guardar
+                <i class="material-icons right">send</i>
+            </button>        
+        </div>
+
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

@@ -11,16 +11,18 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, F
 from .models import *
 from .forms import *
 
+from showcase.forms import CommercialForm
+
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
 	success_url = '/'
 	template_name= 'social/signup.html'
 
-	#def form_valid(self, form):	   
-	#	self.object = form.save()
-	#	auth_login(self.request, self.object)
-	#	return redirect(self.get_success_url())
+	def form_valid(self, form):	   
+		self.object = form.save()
+		auth_login(self.request, self.object)
+		return redirect(self.success_url)
 
 class LoginView(FormView):
 	template_name= 'social/login.html'
@@ -46,23 +48,27 @@ def logout(request):
 
 class ProfileUpdateView(UpdateView):
 	model = User
-	fields = ('username', 'first_name', 'last_name', 'email')	
+	fields = ('username', 'email')	
 	template_name = 'social/profile_form.html'	
 
 	def get_context_data(self, **kwargs):
 		context = super(ProfileUpdateView, self).get_context_data(**kwargs)		
 		context['profile_form'] = self.get_profile_form()
 		success = self.request.GET.get('success') or kwargs.get('success') or None
+		commercial = self.request.GET.get('commercial') or kwargs.get('commercial') or None
 		if success is not None: context['success'] = success
+		if commercial is not None: context['commercial'] = commercial
 		return context
 
 	def form_valid(self, form):
 		profile_form = self.get_profile_form()
 		if profile_form.is_valid():
-			self.object = form.save()
+			self.object = form.save()			
+			self.object.save()
 			profile_form.save()
+			
 			self.success_url = '/profiles/%s/?success=true' % (self.request.user.username)
-			return super(ProfileUpdateView, self).form_valid(form)			
+			return redirect(self.success_url)
 			
 		return self.form_invalid(form)
 
@@ -127,3 +133,45 @@ def reject_request(request, target):
 
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
 	
+
+class CommercialAccountView(UpdateView):
+	model = Profile
+	form_class = ProfileForm
+	template_name = 'social/commercial_account.html'
+	success_url = ''
+
+	def form_valid(self, form):
+		commercial_form = self.get_commercial_form()
+
+		if commercial_form.is_valid():
+			self.object = form.save(commit=False)
+			self.object.is_commercial = True			
+			self.object.save()
+
+			commercial_form.save()
+			self.success_url = '/profiles/%s/?commercial=true' % (self.request.user.username)
+			return redirect(self.success_url)
+			
+		return self.form_invalid(form)
+
+
+	def get_context_data(self, **kwargs):
+		context = super(CommercialAccountView, self).get_context_data(**kwargs)		
+		commercial_form = self.get_commercial_form()
+
+		context.update({			
+			'commercial_form':commercial_form,
+		})
+
+		return context
+
+	def get_commercial_form(self):		
+		form = CommercialForm(user=self.request.user)
+
+		if self.request.method == 'POST':
+			form = CommercialForm(self.request.POST, self.request.FILES, user=self.request.user)
+
+		return form
+
+	def get_object(self, queryset=None):
+		return self.request.user.profile

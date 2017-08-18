@@ -17,21 +17,6 @@
         <h4 class="center">Cuentanos de tu localidad</h4>
         <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
-           <!--  <div class="col s6">
-                {{ form.is_commercial }}        
-                <label for="{{ form.is_commercial.id_for_label }}">{{ form.is_commercial.label }}</label>
-            </div>
-
-            <div class="col s6">
-                {{ form.is_public }}        
-                <label for="{{ form.is_public.id_for_label }}">{{ form.is_public.label }}</label>
-            </div> -->
-            
-            <div class="input-field col s12 commercial">
-                {{ commercial_form.ruc|add_class:"validate" }}
-                <label for="{{ commercial_form.ruc.id_for_label }}">{{ commercial_form.ruc.label }}</label>
-            </div>    
-
             <div class="input-field col s12">
                 {{ form.name|add_class:"validate" }}
                 <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -66,6 +51,5 @@
 
 {% endblock %}
 
-{% block js %}	
-    <script src="{% static 'showcase/js/locality.js' %}"></script>   
+{% block js %}
 {% endblock %}

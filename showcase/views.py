@@ -199,70 +199,35 @@ class LocalityListView(ListView):
 
 class LocalityCreateView(CreateView):
 	model = Locality
-	fields = '__all__'
+	form_class = LocalityForm
 	success_url = '/map/'
 
-	def get_context_data(self, **kwargs):
-		context = super(LocalityCreateView, self).get_context_data(**kwargs)
-
-		commercial_form = self.get_commercial_form()
-
-		context.update({'commercial_form': commercial_form})
-
-		return context
-
-	def form_valid(self, form):
-		# commercial_form = self.get_commercial_form()
-
-		# if form.cleaned_data.get('is_commercial') and commercial_form.is_valid():
-		# 	self.object = form.save()
-		# 	comm = commercial_form.save(commit=False)
-		# 	comm.locality = self.object
-		# 	comm.save()
+	def form_valid(self, form):		
 		self.object = form.save()
 		return redirect('/locality/%s/' % self.object.id)
 
-	def get_commercial_form(self):
-		if self.request.method == 'POST':
-			commercial_form = CommercialForm(self.request.POST)
-		else:
-			commercial_form = CommercialForm()
+	def get_form_kwargs(self):	    
+		kwargs = super(LocalityCreateView, self).get_form_kwargs()
 
-		return commercial_form
+		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
+		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None		
+
+		initial = {
+			'latitude' : lat,
+			'longitude': lng			
+		}
+
+		kwargs.update({'initial': initial})
+		return kwargs
 
 class LocalityUpdateView(UpdateView):
 	model = Locality
 	fields = '__all__'
 	success_url = '/map/'
 
-	def get_context_data(self, **kwargs):
-		context = super(LocalityUpdateView, self).get_context_data(**kwargs)
-
-		commercial_form = self.get_commercial_form()
-
-		context.update({'commercial_form': commercial_form})
-
-		return context
-
-	def form_valid(self, form):
-		# commercial_form = self.get_commercial_form()
-
-		# if form.cleaned_data.get('is_commercial') and commercial_form.is_valid():
-		# 	self.object = form.save()
-		# 	comm = commercial_form.save(commit=False)
-		# 	comm.locality = self.object
-		# 	comm.save()
+	def form_valid(self, form):		
 		self.object = form.save()
 		return redirect('/locality/%s/' % self.object.id)
-
-	def get_commercial_form(self):
-		if self.request.method == 'POST':
-			commercial_form = CommercialForm(self.request.POST)
-		else:
-			commercial_form = CommercialForm()
-
-		return commercial_form
-
 
 class LocalityDetailView(DetailView):
 	model = Locality

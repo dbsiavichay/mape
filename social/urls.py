@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^profiles/send-request/(?P<target>\d+)/$', login_required(send_request), name='profile_send_request'),
     url(r'^profiles/request/accept/(?P<target>\d+)/$', login_required(accept_request), name='profile_accept_request'),
     url(r'^profiles/request/reject/(?P<target>\d+)/$', login_required(reject_request), name='profile_reject_request'),
+    
+    url(r'^profiles/set/commercial-account/$', login_required(CommercialAccountView.as_view()), name='commercial_account'),    
     #url(r'^user/profile/$', login_required(UserProfileView.as_view()), name='user_profile'),
     #url(r'^user/change-avatar/$', change_user_avatar),
 ]

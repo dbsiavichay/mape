@@ -48,7 +48,20 @@ class UserCreationForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        exclude = ['is_commercial']
+
+    first_name = forms.CharField(max_length=30, label='Nombre') 
+    last_name = forms.CharField(max_length=30, label='Apellidos')
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        if self.instance:
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+
+        self.fields['charter'].required = True
+        self.fields['cellphone'].required = True
 
     def clean_charter(self):        
         import math
@@ -87,3 +100,14 @@ class ProfileForm(forms.ModelForm):
             return charter
         
         raise forms.ValidationError('Ingrese una cédula válida.')
+
+    def save(self, commit=True):
+        obj = super(ProfileForm, self).save(commit=False)
+        obj.user.first_name = self.cleaned_data['first_name']
+        obj.user.last_name = self.cleaned_data['last_name']
+
+        obj.user.save()
+        
+        if commit:
+            obj.save()
+        return obj

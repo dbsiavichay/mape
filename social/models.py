@@ -12,8 +12,9 @@ class Profile(models.Model):
 	birthday = models.DateField(blank=True, null=True, verbose_name='fecha de nacimiento')
 	cellphone = models.CharField(max_length=32, blank=True, null=True, verbose_name='número de celular')
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)
+	is_commercial = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	#friends = models.ManyToManyField('self', through='Friendship', symmetrical=False)	
+		
 
 	def get_profiles(self, status):
 		profiles = []

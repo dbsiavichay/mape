@@ -18,6 +18,26 @@
     </div>
     {% endif %}
 
+    {% if commercial %}
+    <div class="row">
+        <div class="col s12">        
+            <div class="card-panel teal lighten-2">
+                Tu cuenta comercial ha sido activada satisfactoriamente.    
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not user.profile.is_commercial %}
+    <div class="row">
+        <div class="col s12">
+            <a href="{% url 'commercial_account' %}" class="waves-effect waves-light btn lime right">
+                Activa tu cuenta comercial        
+            </a>            
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row center">
         {% if user.profile.avatar %}
         <div class="col s12">                                
@@ -33,6 +53,9 @@
         </a>
     </div>
 
+    {{ form.errors }}
+    {{ profile_form.errors }}
+
 
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
@@ -47,13 +70,13 @@
         </div>
 
         <div class="input-field col m6 s12">
-            {{ form.first_name|add_class:"validate" }}
-            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+            {{ profile_form.first_name|add_class:"validate" }}
+            <label for="{{ profile_form.first_name.id_for_label }}">{{ profile_form.first_name.label }}</label>
         </div>
 
         <div class="input-field col m6 s12">
-            {{ form.last_name|add_class:"validate" }}
-            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+            {{ profile_form.last_name|add_class:"validate" }}
+            <label for="{{ profile_form.last_name.id_for_label }}">{{ profile_form.last_name.label }}</label>
         </div>
 
         <div class="input-field col m6 s12">
