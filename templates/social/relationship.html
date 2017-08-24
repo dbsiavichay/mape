@@ -41,79 +41,26 @@
                 </li>
                 {% endfor %}                
             </ul>
-            {% endif %}
-
-            
+            {% endif %}            
         </div>
+
         <div class="col m7">
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
                         <li class="tab col s3"><a class="active" href="#friends">Amigos</a></li>
                         <li class="tab col s3"><a href="#sent">Enviados</a></li>
-                        <li class="tab col s3"><a href="#received">Recibidos</a></li>                        
+                        <li class="tab col s3"><a href="#received">Recibidos</a></li>
                     </ul>
                 </div>
                 <div id="friends" class="col s12">
-                    {% if user.profile.friends %}
-                    <ul class="collection">
-                        {% for profile in user.profile.friends %}
-                        <li class="collection-item avatar">
-                            {% if profile.avatar %}
-                            <img src="{{ profile.avatar.url }}" alt="" class="circle">
-                            {% else %}
-                            <i class="material-icons circle">perm_identity</i>
-                            {% endif %}
-                            <span class="title">{{ profile.user.get_full_name }}</span>
-                            <p>{{ profile.user.username }}</p>
-                            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">call_missed</i></a>
-                            
-                        </li>
-                        {% endfor %}                
-                    </ul>
-                    {% endif %}
+                    {% include "social/components/list_of_friends.html" with profiles=user.profile.friends status='friends' %}
                 </div>
                 <div id="sent" class="col s12">
-                    {% if user.profile.sent_requests %}
-                    <ul class="collection">
-                        {% for profile in user.profile.sent_requests %}
-                        <li class="collection-item avatar">
-                            {% if profile.avatar %}
-                            <img src="{{ profile.avatar.url }}" alt="" class="circle">
-                            {% else %}
-                            <i class="material-icons circle">perm_identity</i>
-                            {% endif %}
-                            <span class="title">{{ profile.user.get_full_name }}</span>
-                            <p>{{ profile.user.username }}</p>
-                            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">call_missed</i></a>
-                            
-                        </li>
-                        {% endfor %}                
-                    </ul>
-                    {% endif %}
+                    {% include "social/components/list_of_friends.html" with profiles=user.profile.sent_requests status='sent' %}                    
                 </div>
-                <div id="received" class="col s12">                    
-                    {% if user.profile.requests %}
-                    <ul class="collection">
-                        {% for profile in user.profile.requests %}
-                        <li class="collection-item avatar">
-                            {% if profile.avatar %}
-                            <img src="{{ profile.avatar.url }}" alt="" class="circle">
-                            {% else %}
-                            <i class="material-icons circle">perm_identity</i>
-                            {% endif %}
-                            <span class="title">{{ profile.user.get_full_name }}</span>
-                            <p>{{ profile.user.username }}</p>
-                            <div class="actions">
-                                <a href="/profiles/request/accept/{{ profile.id }}/"><i class="material-icons">done</i></a>
-                                <a href="/profiles/request/reject/{{ profile.id }}/"><i class="material-icons">call_missed</i></a>
-                            </div>
-                            
-                        </li>
-                        {% endfor %}                
-                    </ul>
-                    {% endif %}
-
+                <div id="received" class="col s12">
+                    {% include "social/components/list_of_friends.html" with profiles=user.profile.requests %}                    
                 </div>
             </div>
         </div>

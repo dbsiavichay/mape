@@ -16,7 +16,7 @@ from showcase.forms import CommercialForm
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
-	success_url = '/'
+	success_url = '/map/'
 	template_name= 'social/signup.html'
 
 	def form_valid(self, form):	   
@@ -132,6 +132,15 @@ def reject_request(request, target):
 	keyword = request.GET.get('keyword', '')
 
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
+
+
+def delete_friend(request, target):
+	target = Profile.objects.get(pk=target)
+
+	friendships = Friendship.objects.filter(
+			models.Q(from_profile=self) |
+			models.Q(to_profile=self)
+		).filter(status=status)
 	
 
 class CommercialAccountView(UpdateView):

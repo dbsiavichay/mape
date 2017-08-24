@@ -14,8 +14,10 @@ class Profile(models.Model):
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)
 	is_commercial = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-		
 
+	def get_full_name(self):
+		return self.user.get_full_name()
+		
 	def get_profiles(self, status):
 		profiles = []
 
@@ -103,6 +105,12 @@ class FriendshipManager(models.Manager):
 		friendship.delete()
 		return True
 
+	def delete_friend(self, profile1, profile2):
+		friendships = Friendship.objects.filter(
+			models.Q(from_profile=profile1, to_profile=profile2) |
+			models.Q(from_profile=profile2, to_profile=profile1)
+		).filter(status=status)
+
 	
 	def check_status(self, profile1, profile2, check=True):
 		friendships = Friendship.objects.filter(
@@ -157,6 +165,10 @@ class Subscriber(models.Model):
 	object_id = models.IntegerField()
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)	
+
+
+
+
 
 def process_image(image_field, size):
 	image = Image.open(image_field)
