@@ -77,7 +77,15 @@ class FriendshipManager(models.Manager):
 		if from_profile == to_profile:
 			raise ValidationError("No se puede enviar una solicitud el mismo")
 
-		friendship, created = Friendship.objects.get_or_create(
+		friendships = Friendship.objects.filter(
+			models.Q(from_profile=from_profile) | models.Q(to_profile=from_profile),
+			models.Q(from_profile=to_profile) | models.Q(to_profile=to_profile)
+		)
+
+		if len(friendships) > 0:
+			return False
+
+		friendship = Friendship.objects.create(
 			from_profile = from_profile,
 			to_profile = to_profile,
 			status = Friendship.FRIENDSHIP_REQUEST
@@ -97,19 +105,23 @@ class FriendshipManager(models.Manager):
 		return True
 
 	def reject(self, from_profile, to_profile):
-		friendships = Friendship.objects.filter(from_profile=from_profile, to_profile=to_profile)
+		friendships = Friendship.objects.filter(
+			from_profile=from_profile, to_profile=to_profile, status=Friendship.FRIENDSHIP_REQUEST
+		)
 		if len(friendships) != 1:
 			raise ValidationError('Error de integridad')
 
-		friendship = friendships[0]
-		friendship.delete()
+		friendships.delete()
 		return True
 
 	def delete_friend(self, profile1, profile2):
 		friendships = Friendship.objects.filter(
-			models.Q(from_profile=profile1, to_profile=profile2) |
-			models.Q(from_profile=profile2, to_profile=profile1)
-		).filter(status=status)
+			models.Q(from_profile=profile1) | models.Q(to_profile=profile1),
+			models.Q(from_profile=profile2) | models.Q(to_profile=profile2)
+		).filter(status=Friendship.FRIENDSHIP_FRIEND)
+
+		friendships.delete()
+		return True
 
 	
 	def check_status(self, profile1, profile2, check=True):
@@ -139,6 +151,9 @@ class Friendship(models.Model):
 		(FRIENDSHIP_FRIEND, 'Amistad'),		
 		(FRIENDSHIP_BLOCKED, 'Bloqueado'),		
 	)
+
+	class Meta:
+		unique_together = ('from_profile', 'to_profile')
 
 	from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='relationship')
 	to_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='to_profile')

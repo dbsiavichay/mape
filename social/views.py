@@ -133,16 +133,22 @@ def reject_request(request, target):
 
 	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
 
+def delete_request(request, target):
+	target = Profile.objects.get(pk=target)
+	Friendship.objects.reject(request.user.profile, target)
+	keyword = request.GET.get('keyword', '')
+
+	return redirect('/profiles/%s/friends/?keyword=%s' % (request.user.username, keyword))
 
 def delete_friend(request, target):
 	target = Profile.objects.get(pk=target)
+	profile = request.user.profile
 
-	friendships = Friendship.objects.filter(
-			models.Q(from_profile=self) |
-			models.Q(to_profile=self)
-		).filter(status=status)
+	Friendship.objects.delete_friend(profile, target)
+	return redirect('relationship', username=request.user.username)
+
+
 	
-
 class CommercialAccountView(UpdateView):
 	model = Profile
 	form_class = ProfileForm

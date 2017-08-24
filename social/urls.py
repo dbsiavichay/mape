@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^profiles/send-request/(?P<target>\d+)/$', login_required(send_request), name='profile_send_request'),
     url(r'^profiles/request/accept/(?P<target>\d+)/$', login_required(accept_request), name='profile_accept_request'),
     url(r'^profiles/request/reject/(?P<target>\d+)/$', login_required(reject_request), name='profile_reject_request'),
+    url(r'^profiles/request/delete/(?P<target>\d+)/$', login_required(delete_request), name='profile_delete_request'),
 
     url(r'^friends/(?P<target>\d+)/delete/$', login_required(delete_friend), name='delete_friend'),
     

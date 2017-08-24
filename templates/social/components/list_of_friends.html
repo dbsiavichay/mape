@@ -12,9 +12,9 @@
 
         <div class="actions">
             {% if status == 'friends'  %}
-            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">close</i></a>
+            <a href="{% url 'delete_friend' profile.id %}" class="secondary-content"><i class="material-icons">close</i></a>
             {% elif status == 'sent' %}
-            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content"><i class="material-icons">close</i></a>
+            <a href="{% url 'profile_delete_request' profile.id %}" class="secondary-content"><i class="material-icons">close</i></a>
             {% else %}            
             <a href="{% url 'profile_accept_request' profile.id %}">
                 <i class="material-icons">done</i>
