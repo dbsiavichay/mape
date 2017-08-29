@@ -8,4 +8,8 @@ from .models import *
 class CategoryAdmin(admin.ModelAdmin):
     model = Category
 
+class LocalityAdmin(admin.ModelAdmin):
+    model = Locality
+
+admin.site.register(Locality, LocalityAdmin)
 admin.site.register(Category, CategoryAdmin)
