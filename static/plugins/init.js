@@ -2,6 +2,7 @@ $(function () {
 	//Initialize modals
 	$('.modal').modal();
 	$('.parallax').parallax();
+	$('.carousel').carousel();
 
 	//Selects
 	$(document).ready(function() {

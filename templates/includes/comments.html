@@ -10,7 +10,7 @@
             {% else %}
             <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
             {% endif %}
-            <a href="/profiles/{{ comment.profile.user.username }}/">{{ comment.profile.user.get_full_name }}</a>
+            <a href="/profiles/{{ comment.profile.user }}/">{{ comment.profile.user }}</a>
         </div>
         <div class="card-panel comentario-izq">
             {{ comment.text }}
@@ -18,11 +18,11 @@
             <img src="{{ comment.image.url }}" width="200">
             {% endif %}
         </div>                
-        <p>Hace <strong>{{ comment.date_joined|timesince }}</strong></p>
+        <p class="no-margin tiny-text">Hace <strong>{{ comment.date_joined|timesince }}</strong></p>
     </li>
     {% empty %}
     <li class="collection-item">
-        No comments yet.
+        A&uacute;n no hay comentarios.
     </li>   
     {% endfor %}
 
@@ -31,12 +31,12 @@
             {% csrf_token %}
             <input type="hidden" name="{{ model_name }}" value="{{ model_id }}">
             <div class="input-field">
-                <input placeholder="Mensaje" id="comment" name="text" type="text" class="validate">
-                <label for="comment">Comenta algo</label>
+                <input placeholder="Comentanos algo, puedes agregar una im&aacute;n" id="comment" name="text" type="text" class="validate">
+                <label for="comment">Nuevo comentario </label>
             </div>
 
             <div class="file-field input-field">
-                <div class="btn">
+                <div class="btn cyan">
                     <span>Imagen</span>
                     <input id="image" name="image" type="file">
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="waves-effect waves-light cyan darken-3 btn right marginado">
+            <button type="submit" class="waves-effect waves-light cyan darken-2 btn right marginado">
                 <i class="material-icons right">send</i>
                 Enviar
             </button>

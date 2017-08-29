@@ -55,9 +55,10 @@
                 Enviar
             </button>
         </form>   
-        <!-- Boton para contraseña olvidad -->
-        <a href="#modal-forgotpass" class="col s12 center modal-trigger cyan-text text-darken-4"> Olvidé mi contraseña</a>
-        <a href="" class="col s12 center modal-trigger cyan-text text-darken-4"> Ingresar como invitado </a>
+        <!-- Botones extras-->
+        <a href="#modal-forgotpass" class="col s12 modal-trigger cyan-text text-darken-4"> Olvidé mi contraseña</a>
+        <a href="{% url 'signup' %}" class="col s4 offset-s4 l2 offset-l5 amber darken-1 btn"> Registrarse </a>
+        <a href="" class="col s12 modal-trigger cyan-text text-darken-4"> Ingresar como invitado </a>
     </div>     
     </div>
     <!-- Modal Recuperacion de contraseña -->
