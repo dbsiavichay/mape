@@ -10,7 +10,7 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link rel="stylesheet" href="{% static 'plugins/settings.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block css %}{% endblock %}    
@@ -18,27 +18,18 @@
 <body>    
 
     <nav class="no-margin no-padding">
-        <div class="nav-wrapper row cyan {% block nav-class %}{%endblock %}">            
-            <!-- <a class="brand-logo center" href="{%url 'map' %}"><img class="mape-medium"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}" ></a> -->
+        <div class="nav-wrapper row cyan {% block nav-class %}{%endblock %}">
             <!-- Espacio izquierdo -->
-            <ul id="nav-left" class="col l4" >
+            <ul id="nav-left" class="col l4 m4 s2 " >
                 {% block nav-left %}{% endblock %}
             </ul>
             <!-- Espacio central -->
-            <ul class="col l4 row center no-margin">
+            <ul class="col l4 m4 s5 row center no-margin">
                 {% block nav-center %}{% endblock %}
             </ul>
             <!-- Espacio derecho -->
-            <ul id="nav-right" class="col l4 row right hide-on-med-and-down no-margin">
+            <ul id="nav-right" class="right no-margin">
                 {% block nav-right %}{% endblock %}
-            </ul>
-            <!-- LISTA de menu izquierdo -->
-            <ul id="menu-1" class="row dropdown-content">
-                {% block dropDown-content-1 %}{% endblock %}
-            </ul>
-            <!-- LISTA de menu derecho -->
-            <ul id="menu-2" class="row dropdown-content">
-                {% block dropDown-content-2 %}{% endblock %}
             </ul>
         </div>
 
@@ -47,7 +38,7 @@
     {% block content %}{% endblock %}
    
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    
     <script src="{% static 'plugins/init.js' %}"></script>
     <script src="{% static 'plugins/csrftoken.js' %}"></script>
     {% block js %}{% endblock %}
