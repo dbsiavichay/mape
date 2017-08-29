@@ -160,10 +160,11 @@ class CommercialAccountView(UpdateView):
 
 		if commercial_form.is_valid():
 			self.object = form.save(commit=False)
-			self.object.is_commercial = True			
+			self.object.is_commercial = True
 			self.object.save()
 
-			commercial_form.save()
+			commercial_form.save()			
+
 			self.success_url = '/profiles/%s/?commercial=true' % (self.request.user.username)
 			return redirect(self.success_url)
 			
@@ -180,11 +181,12 @@ class CommercialAccountView(UpdateView):
 
 		return context
 
-	def get_commercial_form(self):		
-		form = CommercialForm(user=self.request.user)
+	def get_commercial_form(self):
+		current_profile = self.request.user.profile		
+		form = CommercialForm(profile=current_profile)
 
 		if self.request.method == 'POST':
-			form = CommercialForm(self.request.POST, self.request.FILES, user=self.request.user)
+			form = CommercialForm(self.request.POST, self.request.FILES, profile=current_profile)
 
 		return form
 

@@ -48,7 +48,7 @@ class UserCreationForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ['is_commercial']
+        exclude = ['is_commercial', 'is_complete']
 
     first_name = forms.CharField(max_length=30, label='Nombre') 
     last_name = forms.CharField(max_length=30, label='Apellidos')
@@ -103,6 +103,8 @@ class ProfileForm(forms.ModelForm):
 
     def save(self, commit=True):
         obj = super(ProfileForm, self).save(commit=False)
+        obj.is_complete = True
+
         obj.user.first_name = self.cleaned_data['first_name']
         obj.user.last_name = self.cleaned_data['last_name']
 

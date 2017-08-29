@@ -13,7 +13,11 @@ class Profile(models.Model):
 	cellphone = models.CharField(max_length=32, blank=True, null=True, verbose_name='número de celular')
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)
 	is_commercial = models.BooleanField(default=False)
+	is_complete = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __unicode__(self):
+		return self.user.get_full_name()
 
 	def get_full_name(self):
 		return self.user.get_full_name()

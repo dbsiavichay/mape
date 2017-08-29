@@ -22,7 +22,7 @@
         <li><a class="dropdown-button" data-activates="menu-1"> <i class="material-icons medium">info</i></a></li>
         <li><span class="new badge cyan darken-1">4</span></li>
         {%if user.profile.avatar %} 
-            <li><a class="dropdown-button " data-activates="menu-2"><img class=" responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a>  </li>
+            <li><a class="dropdown-button" data-activates="menu-2"><img class="responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a>  </li>
             {%else%}
                 <li><a class="dropdown-button" data-activates="menu-2"> <i class="material-icons medium">person_pin</i></a></li>
         {%endif%}
@@ -126,7 +126,7 @@
                         {% endif %}
                         <!-- Contador de suscriptores -->                        
                         <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
-                        {% if object.owner == user%}
+                        {% if object.owner == user.profile %}
                         <a href="{% url 'locality_update' object.id %}" class="btn grey darken-3">Editar</a>
                         {%endif%}
                     </div>                    
@@ -218,17 +218,11 @@
                     <a href="">Alcaldia de Morona</a>
                 </div>
               </div>
-              <!-- Informacion de Contacto -->
-              <div class="col s12 row">
-                <div class="col s12 m4 l4"><h5>Dirección:</h5>
-                  <p> Don bosco y Riobamba </p></div>
-                <div class="col s12 m4 l4"><h5>Pagina web:</h5>
-                  <p> www.pagina.com </p>
-                </div>
-                <div clas="col s12 m4 l4">
-                  <h5>Telefonos:</h5>
-                  <p>123123423541234{{ user.cellphone }}</p></div>
-              </div>
+              
+              <!-- Informacion Comercial -->              
+              {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
+              
+              
             </div>
             <!-- Media 
             <div id="media" class="row">

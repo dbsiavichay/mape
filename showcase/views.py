@@ -180,7 +180,7 @@ class LocalityListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.filter(Q(owner=request.user) | Q(is_public=True))
+			object_list = self.model.objects.filter(Q(owner=request.user.profile) | Q(is_public=True))
 			
 			localities = []
 
@@ -204,7 +204,7 @@ class LocalityCreateView(CreateView):
 
 	def form_valid(self, form):	
 		self.object = form.save()
-		return redirect('/locality/%s/' % self.object.id)
+		return redirect('locality_detail', pk=self.object.id)
 
 	def get_form_kwargs(self):	    
 	## Recogemos las palabras clave recurrentemente en lat y lng
@@ -215,7 +215,8 @@ class LocalityCreateView(CreateView):
 
 		initial = {
 			'latitude' : lat,
-			'longitude': lng			
+			'longitude': lng,
+			'owner': self.request.user.profile,			
 		}
 
 		kwargs.update({'initial': initial})
@@ -223,12 +224,13 @@ class LocalityCreateView(CreateView):
 
 class LocalityUpdateView(UpdateView):
 	model = Locality
-	fields = '__all__'
+	#fields = '__all__'
+	form_class = LocalityForm
 	success_url = '/map/'
 
 	def form_valid(self, form):		
 		self.object = form.save()
-		return redirect('/locality/%s/' % self.object.id)
+		return redirect('locality_detail', pk=self.object.id)
 
 class LocalityDetailView(DetailView):
 	model = Locality

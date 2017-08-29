@@ -4,10 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 
 from django.contrib.contenttypes.models import ContentType
-from social.models import Comment, Subscriber
+from social.models import Comment, Subscriber, Profile
 
 from django.contrib.gis.geos import Point
-
 
 class Category(models.Model):
 	name = models.CharField(max_length=64, unique=True)
@@ -23,18 +22,16 @@ class Locality(models.Model):
 	latitude = models.FloatField(verbose_name='latitud')
 	longitude = models.FloatField(verbose_name='longitud')
 	point = models.PointField(null=True, blank=True)
+	###Por defecto TRUE cuando ya es comercial
 	is_public = models.BooleanField(default=False, verbose_name='visible a todos?')
+	###
 	verified = models.BooleanField(default=False,)	
 	date_joined = models.DateTimeField(auto_now_add=True)	
-	owner = models.ForeignKey(User)	
+	owner = models.ForeignKey(Profile)	
 	categories = models.ManyToManyField(Category, verbose_name='categorias')
 
 	def __unicode__(self):
 		return self.name
-
-	def save(self, *args, **kwargs):
-		self.point = Point(self.longitude, self.latitude)
-		super(Locality, self).save(*args, **kwargs)
 
 	def comments(self):
 		contenttype = ContentType.objects.get_for_model(Locality)

@@ -1,0 +1,16 @@
+{% if commercial %}
+<div class="row">
+    <div class="col s12 m4 l4">
+        <h5>Dirección:</h5>                  
+        <p>{{ commercial.address }}</p>
+    </div>
+    <div class="col s12 m4 l4">
+        <h5>Pagina web:</h5>
+        <p>{{ commercial.webpage }}</p>
+    </div>
+    <div class="col s12 m4 l4">
+        <h5>Telefonos:</h5>
+        <p>{{ commercial.telephone }}</p>
+    </div>    
+</div>
+{% endif %}

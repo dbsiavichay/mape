@@ -36,12 +36,20 @@ class LocalityForm(forms.ModelForm):
 	class Meta:
 		model = Locality
 		fields = '__all__'
+		widgets = {
+			'latitude': forms.HiddenInput,
+			'longitude': forms.HiddenInput,
+			'owner': forms.HiddenInput,
+		}
 
 	def save(self, commit=True):
-		obj = super(LocalityForm, self).save(commit=False)
-		obj.point = Point(obj.longitude, obj.latitude)
+		obj = super(LocalityForm, self).save(commit=False)				
+		## Hay que especificar debido al commit False
+		obj.categories = self.cleaned_data['categories']
+		###
+		obj.point = Point(obj.longitude, obj.latitude)		
 		
-		if commit:
+		if commit:			
 			obj.save()
 		return obj
 
@@ -51,12 +59,21 @@ class CommercialForm(forms.ModelForm):
 		fields = '__all__'
 
 	def __init__(self, *args, **kwargs):
-		user = kwargs.pop('user')
+		profile = kwargs.pop('profile')
 		
 		super(CommercialForm, self).__init__(*args, **kwargs)
 
 		self.fields['locality'] = forms.ModelChoiceField(
-			queryset = Locality.objects.filter(owner=user)
+			queryset = Locality.objects.filter(owner=profile)
 		)
+
+	def save(self, commit=True):
+		obj = super(CommercialForm, self).save(commit=False)
+		obj.locality.is_public = True
+		obj.locality.save()
+		
+		if commit:
+			obj.save()
+		return obj
 
 SubscriberForm = forms.modelform_factory(Subscriber, fields='__all__')
