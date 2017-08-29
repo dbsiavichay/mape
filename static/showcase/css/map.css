@@ -215,3 +215,15 @@ text-shadow: -3px -3px 3px #fff , 3px -3px 3px #fff , -3px 3px 3px #fff , 3px 3p
 .nav-large{
   height: 150% !important;
 }
+
+.product{
+  background-color: #00b0ff !important;
+}
+.service{
+  background-color: #1de9b6 !important;
+}
+
+.fringe{
+  height: 13px;
+  background-color: grey; 
+}

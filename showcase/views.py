@@ -202,11 +202,12 @@ class LocalityCreateView(CreateView):
 	form_class = LocalityForm
 	success_url = '/map/'
 
-	def form_valid(self, form):		
+	def form_valid(self, form):	
 		self.object = form.save()
 		return redirect('/locality/%s/' % self.object.id)
 
 	def get_form_kwargs(self):	    
+	## Recogemos las palabras clave recurrentemente en lat y lng
 		kwargs = super(LocalityCreateView, self).get_form_kwargs()
 
 		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
