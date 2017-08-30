@@ -109,20 +109,19 @@
                     <h4 class="grey-text"> #{{ object.name }} </h4>
                     
                     <div class="left-align">
+                        {% if not user.is_anonymous %}
                         {% if is_subscribed %}
                         <button class="btn amber darken-3" type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Suscrito</button>
                         {% else %}
-
-                          {% if object.is_public %}
-                            <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
-                              {% csrf_token %}
-                              <input type="hidden" name="profile" value="{{ user.profile.id }}">
-                              <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
-                              <input type="hidden" name="object_id" value="{{ object.id }}">
-                              <input type="hidden" name="next" value="/locality/{{ object.id }}/">
-                              <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
-                            </form>
-                          {%endif%}
+                        <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
+                          {% csrf_token %}
+                          <input type="hidden" name="profile" value="{{ user.profile.id }}">
+                          <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
+                          <input type="hidden" name="object_id" value="{{ object.id }}">
+                          <input type="hidden" name="next" value="/locality/{{ object.id }}/">
+                          <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
+                        </form>
+                        {% endif %}
                         {% endif %}
                         <!-- Contador de suscriptores -->                        
                         <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
