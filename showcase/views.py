@@ -56,7 +56,7 @@ class EventCreateView(CreateView):
 		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None	
 		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
 
-		localities = Locality.objects.filter(owner=self.request.user)
+		localities = Locality.objects.filter(owner=self.request.user.profile)
 		reference = Point(float(lng), float(lat))
 		close = Locality.objects.filter(point__distance_lte=(reference, D(m=1000)))
 
@@ -202,9 +202,26 @@ class LocalityCreateView(CreateView):
 	form_class = LocalityForm
 	success_url = '/map/'
 
-	def form_valid(self, form):	
-		self.object = form.save()
+	def form_valid(self, form):			
+		self.object = form.save()		
 		return redirect('locality_detail', pk=self.object.id)
+
+	def post(self, request, *args, **kwargs):
+		request.POST = request.POST.copy()
+		categories = [cat for cat in request.POST.getlist('categories') if cat.isdigit()]
+		
+		for cat in request.POST.getlist('categories'):
+			if not cat.isdigit():
+				category, created = Category.objects.get_or_create(name=cat.encode('utf-8'))
+				categories.append(str(category.id))
+
+		##Encode utf-8
+		for key in request.POST.keys():
+			request.POST[key] = unicode(request.POST[key]).encode('utf-8')
+
+		request.POST.setlist('categories', categories)
+		
+		return super(LocalityCreateView, self).post(request, *args, **kwargs)
 
 	def get_form_kwargs(self):	    
 	## Recogemos las palabras clave recurrentemente en lat y lng
@@ -231,6 +248,24 @@ class LocalityUpdateView(UpdateView):
 	def form_valid(self, form):		
 		self.object = form.save()
 		return redirect('locality_detail', pk=self.object.id)
+
+	def post(self, request, *args, **kwargs):
+		request.POST = request.POST.copy()
+		categories = [cat for cat in request.POST.getlist('categories') if cat.isdigit()]
+		
+		for cat in request.POST.getlist('categories'):
+			if not cat.isdigit():
+				category, created = Category.objects.get_or_create(name=cat.encode('utf-8'))
+				categories.append(str(category.id))
+
+		##Encode utf-8
+		for key in request.POST.keys():
+			request.POST[key] = unicode(request.POST[key]).encode('utf-8')
+
+		request.POST.setlist('categories', categories)
+		
+		return super(LocalityUpdateView, self).post(request, *args, **kwargs)
+	
 
 class LocalityDetailView(DetailView):
 	model = Locality

@@ -39,4 +39,12 @@ $(function () {
 		});	
 	}
 
+	//Init for select2
+
+	if ($('.select2').select2) {
+		$('.select2').select2({
+			tags: true,
+		})
+	}
+
 });

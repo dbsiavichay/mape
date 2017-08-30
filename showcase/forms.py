@@ -42,15 +42,13 @@ class LocalityForm(forms.ModelForm):
 			'owner': forms.HiddenInput,
 		}
 
-	def save(self, commit=True):
-		obj = super(LocalityForm, self).save(commit=False)				
-		## Hay que especificar debido al commit False
-		obj.categories = self.cleaned_data['categories']
-		###
-		obj.point = Point(obj.longitude, obj.latitude)		
-		
-		if commit:			
+	def save(self, commit=True):		
+		obj = super(LocalityForm, self).save()				
+		obj.point = Point(obj.longitude, obj.latitude)			
+
+		if commit:
 			obj.save()
+			
 		return obj
 
 class CommercialForm(forms.ModelForm):
