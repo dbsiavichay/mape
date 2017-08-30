@@ -15,27 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block css %}{% endblock %}    
 </head>
-<body>    
-
-    <nav class="no-margin no-padding">
-        <div class="nav-wrapper row cyan {% block nav-class %}{%endblock %}">
-            <!-- Espacio izquierdo -->
-            <ul id="nav-left" class="col l4 m4 s2 " >
-                {% block nav-left %}{% endblock %}
-            </ul>
-            <!-- Espacio central -->
-            <ul class="col l4 m4 s5 row center no-margin">
-                {% block nav-center %}{% endblock %}
-            </ul>
-            <!-- Espacio derecho -->
-            <ul id="nav-right" class="right no-margin">
-                {% block nav-right %}{% endblock %}
-            </ul>
-        </div>
-
-    </nav>
-    
-    {% block content %}{% endblock %}
+<body>{% block content %}{% endblock %}
    
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    

@@ -3,15 +3,16 @@
 {% load staticfiles %}
 
 {% block content %}
+{% include 'includes/nav.html' %}
 {% load widget_tweaks %}
 
-{% include "includes/errors.html" %}
+
 
 <div class="container">    
     {% if success %}
     <div class="row">
         <div class="col s12">        
-            <div class="card-panel teal lighten-2">
+            <div class="amber lighten-2 low-border tiny-text">
                 Datos actualizados correctamente.    
             </div>
         </div>
@@ -31,8 +32,8 @@
     {% if not user.profile.is_commercial %}
     <div class="row">
         <div class="col s12">
-            <a href="{% url 'commercial_account' %}" class="waves-effect waves-light btn lime right">
-                Activa tu cuenta comercial        
+            <a href="{% url 'commercial_account' %}" class="btn amber right waves-effect waves-light ">
+                Activar comercial        
             </a>            
         </div>
     </div>
@@ -47,15 +48,13 @@
         <div class="col s12">                                
             <h5>{{ user.get_full_name }}</h5>
         </div>
-        <a href="/profiles/{{ user.username }}/friends/" class="waves-effect waves-light btn">
-            Amigos
-            <span class="badge">{{ user.profile.friends|length }}</span>
+        <a href="/profiles/{{ user.username }}/friends/" class="waves-effect waves-light btn cyan">Amigos
+        <span class="badge">{{ user.profile.friends|length }}</span>
         </a>
     </div>
 
     {{ form.errors }}
-    {{ profile_form.errors }}
-
+    {% include "includes/errors.html" with form=profile_form %}
 
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
@@ -95,7 +94,7 @@
         </div>    
 
         <div class="file-field input-field col m6 s12">
-            <div class="btn">
+            <div class="btn cyan waves-effect waves-light">
                 <span>{{ profile_form.avatar.label }}</span>
                 {{ profile_form.avatar }}
             </div>
@@ -106,7 +105,7 @@
 
         <input type="hidden" name="user" value="{{ user.id }}">
         <div class="col s12 center">
-            <button class="btn btn-large waves-effect waves-light red" type="submit" name="action">Guardar
+            <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar
                 <i class="material-icons right">send</i>
             </button>        
         </div>

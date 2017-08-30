@@ -2,70 +2,14 @@
 
 {% load staticfiles %}
 
-{% block nav-left %}
-<li><a class="" href="{% url 'map' %}"><img class="mape-tiny"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a></li>
-{% if not request.session %}
-    <li><a href="{%url 'signup' %}" class="amber darken-1">Resgistrarse</a></li>
-{% endif %}
-{%endblock%}
-
-{% block nav-right %}
-    {% if not request.session %}
-        <li><a href="{% url 'login' %}" class="btn blue darken-1">Iniciar Sesi&oacute;n</a></li>
-    {%else%}
-        <li><a class="dropdown-button" data-activates="menu-1"> <i class="material-icons medium">info</i> Notifications <span class="new badge cyan">4</span></a></li>
-        {%if user.profile.avatar %} 
-            <li><a class="dropdown-button" data-activates="menu-2"><img class=" responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a></li>
-            {%else%}
-                <li><a class="dropdown-button" data-activates="menu-2"> <i class="material-icons medium">person_pin</i></a></li>
-        {%endif%}
-    {% endif %}
-{%endblock%}
-
-
-{% block nav-center %}
-<!-- Boton de Busqueda -->
-  <div class="input-field">
-      <i class="material-icons prefix ">search</i>
-      <input id="search2" type="search" class="validate no-padding">
-      <label for="search2"  data-error="wrong"> buscar<label>
-  </div>
-{%endblock%}
-
-{%if not request.session %}
-    <!-- Contenido del dropdown Notificaciones -->
-    {% block dropDown-content-1 %}
-    <li><div class="collection">
-        <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
-        <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
-        <a href="#!" class="collection-item">Alan</a>
-        <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
-      </div></li>
-    <li class="divider"></li>
-    <li><a href="" class="center"> Ver mas </a></li>
-    {%endblock%}
-
-    <!-- Contenido del dropdown Configuraciones de cuenta -->
-    {% block dropDown-content-2 %}
-    <li><a href="/profiles/{{ user.username }}/" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
-    <li><a href="" class="center"> <i class="material-icons">group</i>Contactos </a></li>
-
-        <!-- Links genericos para cuentas comerciales -->
-        {% if user_commertial %}
-        <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
-        {% endif %}
-    <li class="divider"></li>
-    <li><a href="/logout/" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
-    {% endblock%}
-{%endif%}
 {% block content %}
+{% include 'includes/nav.html' %}
 {% load widget_tweaks %}
 
-{% include "includes/errors.html" %}
+{% include "includes/errors.html" with form=form %}
+{% include "includes/errors.html" with form=commercial_form %}
 
 <div class="container">
-    {{ commercial_form.errors }}
-
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}        
         <div class="col s12">                                
@@ -130,7 +74,7 @@
 
 
         <div class="col s12 center">
-            <button class="btn btn-large waves-effect waves-light red" type="submit" name="action">Guardar
+            <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar
                 <i class="material-icons right">send</i>
             </button>        
         </div>

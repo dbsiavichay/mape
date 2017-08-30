@@ -17,7 +17,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 	def __unicode__(self):
-		return self.user.get_full_name()
+		return self.user
 
 	def get_full_name(self):
 		return self.user.get_full_name()

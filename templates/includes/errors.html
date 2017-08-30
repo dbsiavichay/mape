@@ -1,10 +1,10 @@
 {% if form.errors %}
 <div class="row">
     <div class="col s12">
-        <div class="card-panel red white-text">
+        <div class="card-panel">
             {% for field in form %}  
             {% if field.errors %}
-            <strong>{{ field.label }}</strong>
+            <p class="red-text">{{ field.label }}</p>
             <ul>
                 {% for error in field.errors %}
                 <li>* {{ error }}</li>
