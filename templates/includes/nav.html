@@ -1,56 +1,71 @@
-{% block nav-left %}
-<li><a class="" href="{% url 'map' %}"><img class="mape-tiny"src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"><b>Mape</b></a></li>
-{% if not request.session %}
-    <li><a href="{%url 'signup' %}" class="amber darken-1">Resgistrarse</a></li>
-{% endif %}
-{%endblock%}
-
-{% block nav-right %}
-    {% if not request.session %}
-        <li><a href="{% url 'login' %}" class="btn blue darken-1">Iniciar Sesi&oacute;n</a></li>
-    {%else%}
-        <li><a class="dropdown-button" data-activates="menu-1"> <i class="material-icons medium">info</i> Notifications <span class="new badge cyan">4</span></a></li>
-        {%if user.profile.avatar %} 
-            <li><a class="dropdown-button" data-activates="menu-2"><img class=" responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a></li>
-            {%else%}
-                <li><a class="dropdown-button" data-activates="menu-2"> <i class="material-icons medium">person_pin</i></a></li>
-        {%endif%}
-    {% endif %}
-{%endblock%}
-
-
-{% block nav-center %}
-<!-- Boton de Busqueda -->
-  <div class="input-field">
-      <i class="material-icons prefix ">search</i>
-      <input id="search2" type="search" class="validate no-padding">
-      <label for="search2"  data-error="wrong"> buscar<label>
-  </div>
-{%endblock%}
-
-{%if not request.session %}
-    <!-- Contenido del dropdown Notificaciones -->
-    {% block dropDown-content-1 %}
-    <li><div class="collection">
-        <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
-        <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
-        <a href="#!" class="collection-item">Alan</a>
-        <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
-      </div></li>
-    <li class="divider"></li>
-    <li><a href="" class="center"> Ver mas </a></li>
-    {%endblock%}
-
-    <!-- Contenido del dropdown Configuraciones de cuenta -->
-    {% block dropDown-content-2 %}
-    <li><a href="/profiles/{{ user.username }}/" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
-    <li><a href="" class="center"> <i class="material-icons">group</i>Contactos </a></li>
-
-        <!-- Links genericos para cuentas comerciales -->
-        {% if user_commertial %}
-        <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
+{% load staticfiles %}
+<nav class="no-margin no-padding">
+    <div class="nav-wrapper row cyan">
+        <!-- Espacio izquierdo -->
+        <ul id="nav-left" class="col l3 m4 s2 " >
+            <li>
+                <a class="no-padding" href="{% url 'map' %}">
+                <img class="hide-on-small-only" width="115" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
+                <img class="hide-on-med-and-up" width="40" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
+            </li>
+        {% if not request.session %}
+            <li>
+                <a href="{%url 'signup' %}" class="amber darken-1 hide-on-small-only">Resgistrarse</a>
+            </li>
         {% endif %}
-    <li class="divider"></li>
-    <li><a href="/logout/" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
-    {% endblock%}
-{%endif%}
+        </ul>
+        <!-- Espacio central -->
+        <ul class="col l4 m4 s5 row center no-margin no-padding">
+            <li><!-- Boton de Busqueda -->
+            <div class="input-field">
+                <i class="material-icons prefix">search</i>
+                <input id="search2" type="text" class="validate no-padding">
+                <label class="white-text" for="search2" data-error="error"> buscar<label>
+
+            </div>
+            </li>
+            
+        </ul>
+        <!-- Espacio derecho -->
+        {% if not request.session %}
+        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3">
+            <div class="row fullscreen">
+                <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
+            {%else%}
+        <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1">
+                {%if user.profile.avatar %} 
+                <li><a class="" id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
+                {%else%}
+                <li><a data-activates="slide-out" id="boton"> <i class="material-icons medium">person_pin</i></a></li>
+                {%endif%}
+            <ul id="slide-out" class="side-nav">
+                <li>
+                    <div class="user-view">
+                      <div class="background">
+                        <img src="{% static 'showcase/img/Fondo-colores.jpg' %}">
+                      </div>
+                      {%if user.profile.avatar %} 
+                      <a href="/profiles/{{ user.username }}/"><img class="circle responsive-img" src="{{ user.profile.avatar.url }}"></a>
+                      {%else%}
+                      <a href="/profiles/{{ user.username }}/"> <i class="material-icons medium">person_pin</i></a>
+                      {%endif%}
+                      <a href="#!name"><span class="white-text name">{{ user }}</span></a>
+                      <span class="white-text email">{{ user.profile.cellphone }}</span>
+                    </div>
+                </li>
+                <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
+                <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
+                <li><a href=""> <i class="material-icons">notifications</i> Notificaciones <span class="badge">4</span></a>  </li>
+                {% if user.profile.is_commertial %}
+                <li><a href="#!comercial"><i class="material-icons">store</i> Nombre de la localidad </a></li> 
+                {% else %}
+                <li><a href="#!NuevoComercial" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
+                {%endif%}
+                <li><div class="divider"></div></li>
+                <li><a class="subheader">Subheader</a></li>
+                <li><a class="right" href="/logout/"> <i class="material-icons">power_settings_new</i>Salir</a></li>
+            </ul>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

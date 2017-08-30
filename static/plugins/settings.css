@@ -35,4 +35,14 @@ html {
     background-color: white;
     border-radius: 5px;
 }
-/*Custom materialize clases */
+.tabs .tab a.active {
+  color: #00e5ff;
+}
+.tabs .tab a {
+  color: #84ffff;
+  font-size: 12px;
+}
+
+.tabs .indicator{
+  background-color: #00bcd4
+}

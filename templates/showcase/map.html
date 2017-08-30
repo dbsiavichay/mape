@@ -5,61 +5,8 @@
     <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block nav-left %}
-<li><a class="no-padding" href="{% url 'map' %}">
-<img class="mape-tiny materialboxed " src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a></li>
-{% if not request.session %}
-    <li><a href="{%url 'signup' %}" class="amber darken-1">Resgistrarse</a></li>
-{% endif %}
-{%endblock%}
-
-{% block nav-right %}
-    {% if not request.session %}
-      <div class="row fullscreen">
-      <li><a href="{% url 'login' %}" class="btn blue darken-1 ">Iniciar Sesi&oacute;n</a></li>
-    {%else%}
-        {%if user.profile.avatar %} 
-            <li><a data-activates="slide-out" class="button-collapse no-padding"><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
-            {%else%}
-                <li><a data-activates="slide-out" class="button-collapse"> <i class="material-icons medium">person_pin</i></a></li>
-        {%endif%}
-        <ul id="slide-out" class="side-nav">
-            <li>
-                <div class="user-view">
-                  <div class="background">
-                    <img src="{% static 'showcase/img/Fondo-colores.jpg' %}">
-                  </div>
-                  <a href="#!user"><img class="circle responsive-img" src="{{ user.profile.avatar.url }}"></a>
-                  <a href="#!name"><span class="white-text name">{{ user }}</span></a>
-                  <span class="white-text email">{{ user.profile.cellphone }}</span>
-              
-                </div>
-            </li>
-            <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
-            <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
-            <li><a href=""> <i class="material-icons">notifications</i> Notificaciones</a> </li>
-            {% if user.profile.is_commertial %}
-            <li><a href="#!comercial"><i class="material-icons">store</i> Nombre de la localidad </a></li> 
-            {% else %}
-            <li><a href="#!NuevoComercial" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
-            {%endif%}
-            <li><div class="divider"></div></li>
-            <li><a class="subheader">Subheader</a></li>
-            <li><a class="right" href="/logout/"> <i class="material-icons">power_settings_new</i>Salir</a></li>
-        </ul>
-    {% endif %}
-{%endblock%}
-
-{% block nav-center %}
-<!-- Boton de Busqueda -->
-  <div class="input-field">
-      <i class="material-icons prefix ">search</i>
-      <input id="search2" type="search" class="validate no-padding">
-      <label for="search2"  data-error="wrong"> buscar<label>
-  </div>
-{%endblock%}
-
 {% block content %}
+{% include 'includes/nav.html' %}
 <div id="map"></div>
 
 <div id="event-modal" class="modal">
