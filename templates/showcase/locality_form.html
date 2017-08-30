@@ -3,7 +3,8 @@
 {% load staticfiles %} 
 
 {% block css %}
-    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet"> 
+    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">    
+    <link href="{% static 'plugins/select2/select2-materialize.css' %}" rel="stylesheet"> 
 {% endblock %}
 
 {% block nav-left %}
@@ -125,10 +126,14 @@
             </div>
 
             
-            <div class="input-field col s12">
+            <!-- <div class="input-field col s12">
                 {{ form.categories|add_class:"validate" }}
                 <label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>
-            </div>   
+            </div> -->   
+
+            <div class="input-field col s12">
+                {{ form.categories|add_class:"select2" }}
+            </div>
 
             {{ form.latitude }}
             {{ form.longitude }}
@@ -146,4 +151,5 @@
 {% endblock %}
 
 {% block js %}
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
 {% endblock %}
