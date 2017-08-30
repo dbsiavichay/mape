@@ -8,7 +8,7 @@
                 <img class="hide-on-small-only" width="115" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
                 <img class="hide-on-med-and-up" width="40" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
             </li>
-        {% if not request.session %}
+        {% if user.is_anonymous %}
             <li>
                 <a href="{%url 'signup' %}" class="amber darken-1 hide-on-small-only">Resgistrarse</a>
             </li>
@@ -27,14 +27,14 @@
             
         </ul>
         <!-- Espacio derecho -->
-        {% if not request.session %}
+        {% if user.is_anonymous %}
         <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3">
             <div class="row fullscreen">
                 <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
             {%else%}
         <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1">
                 {%if user.profile.avatar %} 
-                <li><a class="" id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
+                <li><a id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
                 {%else%}
                 <li><a data-activates="slide-out" id="boton"> <i class="material-icons medium">person_pin</i></a></li>
                 {%endif%}

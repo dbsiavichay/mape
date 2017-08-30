@@ -5,25 +5,27 @@
         {% if profile.avatar %}
         <img src="{{ profile.avatar.url }}" alt="{{ profile }}" class="circle">
         {% else %}
-        <i class="material-icons circle">perm_identity</i>
+        <i class="material-icons circle cyan ">perm_identity</i>
         {% endif %}
-        <span class="title">{{ profile.get_full_name }}</span>
-        <p>{{ profile.user.username }}</p>
-
-        <div class="actions">
+        <div class="actions col push-s11 s1">
             {% if status == 'friends'  %}
-            <a href="{% url 'delete_friend' profile.id %}" class="secondary-content"><i class="material-icons">close</i></a>
+            <a href="{% url 'delete_friend' profile.id %}" class="secondary-content"><i class="red-text material-icons">close</i></a>
             {% elif status == 'sent' %}
-            <a href="{% url 'profile_delete_request' profile.id %}" class="secondary-content"><i class="material-icons">close</i></a>
+            <a href="{% url 'profile_delete_request' profile.id %}" class="secondary-content"><i class="red-text material-icons">close</i></a>
             {% else %}            
-            <a href="{% url 'profile_accept_request' profile.id %}">
-                <i class="material-icons">done</i>
+            <a class="tooltipped" data-tooltip="Aceptar" href="{% url 'profile_accept_request' profile.id %}">
+                <i class="material-icons">done</i> 
             </a>
-            <a href="{% url 'profile_reject_request' profile.id %}">
-                <i class="material-icons">close</i>
+            <a class="tooltipped" data-tooltip="Ignorar" href="{% url 'profile_reject_request' profile.id %}">
+                <i class="red-text material-icons">close</i> 
             </a>            
             {% endif %}            
         </div>
+
+        <a class="col s10 pull-s1 truncate" href="#!Perfil"><span class="title">{{ profile.user }}</span></a>
+        <p class="col s11 truncate">{{ profile.get_full_name }}</p>
+
+        
 
     </li>
     {% endfor %}                
