@@ -25,8 +25,10 @@ class EventListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
+			user = request.user if not request.user.is_anonymous() else None
+
 			self.object_list = self.model.objects.filter(
-				Q(guest__user=request.user) | 
+				Q(guest__user=user) | 
 				Q(is_public=True)
 			)			
 			
@@ -180,8 +182,10 @@ class LocalityListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			object_list = self.model.objects.filter(Q(owner=request.user.profile) | Q(is_public=True))
+			profile = request.user.profile if not request.user.is_anonymous() else None
 			
+			object_list = self.model.objects.filter(Q(owner=profile) | Q(is_public=True))
+						
 			localities = []
 
 			for locality in object_list:				
@@ -274,12 +278,14 @@ class LocalityDetailView(DetailView):
 		context = super(LocalityDetailView, self).get_context_data(**kwargs)
 		contenttype = ContentType.objects.get_for_model(Locality)
 
-		try:
-			subscriber = Subscriber.objects.get(
-				contenttype=contenttype, profile=self.request.user.profile, object_id=self.object.id
-			)
-		except Subscriber.DoesNotExist:
-			subscriber = None
+		subscriber = None
+		if not self.request.user.is_anonymous():
+			try:
+				subscriber = Subscriber.objects.get(
+					contenttype=contenttype, profile=self.request.user.profile, object_id=self.object.id
+				)
+			except Subscriber.DoesNotExist:
+				subscriber = None		
 
 		context.update({
 			'contenttype': contenttype,

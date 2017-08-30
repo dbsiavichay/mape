@@ -22,16 +22,17 @@
     </li>
     {% empty %}
     <li class="collection-item">
-        A&uacute;n no hay comentarios.
+        Aún no hay comentarios.
     </li>   
     {% endfor %}
 
+    {% if not user.is_anonymous %}
     <li class="collection-item">
         <form action="/{{ model_name }}/add/comment/" method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             <input type="hidden" name="{{ model_name }}" value="{{ model_id }}">
             <div class="input-field">
-                <input placeholder="Comentanos algo, puedes agregar una im&aacute;n" id="comment" name="text" type="text" class="validate">
+                <input placeholder="Comentanos algo, puedes agregar una imagen" id="comment" name="text" type="text" class="validate">
                 <label for="comment">Nuevo comentario </label>
             </div>
 
@@ -51,4 +52,9 @@
             </button>
         </form>     
     </li>
+    {% else %}
+    <li class="collection-item">
+        Logueate para comentar.
+    </li>
+    {% endif %}
 </ul>
