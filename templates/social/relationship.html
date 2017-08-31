@@ -61,7 +61,7 @@
                     {% include "social/components/list_of_friends.html" with profiles=user.profile.sent_requests status='sent' %}                    
                 </div>
                 <div id="received" class="col s12">
-                    {% include "social/components/list_of_friends.html" with profiles=user.profile.requests %}                    
+                    {% include "social/components/list_of_friends.html" with profiles=user.profile.requests status='received' %}                    
                 </div>
             </div>
         </div>

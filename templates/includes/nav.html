@@ -56,10 +56,10 @@
                 <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
                 <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
                 <li><a href=""> <i class="material-icons">notifications</i> Notificaciones <span class="badge">4</span></a>  </li>
-                {% if user.profile.is_commertial %}
-                <li><a href="#!comercial"><i class="material-icons">store</i> Nombre de la localidad </a></li> 
+                {% if user.profile.commercial %}
+                <li><a href="{% url 'commercial_account' user.username %}"><i class="material-icons">store</i> Mi comercial</a></li> 
                 {% else %}
-                <li><a href="#!NuevoComercial" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
+                <li><a href="{% url 'commercial_account' user.username %}" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
                 {%endif%}
                 <li><div class="divider"></div></li>
                 <li><a class="subheader">Subheader</a></li>

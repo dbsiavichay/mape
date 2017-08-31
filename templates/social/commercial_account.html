@@ -9,7 +9,9 @@
 {% include "includes/errors.html" with form=form %}
 {% include "includes/errors.html" with form=commercial_form %}
 
+
 <div class="container">
+    {% include "includes/success_message.html" %}
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}        
         <div class="col s12">                                

@@ -6,7 +6,7 @@ from social.models import *
 
 class ProfilesAdmin(admin.ModelAdmin):
 	model = Profile
-	list_display = ('user', 'cellphone', 'is_commercial')
+	list_display = ('user', 'cellphone', 'commercial')
 
 
 admin.site.register(Profile, ProfilesAdmin)
