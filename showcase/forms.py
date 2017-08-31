@@ -57,17 +57,24 @@ class CommercialForm(forms.ModelForm):
 		fields = '__all__'
 
 	def __init__(self, *args, **kwargs):
-		profile = kwargs.pop('profile')
+		self.profile = kwargs.pop('profile')
 		
 		super(CommercialForm, self).__init__(*args, **kwargs)
 
 		self.fields['locality'] = forms.ModelChoiceField(
-			queryset = Locality.objects.filter(owner=profile)
+			queryset = Locality.objects.filter(owner=self.profile)
 		)
 
 	def save(self, commit=True):
+		##Deactivate current commercial if exist
+		commercial = self.profile.commercial()
+		if commercial is not None:
+			commercial.locality.is_commercial = False
+			commercial.locality.save()
+
 		obj = super(CommercialForm, self).save(commit=False)
 		obj.locality.is_public = True
+		obj.locality.is_commercial = True
 		obj.locality.save()
 		
 		if commit:

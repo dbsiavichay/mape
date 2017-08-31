@@ -11,8 +11,7 @@ class Profile(models.Model):
 	charter = models.CharField(max_length=10, blank=True, null=True, verbose_name='cédula')
 	birthday = models.DateField(blank=True, null=True, verbose_name='fecha de nacimiento')
 	cellphone = models.CharField(max_length=32, blank=True, null=True, verbose_name='número de celular')
-	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)
-	is_commercial = models.BooleanField(default=False)
+	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)	
 	is_complete = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -69,6 +68,14 @@ class Profile(models.Model):
 			profiles.append(friendship.to_profile)
 
 		return profiles
+
+	def commercial(self):
+		from showcase.models import Locality
+		try:
+			locality = Locality.objects.get(owner=self, is_commercial=True)
+			return locality.commercial
+		except Locality.DoesNotExist:
+			return None
 
 	def save(self, *args, **kwargs):
 		super(Profile, self).save(*args, **kwargs)

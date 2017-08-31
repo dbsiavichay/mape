@@ -12,21 +12,22 @@
             <a href="{% url 'delete_friend' profile.id %}" class="secondary-content"><i class="red-text material-icons">close</i></a>
             {% elif status == 'sent' %}
             <a href="{% url 'profile_delete_request' profile.id %}" class="secondary-content"><i class="red-text material-icons">close</i></a>
-            {% else %}            
+            {% elif status == 'received' %}            
             <a class="tooltipped" data-tooltip="Aceptar" href="{% url 'profile_accept_request' profile.id %}">
                 <i class="material-icons">done</i> 
             </a>
             <a class="tooltipped" data-tooltip="Ignorar" href="{% url 'profile_reject_request' profile.id %}">
                 <i class="red-text material-icons">close</i> 
-            </a>            
+            </a>
+            {% else %}
+            <a href="/profiles/send-request/{{ profile.id }}/" class="secondary-content">
+                <i class="material-icons">send</i>
+            </a>
             {% endif %}            
         </div>
 
         <a class="col s10 pull-s1 truncate" href="#!Perfil"><span class="title">{{ profile.user }}</span></a>
         <p class="col s11 truncate">{{ profile.get_full_name }}</p>
-
-        
-
     </li>
     {% endfor %}                
 </ul>

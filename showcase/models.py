@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 
 from django.contrib.contenttypes.models import ContentType
-from social.models import Comment, Subscriber, Profile
 
 from django.contrib.gis.geos import Point
 
@@ -25,20 +23,23 @@ class Locality(models.Model):
 	###Por defecto TRUE cuando ya es comercial
 	is_public = models.BooleanField(default=False, verbose_name='visible a todos?')
 	###
+	is_commercial = models.BooleanField(default=False, verbose_name='es comercial?')
 	verified = models.BooleanField(default=False,)	
 	date_joined = models.DateTimeField(auto_now_add=True)	
-	owner = models.ForeignKey(Profile)	
+	owner = models.ForeignKey('social.Profile')	
 	categories = models.ManyToManyField(Category, verbose_name='categorias')
 
 	def __unicode__(self):
 		return self.name
 
 	def comments(self):
+		from social.models import Comment
 		contenttype = ContentType.objects.get_for_model(Locality)
 		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
 		return comments
 
 	def subscribers_count(self):
+		from social.models import Subscriber
 		contenttype = ContentType.objects.get_for_model(Locality)
 		count = Subscriber.objects.filter(contenttype = contenttype, object_id=self.id).count()
 		return count
@@ -99,7 +100,7 @@ class Event(models.Model):
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
 	locality = models.ForeignKey(Locality, blank=True, null=True)		
-	guests = models.ManyToManyField(User, through='Guest', blank=True)
+	guests = models.ManyToManyField('auth.User', through='Guest', blank=True)
 
 	def __unicode__(self):
 		return self.name
@@ -121,6 +122,7 @@ class Event(models.Model):
 		return '%s invitados * %s asistirán * %s les gusta' % (len(invited) - 1, len(attend), len(liked))
 
 	def comments(self):
+		from social.models import Comment
 		contenttype = ContentType.objects.get_for_model(Event)
 		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
 		return comments
@@ -145,7 +147,7 @@ class Guest(models.Model):
 	class Meta:
 		unique_together = (('user', 'event'),)
 
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 	is_creator = models.BooleanField(default=False)
 	is_organizer = models.BooleanField(default=False)

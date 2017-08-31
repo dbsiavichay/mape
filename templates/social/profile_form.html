@@ -7,37 +7,8 @@
 {% load widget_tweaks %}
 
 
-
 <div class="container">    
-    {% if success %}
-    <div class="row">
-        <div class="col s12">        
-            <div class="amber lighten-2 low-border tiny-text">
-                Datos actualizados correctamente.    
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if commercial %}
-    <div class="row">
-        <div class="col s12">        
-            <div class="card-panel teal lighten-2">
-                Tu cuenta comercial ha sido activada satisfactoriamente.    
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    {% if not user.profile.is_commercial %}
-    <div class="row">
-        <div class="col s12">
-            <a href="{% url 'commercial_account' %}" class="btn amber right waves-effect waves-light ">
-                Activar comercial        
-            </a>            
-        </div>
-    </div>
-    {% endif %}
+    {% include 'includes/success_message.html' %}
 
     <div class="row center">
         {% if user.profile.avatar %}
@@ -53,7 +24,8 @@
         </a>
     </div>
 
-    {{ form.errors }}
+    
+    {% include "includes/errors.html" with form=form %}
     {% include "includes/errors.html" with form=profile_form %}
 
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>

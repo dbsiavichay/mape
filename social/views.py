@@ -12,6 +12,7 @@ from .models import *
 from .forms import *
 
 from showcase.forms import CommercialForm
+from showcase.models import Locality
 
 class UserCreateView(CreateView):
 	model = User
@@ -159,34 +160,36 @@ class CommercialAccountView(UpdateView):
 		commercial_form = self.get_commercial_form()
 
 		if commercial_form.is_valid():
-			self.object = form.save(commit=False)
-			self.object.is_commercial = True
-			self.object.save()
+			self.object = form.save()
+			commercial = commercial_form.save()
 
-			commercial_form.save()			
-
-			self.success_url = '/profiles/%s/?commercial=true' % (self.request.user.username)
-			return redirect(self.success_url)
+			self.success_url = '/profiles/%s/commercial-account/?success=true' % self.request.user.username
+			return redirect(self.success_url)			
 			
 		return self.form_invalid(form)
 
 
 	def get_context_data(self, **kwargs):
-		context = super(CommercialAccountView, self).get_context_data(**kwargs)		
+		context = super(CommercialAccountView, self).get_context_data(**kwargs)
+
+		success = self.request.GET.get('success') or self.kwargs.get('success') or None
+
 		commercial_form = self.get_commercial_form()
 
 		context.update({			
 			'commercial_form':commercial_form,
+			'success': success
 		})
 
 		return context
 
 	def get_commercial_form(self):
-		current_profile = self.request.user.profile		
-		form = CommercialForm(profile=current_profile)
+		current_profile = self.request.user.profile	
 
+		instance = current_profile.commercial()
+		form = CommercialForm(instance=instance, profile=current_profile)
 		if self.request.method == 'POST':
-			form = CommercialForm(self.request.POST, self.request.FILES, profile=current_profile)
+			form = CommercialForm(self.request.POST, self.request.FILES, instance=instance, profile=current_profile)
 
 		return form
 
