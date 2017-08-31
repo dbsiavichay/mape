@@ -42,7 +42,18 @@ html {
   color: #84ffff;
   font-size: 12px;
 }
+.tabs .tab a:hover {
+  color: #00b8d4;
+}
 
 .tabs .indicator{
-  background-color: #00bcd4
+  background-color: #00e5ff;
+}
+
+.chip a.collection-item {
+  color: #000;
+}.chip a.collection-item.active {
+  color: #00e5ff;
+}.chip a.collection-item:hover {
+  color: #18ffff;
 }
