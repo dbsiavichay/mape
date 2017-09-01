@@ -171,8 +171,9 @@
                 <p align="justify"><span>{{ object.description }}</span></p>
               </div>
               <!-- Productos / Servicios-->            
+              {% if object.is_commercial and object.owner == user.profile %}
               {% for offer in  user.profile.commercial.offer_set.all %}
-              <div class="card col l3 m4 s12 service no-padding">
+              <div class="card col l3 m4 s12 {% if offer.kind == 1 %} product {% else %} service {% endif %} no-padding">
                 <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="{% static 'showcase/img/temporal/cerveza-y-probioticos.jpg' %}">
                   <span class="card-title">{{ offer.name }}</span>
@@ -187,6 +188,7 @@
                 </div>
               </div>
               {% endfor %}
+              {% endif %}
               
               <!-- Grupo de colacoracion en la localidad -->
               <div class="card-panel grey lighten-2 col s12">

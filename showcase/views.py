@@ -25,10 +25,10 @@ class EventListView(ListView):
 
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
-			user = request.user if not request.user.is_anonymous() else None
+			profile = request.user.profile if not request.user.is_anonymous() else None
 
 			self.object_list = self.model.objects.filter(
-				Q(guest__user=user) | 
+				Q(guest__profile=profile) | 
 				Q(is_public=True)
 			)			
 			
@@ -80,7 +80,7 @@ class EventCreateView(CreateView):
 		self.object.save()
 
 		Guest.objects.create(
-			user = self.request.user,
+			profile = self.request.user.profile,
 			event = self.object,
 			is_creator = True,
 			is_organizer = True,
@@ -117,7 +117,7 @@ class EventUpdateView(UpdateView):
 		lng = self.object.latitude	
 		lat = self.object.longitude
 
-		localities = Locality.objects.filter(owner=self.request.user)
+		localities = Locality.objects.filter(owner=self.request.user.profile)
 		reference = Point(lng, lat)
 		close = Locality.objects.filter(point__distance_lte=(reference, D(m=1000)))
 
@@ -157,7 +157,7 @@ class EventDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(EventDetailView, self).get_context_data(**kwargs)
-		organizers = self.object.guests.filter(guest__user=self.request.user, guest__is_organizer=True)
+		organizers = self.object.guests.filter(guest__profile=self.request.user.profile, guest__is_organizer=True)
 
 		context.update({
 			'guests': context['event'].guests.filter(guest__is_creator=False),
@@ -169,7 +169,7 @@ class EventDetailView(DetailView):
 	def get(self, request, *args, **kwargs):
 		#Redirecciona si no es invitado
 		self.object = self.get_object()		
-		invited = self.object.guests.filter(guest__user=request.user)
+		invited = self.object.guests.filter(guest__profile=request.user.profile)
 
 		if len(invited) <= 0:
 			return redirect('/map/')
@@ -348,28 +348,28 @@ class OfferUpdateView(UpdateView):
 ###FUNCTION VIEWS###
 
 def event_like(request, pk):
-	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation = Guest.objects.get(profile=request.user.profile, event=pk)
 	invitation.status = Guest.LIKE
 	invitation.save()
 
 	return redirect('/event/%s/' % pk)
 
 def event_attend(request, pk):
-	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation = Guest.objects.get(profile=request.profile, event=pk)
 	invitation.status = Guest.ATTEND
 	invitation.save()
 
 	return redirect('/event/%s/' % pk)
 
 def event_maybe_attend(request, pk):
-	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation = Guest.objects.get(profile=request.profile, event=pk)
 	invitation.status = Guest.MAYBE_ATTEND
 	invitation.save()
 
 	return redirect('/event/%s/' % pk)
 
 def event_not_attend(request, pk):
-	invitation = Guest.objects.get(user=request.user, event=pk)
+	invitation = Guest.objects.get(profile=request.profile, event=pk)
 	invitation.status = Guest.NOT_ATTEND
 	invitation.save()
 
@@ -426,7 +426,7 @@ def send_invitation(request, event):
 			)
 
 			Guest.objects.create(
-				user=profile.user,
+				profile=profile,
 				event_id = event
 			)
 

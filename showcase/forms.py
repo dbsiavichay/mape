@@ -11,7 +11,9 @@ class EventForm(forms.ModelForm):
 		model = Event
 		exclude = ('start','guests')
 		widgets = {
-			'locality': forms.HiddenInput
+			'locality': forms.HiddenInput,
+			'latitude':forms.HiddenInput,
+			'longitude':forms.HiddenInput,			
 		}
 	
 	start_0 = forms.DateField(
@@ -62,7 +64,7 @@ class CommercialAccountForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		self.profile = kwargs.pop('profile')
 		
-		super(CommercialForm, self).__init__(*args, **kwargs)
+		super(CommercialAccountForm, self).__init__(*args, **kwargs)
 
 		self.fields['locality'] = forms.ModelChoiceField(
 			queryset = Locality.objects.filter(owner=self.profile)
@@ -75,7 +77,7 @@ class CommercialAccountForm(forms.ModelForm):
 			commercial.locality.is_commercial = False
 			commercial.locality.save()
 
-		obj = super(CommercialForm, self).save(commit=False)
+		obj = super(CommercialAccountForm, self).save(commit=False)
 		obj.locality.is_public = True
 		obj.locality.is_commercial = True
 		obj.locality.save()

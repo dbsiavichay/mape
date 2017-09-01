@@ -100,7 +100,7 @@ class Event(models.Model):
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
 	locality = models.ForeignKey(Locality, blank=True, null=True)		
-	guests = models.ManyToManyField('auth.User', through='Guest', blank=True)
+	guests = models.ManyToManyField('social.Profile', through='Guest', blank=True)
 
 	def __unicode__(self):
 		return self.name
@@ -145,14 +145,14 @@ class Guest(models.Model):
 	)
 
 	class Meta:
-		unique_together = (('user', 'event'),)
-
-	user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+		unique_together = (('profile', 'event'),)
+	
+	profile = models.ForeignKey('social.Profile', on_delete=models.CASCADE)
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
 	is_creator = models.BooleanField(default=False)
 	is_organizer = models.BooleanField(default=False)
 	status = models.PositiveSmallIntegerField(default = INVITED, choices = STATE_CHOICES) 
-	date = models.DateTimeField(auto_now_add=True)
+	date = models.DateTimeField(auto_now_add=True)	
 
 	def attend(self, action=True):
 		self.state = 2 if action else 3		
