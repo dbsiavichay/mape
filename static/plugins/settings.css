@@ -57,3 +57,26 @@ html {
 }.chip a.collection-item:hover {
   color: #18ffff;
 }
+
+.fringe{
+  height: 13px;
+  background-color: grey; 
+  color: white;
+}
+.tiny-text{
+  font-size: 0.7rem;
+}
+
+/*Clases para el navegador*/
+.navigator{
+  height: 64px !important;
+}
+
+.marginado{
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.indicators .indicator-item.active{
+  background-color: white !important; 
+}

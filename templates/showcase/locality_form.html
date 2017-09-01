@@ -11,8 +11,8 @@
 {% include 'includes/nav.html' %}
 {% load widget_tweaks %}
 
-{{ form.errors }}
-{{ commercial_form.errors }}
+{% include "includes/errors.html" with form=form %}
+{% include "includes/errors.html" with form=commercial_form %}
 
 <div class="row container">
     <div class="col s12 ">

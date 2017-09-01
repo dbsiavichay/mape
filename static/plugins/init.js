@@ -35,7 +35,8 @@ $(function () {
 	if (timepickers.length) {
 		timepickers.pickatime({
 		    autoclose: false,
-		    twelvehour: false,	 
+		    twelvehour: false,	
+		    done: 'Ok' 
 		});	
 	}
 

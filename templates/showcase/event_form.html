@@ -10,9 +10,7 @@
 {% include 'includes/nav.html' %}
 {% load widget_tweaks %}
 
-{{ form.errors }}
-
-
+{% include "includes/errors.html" with form=form %}
 
 <div class="row container">
     <div class="col s12 ">
@@ -97,14 +95,14 @@
                 {{ form.ends_1|add_class:"timepicker" }}
                 <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
             </div> 
-            
-            <div id="selected" class=" col s6">
+            -->
+            <div id="selected" class=" hide">
                 <p>{{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
                 <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label></p>
                 <p>{{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
                 <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label></p>
             </div>
-            -->
+            
             <div class="input-field col s6 m4 l4">        
                 {{ form.cover|add_class:"validate" }}
                 <label for="{{ form.cover.id_for_label }}">{{ form.cover.label }}</label>

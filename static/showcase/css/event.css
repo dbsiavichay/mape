@@ -9,8 +9,6 @@
 	width: 100%;
 }
 
-
-
 .front-image .title {
 	position: absolute;
 	bottom: 0;
@@ -25,12 +23,6 @@
 	border-radius: 15px 15px 0 0;
 }
 
-
-.timeuntil {
-	margin-top: 5px;
-	padding: 15px 0;
-}
-
 .timeuntil h2 {
 	margin: 0;
 }
@@ -41,4 +33,20 @@
 
 .select-friend:hover {
 	cursor:pointer; 
+}
+
+.timeuntil{
+    border-radius: 12px;
+    border-style: groove;
+    border-color: #F44336;
+}
+.carousel .carousel-item{
+	width: 300px;
+}
+.opacado{
+  opacity: 0.7;
+}
+
+.highter{
+	height: 250px;
 }

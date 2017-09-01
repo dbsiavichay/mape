@@ -8,92 +8,104 @@
 {% endblock %}
 
 {% block content %}
+{% include 'includes/nav.html' %}
 <span class="hidden" id="event-info" event-id="{{ event.id }}"></span>
   
-
+<!-- Imagen de portada -->
 <div class="front-image">        
     {% if object.front_image %}      
     <img src="{{ object.front_image.url }}">
     {% else %}
     <img src="{% static 'showcase/img/event-header.jpg' %}">
     {% endif %}
-    <div class="title center">
+    <div class="title center opacado">
         <h3 class="white">{{ event.name }}</h3>        
     </div>
 </div>
 
 {% if is_organizer %}
-<div class="center">
-    <a href="/event/{{ event.id }}/update/" class="waves-effect waves-teal btn-flat">Editar</a>
-    <a class="waves-effect waves-teal btn-flat">Publicar</a>
+<!-- Opciones para organizador -->
+<div class="right">
+    <a class="waves-effect waves-cyan btn-flat" href="/event/{{ event.id }}/update/" >Editar</a>
 </div>
 {% endif %}
+<!-- Imagenes -->
+{%if object.profile_image or object.front_image %}
+<div class="carousel grey col s12 m12 l6">
 
-<div class="red center timeuntil">
-    <h2>En {{ event.start|timeuntil }}</h2>
-    {% if is_organizer %}
-    <a href="#guests_modal" class="waves-effect waves-light btn">Invitar</a>
-    {% else %}
-    <a href="/event/{{ event.id }}/like/" class="waves-effect waves-light btn">Me gusta</a>
-    <a href="/event/{{ event.id }}/attend/" class="waves-effect waves-light btn">Asistiré</a>
-    <a href="/event/{{ event.id }}/maybe_attend/" class="waves-effect waves-light btn">Talvez asista</a>
-    <a href="/event/{{ event.id }}/not_atttend/" class="waves-effect waves-light btn">No asistiré</a>
+  {%if object.profile_image %}
+    <a class="carousel-item" href="{{ object.profile_image.url }}">
+        <img src="{{ object.profile_image.url }}">
+    </a>
+  {%endif%}
+  {% if object.front_image %}
+    <a class="carousel-item" href="{{ object.front_image.url }}">
+        <img src="{{ object.front_image.url }}">
+    </a>
+  {% endif %}
+    {% for comment in object.comments %}
+    {% if comment.image %}
+    <a class="carousel-item" href="{{ comment.image.url }}">
+        <img src="{{ comment.image.url }}">
+    </a>
     {% endif %}
+    {% endfor %}
 </div>
-
+{%endif%}
 <div class="row">
     <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s4"><a class="active" href="#information">Información</a></li>            
-            <li class="tab col s4"><a href="#comments">Comentarios</a></li>
-            <li class="tab col s4"><a href="#pictures">Fotos</a></li>
-        </ul>
-    </div>
-    <div id="information" class="col s12">
-        <div class="section">
-            <div class="center">
-                <div class="card">
-                    <p>Organizado por</p>
-                    <div class="chip">                        
-                        {% for organizer in event.get_organizers %}
-                        {% if organizer.profile.avatar %}
-                        <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
-                        {% else %}
-                        <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                        {% endif %}
-                        <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
-                        {% endfor %}
-                    </div>                    
-                </div>
-
-                <div class="card">
-                    {{ event.description }}                
-                </div>
-                
-                <div class="card">
-                    <i class="small material-icons">query_builder</i>
-                    {{ event.start }}
-                </div>                
-            </div>
-
-            <strong>{{ event.get_information }}</strong>
-        </div>
-    </div>
-
-    <div id="comments" class="col s12">       
-      {% include 'includes/comments.html' with comments=object.comments model_name="event" model_id=object.id %}
-    </div>
-    <div id="pictures" class="col s12">
-        <div class="row">
-            {% for comment in object.comments %}
-            {% if comment.image %}
-            <div class="col s2">
-                <img class="materialboxed" style="width: 100%" src="{{ comment.image.url }}">
+      <div class="center">
+      <div class="right-align fringe tiny-text" >{{ event.get_information }} {% if not object.is_public %} * Privado {% endif %} </div>
+        <!-- Opciones de evento -->
+        <div class="center row">
+          <div class="col l6 m6 s12 valign-wrapper highter">
+            {% if true %}
+            <h4 class="red-text">Cancelado</h4>
+            {%elif falser%}
+            <h4 class="timeuntil">En {{ event.start|timeuntil }}</h4>
+            {% endif %}
+          </div>  
+          <div class="card col l6 m6 s12">
+            <p class="flow-text left-align">{{ event.description }} </p>
+            {% if object.locality %}
+            <p>Lugar: </p>
+            <div class="chip truncate {% if object.locality.commercial %} amber {% endif %} lighten-2">
+                <img src="{{ object.locality.profile_image.url }}" alt="{{ object.locality }}">
+                <a class="collection-item" href="/locality/{{ object.locality.id }}">{{ object.locality }} </a>
             </div>
             {% endif %}
-            {% endfor %}
+            <p>Organizado por</p>
+            <div class="chip truncate">                        
+                {% for organizer in event.get_organizers %}
+                {% if organizer.profile.avatar %}
+                <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
+                {% else %}
+                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                {% endif %}
+                <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
+                {% endfor %}
+            </div>
+          </div>
+          <div class="col s12">
+              <i class="small material-icons">query_builder</i>
+              {{ event.start }}
+          </div>  
+          <div class="col s12">
+            {% if not is_organizer and not object.is_public %}
+            <a href="#guests_modal" class="waves-effect waves-light btn"><i class="material-icons tiny">supervisor_account</i>Invitar</a>
+            {% else %}
+            <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</a>
+            <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_box</i>Asistiré</a>
+            <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
+            <a href="/event/{{ event.id }}/not_atttend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
+            {% endif %}
+          </div>
+          <div class="card col s12">       
+            {% include 'includes/comments.html' with comments=object.comments model_name="event" model_id=object.id %}
+          </div>
         </div>
-    </div>
+      </div>
+    
 </div>
 
 

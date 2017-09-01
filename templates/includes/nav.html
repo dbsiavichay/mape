@@ -1,12 +1,12 @@
 {% load staticfiles %}
 <nav class="no-margin no-padding">
-    <div class="nav-wrapper row cyan">
+    <div class="nav-wrapper row cyan navigator">
         <!-- Espacio izquierdo -->
         <ul id="nav-left" class="col l3 m4 s2 " >
             <li>
-                <a class="no-padding" href="{% url 'map' %}">
-                <img class="hide-on-small-only" width="115" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
-                <img class="hide-on-med-and-up" width="40" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
+                <a class="no-padding navigator" href="{% url 'map' %}">
+                <img class="hide-on-small-only navigator" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
+                <img class="hide-on-med-and-up" height="57" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
             </li>
         {% if user.is_anonymous %}
             <li>
@@ -15,9 +15,9 @@
         {% endif %}
         </ul>
         <!-- Espacio central -->
-        <ul class="col l4 m4 s5 row center no-margin no-padding">
+        <ul class="col l4 m4 s5 center no-margin no-padding navigator">
             <li><!-- Boton de Busqueda -->
-            <div class="input-field">
+            <div class="input-field navigator">
                 <i class="material-icons prefix">search</i>
                 <input id="search2" type="text" class="validate no-padding">
                 <label class="white-text" for="search2" data-error="error"> buscar<label>
@@ -27,11 +27,11 @@
         </ul>
         <!-- Espacio derecho -->
         {% if user.is_anonymous %}
-        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3">
+        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3 navigator">
             <div class="row fullscreen">
                 <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
             {%else%}
-        <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1">
+        <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1 navigator">
                 {%if user.profile.avatar %} 
                 <li><a id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
                 {%else%}

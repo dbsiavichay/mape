@@ -110,7 +110,7 @@ color: #80deea;}
   font-size: 0.7em; }
 
 
-.slider .indicators .indicator-item.active{
+.indicators .indicator-item.active{
   background-color: white !important; 
 }
 
