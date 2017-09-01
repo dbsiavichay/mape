@@ -3,25 +3,29 @@ $(function () {
 	var list2 = $('#close').find('a');
 
 
-	list1.on('click', function (e) {
+	list1.on('click', function (e) {		
 		e.preventDefault();
-		list1.removeClass('active');
-		list2.removeClass('active');
-		$(this).addClass('active');
-		$('#id_longitude').val($(this).attr('x').replace(',','.'))
-		$('#id_latitude').val($(this).attr('y').replace(',','.'))
-		$('#id_locality').val($(this).attr('pk'))
+		selectLocality(this);
 	});
 
 	list2.on('click', function (e) {
 		e.preventDefault();
+		selectLocality(this);
+	});
+
+	var selectLocality = function (sender) {
 		list1.removeClass('active');
 		list2.removeClass('active');
-		$(this).addClass('active');
-		$('#id_longitude').val($(this).attr('x').replace(',','.'))
-		$('#id_latitude').val($(this).attr('y').replace(',','.'))
-		$('#id_locality').val($(this).attr('pk'))
-	});
+		$(sender).addClass('active');
+		$('#id_longitude').val($(sender).attr('x').replace(',','.'))
+		$('#id_latitude').val($(sender).attr('y').replace(',','.'))
+		$('#id_locality').val($(sender).attr('pk'))
+
+		chip = $(sender).parent('.chip').clone();
+		$('#selected').children().remove();
+		$('#selected').append(chip);
+		
+	}
 
 
 	//Send invitations

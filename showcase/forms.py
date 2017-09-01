@@ -11,7 +11,9 @@ class EventForm(forms.ModelForm):
 		model = Event
 		exclude = ('start','guests')
 		widgets = {
-			'locality': forms.HiddenInput
+			'locality': forms.HiddenInput,
+			'latitude':forms.HiddenInput,
+			'longitude':forms.HiddenInput,			
 		}
 	
 	start_0 = forms.DateField(

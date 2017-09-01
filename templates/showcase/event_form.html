@@ -25,16 +25,30 @@
                 </ul>
             </div>
             <div id="selected">
-                <p>Latitud: {{ latitude }}</p>
-                <p>Longitud: {{ longitude }}</p>
-
+                {% if object.locality %}
+                <div class="chip {% if object.locality.commercial %} amber {% endif %} lighten-2">
+                    {% if object.locality.profile_image %}
+                    <img src="{{ object.locality.profile_image.url }}" alt="{{object.locality}}">
+                    {% else %}                        
+                    <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{objec.tlocality}}">
+                    {% endif %}
+                    <a class="collection-item" href="#!">{{ object.locality }} </a>
+                </div>
+                {% else %}
+                <p>Latitud: {{ form.latitude.value }}</p>
+                <p>Longitud: {{ form.longitude.value }}</p>
+                {% endif %}
             </div>
             {% if localities %}
             <div id="privates" class="col s12">
                 <div id="localities" class="container no-margin">
                 {% for locality in localities %}
                     <div class="chip {% if locality.commercial %} amber {% endif %} lighten-2">
+                        {% if locality.profile_image %}
                         <img src="{{ locality.profile_image.url }}" alt="{{locality}}">
+                        {% else %}                        
+                        <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{locality}}">
+                        {% endif %}
                         <a class="collection-item" href="#!" pk="{{ locality.id }}" x="{{ locality.point.x }}" y="{{ locality.point.y }}">{{ locality }} </a>
                     </div>
                 {% endfor %}            
@@ -46,7 +60,11 @@
                 <div id="close" class="container no-margin">
                 {% for locality in close %}
                     <div class="chip {% if locality.commercial %} amber {% endif %} lighten-2">
+                        {% if locality.profile_image %}
                         <img src="{{ locality.profile_image.url }}" alt="{{locality}}">
+                        {% else %}
+                        <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{locality}}">
+                        {% endif %}
                         <a class="collection-item" href="#!" pk="{{ locality.id }}" x="{{ locality.point.x }}" y="{{ locality.point.y }}">{{ locality }} </a>
                     </div>
                 {% endfor %}            
@@ -95,25 +113,21 @@
                 {{ form.ends_1|add_class:"timepicker" }}
                 <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
             </div> 
-            -->
-            <div id="selected" class=" hide">
-                <p>{{ form.latitude|add_class:"validate"|attr:"readOnly" }}        
-                <label for="{{ form.latitude.id_for_label }}">{{ form.latitude.label }}</label></p>
-                <p>{{ form.longitude|add_class:"validate"|attr:"readOnly" }}        
-                <label for="{{ form.longitude.id_for_label }}">{{ form.longitude.label }}</label></p>
-            </div>
+            -->            
             
             <div class="input-field col s6 m4 l4">        
                 {{ form.cover|add_class:"validate" }}
                 <label for="{{ form.cover.id_for_label }}">{{ form.cover.label }}</label>
             </div>
-            <input type="hidden" name="published_by" value="{{ user.id }}">
+            {{ form.latitude }}
+            {{ form.longitude }}
+            {{ form.locality }}
+                        
             <div class="col s12 center">
                 <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Guardar
                     <i class="material-icons right">send</i>
                 </button>        
             </div>
-            {{ form.locality }}
         </form>    
     </div>
     
