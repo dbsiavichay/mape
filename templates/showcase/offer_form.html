@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}        
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+{% load widget_tweaks %}
+
+
+<div class="container">
+    {% include 'includes/errors.html' with form=form %}
+    <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="input-field col s12">
+            {{ form.name|add_class:"validate" }}
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        </div>
+        <div class="input-field col s12">
+            {{ form.description|add_class:"materialize-textarea validate" }}
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        </div>
+        <div class="input-field col s12">
+            {{ form.price|add_class:"validate" }}
+            <label for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+        </div>
+        <div class="file-field input-field col s12">
+            <div class="btn cyan waves-effect waves-light">
+                <span>Imagen</span>
+                {{ form.image }}
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+            </div>
+        </div>
+        <div class="input-field col s12">        
+            {{ form.kind|add_class:"validate" }}
+            <label for="{{ form.kind.id_for_label }}">{{ form.kind.label }}</label>
+        </div>
+        {{ form.commercial }}
+
+        <div class="col s12">
+            <button class="btn waves-effect waves-light amber darken-2" type="submit">
+                Guardar <i class="material-icons right">save</i>
+            </button> 
+            {% if 'update' in request.path %}
+            <a class="btn waves-effect waves-light red" href="{% url 'commercial_update' %}">
+                Cancelar <i class="material-icons right">close</i>
+            </a> 
+            {% endif %}
+        </div>
+    </form>    
+</div>
+
+
+{% endblock %}
+
+{% block js %}	   
+{% endblock %}

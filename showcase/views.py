@@ -211,20 +211,7 @@ class LocalityCreateView(CreateView):
 		return redirect('locality_detail', pk=self.object.id)
 
 	def post(self, request, *args, **kwargs):
-		request.POST = request.POST.copy()
-		categories = [cat for cat in request.POST.getlist('categories') if cat.isdigit()]
-		
-		for cat in request.POST.getlist('categories'):
-			if not cat.isdigit():
-				category, created = Category.objects.get_or_create(name=cat.encode('utf-8'))
-				categories.append(str(category.id))
-
-		##Encode utf-8
-		for key in request.POST.keys():
-			request.POST[key] = unicode(request.POST[key]).encode('utf-8')
-
-		request.POST.setlist('categories', categories)
-		
+		request.POST = create_categories(request.POST.getlist('categories'), request.POST.copy())
 		return super(LocalityCreateView, self).post(request, *args, **kwargs)
 
 	def get_form_kwargs(self):	    
@@ -254,21 +241,16 @@ class LocalityUpdateView(UpdateView):
 		return redirect('locality_detail', pk=self.object.id)
 
 	def post(self, request, *args, **kwargs):
-		request.POST = request.POST.copy()
-		categories = [cat for cat in request.POST.getlist('categories') if cat.isdigit()]
-		
-		for cat in request.POST.getlist('categories'):
-			if not cat.isdigit():
-				category, created = Category.objects.get_or_create(name=cat.encode('utf-8'))
-				categories.append(str(category.id))
-
-		##Encode utf-8
-		for key in request.POST.keys():
-			request.POST[key] = unicode(request.POST[key]).encode('utf-8')
-
-		request.POST.setlist('categories', categories)
-		
+		request.POST = create_categories(request.POST.getlist('categories'), request.POST.copy())
 		return super(LocalityUpdateView, self).post(request, *args, **kwargs)
+
+	def get(self, request, *args, **kwargs):
+		self.object = self.get_object()
+
+		if self.object.is_commercial:
+			return redirect('commercial_update')
+
+		return super(LocalityUpdateView, self).get(request, *args, **kwargs)
 	
 
 class LocalityDetailView(DetailView):
@@ -294,6 +276,75 @@ class LocalityDetailView(DetailView):
 
 		return context
 
+class CommercialUpdateView(UpdateView):
+	model = Commercial
+	form_class = CommercialForm
+	template_name = 'showcase/commercial.html'
+
+	def form_valid(self, form):
+		locality_form = self.get_locality_form()
+		if locality_form.is_valid():
+			locality_form.save()
+			self.object = form.save()
+			return redirect('commercial_update')
+
+		return self.form_invalid(form)
+
+	def get_context_data(self, **kwargs):
+		context = super(CommercialUpdateView, self).get_context_data(**kwargs)
+
+		locality_form = self.get_locality_form()
+		products = Offer.objects.filter(kind=Offer.PRODUCT, commercial=self.object)
+		services = Offer.objects.filter(kind=Offer.SERVICE, commercial=self.object)
+		context.update({
+			'locality_form': locality_form,
+			'products': products,
+			'services': services
+		})
+
+		return context
+
+	def get_locality_form(self):
+		instance = self.object.locality
+		form = LocalityForm(instance=instance)
+
+		if self.request.method == 'POST':
+			form = LocalityForm(self.request.POST, self.request.FILES, instance=instance)
+
+		return form
+
+	def get(self, request, *args, **kwargs):
+		if request.user.profile.commercial() is None:
+			return redirect('map')
+
+		return super(CommercialUpdateView, self).get(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		request.POST = create_categories(request.POST.getlist('categories'), request.POST.copy())
+		return super(CommercialUpdateView, self).post(request, *args, **kwargs)
+
+	def get_object(self, queryset=None):
+		return self.request.user.profile.commercial()
+
+class OfferCreateView(CreateView):
+	model = Offer
+	form_class = OfferForm
+	success_url = '/commercial/'
+
+	def get_form_kwargs(self):	    		
+		kwargs = super(OfferCreateView, self).get_form_kwargs()	
+		initial = {			
+			'commercial': self.request.user.profile.commercial(),			
+		}
+
+		kwargs.update({'initial': initial})
+		return kwargs
+
+class OfferUpdateView(UpdateView):
+	model = Offer
+	form_class = OfferForm
+	success_url = '/commercial/'
+	
 ###FUNCTION VIEWS###
 
 def event_like(request, pk):
@@ -383,3 +434,24 @@ def send_invitation(request, event):
 	else:
 		pass
 
+###Utilities
+
+def create_categories(category_list, post=None):	
+	categories = [cat for cat in category_list if cat.isdigit()]
+	
+	for cat in category_list:
+		if not cat.isdigit():
+			category, created = Category.objects.get_or_create(name=cat.encode('utf-8'))
+			categories.append(str(category.id))
+
+	#Si hay post se devuelve el post con unicode utf-8 y seteada las categorias
+	#De no ser asi solo se devuelve el listado de categorias
+	if post is not None:
+		##Encode utf-8
+		for key in post.keys():
+			post[key] = unicode(post[key]).encode('utf-8')
+
+		post.setlist('categories', categories)
+		return post
+
+	return categories

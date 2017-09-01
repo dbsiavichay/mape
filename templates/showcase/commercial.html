@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}        
+
+{% block css %}
+<link href="{% static 'plugins/select2/select2-materialize.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+{% load widget_tweaks %}
+
+
+<div class="container">        
+    {% include 'includes/errors.html' with form=locality_form %}
+    {% include 'includes/errors.html' with form=form %}
+
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s4"><a class="active" href="#commercial">Comercial</a></li>
+                <li class="tab col s4"><a href="#products">Productos</a></li>
+                <li class="tab col s4"><a href="#services">Servicios</a></li>                
+            </ul>
+        </div>
+        <div id="commercial" class="col s12">
+            <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="input-field col s12">
+                    {{ locality_form.name|add_class:"validate" }}
+                    <label for="{{ locality_form.name.id_for_label }}">{{ locality_form.name.label }}</label>
+                </div>
+                <div class="input-field col s12">        
+                    {{ locality_form.description|add_class:"materialize-textarea validate" }}
+                    <label for="{{ locality_form.description.id_for_label }}">{{ locality_form.description.label }}</label>
+                </div>
+
+                <div class="file-field input-field col s12">
+                    <div class="btn cyan waves-effect waves-light">
+                        <span>Portada</span>
+                        {{ locality_form.front_image }}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+
+                <div class="file-field input-field col s12">
+                    <div class="btn cyan waves-effect waves-light">
+                        <span>Perfil</span>
+                        {{ locality_form.profile_image }}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" >
+                    </div>
+                </div>
+
+                <div class="input-field col s12">
+                    {{ locality_form.categories|add_class:"select2" }}
+                </div>   
+
+                {{ locality_form.latitude }}
+                {{ locality_form.longitude }}
+                {{ locality_form.owner }}
+
+
+                {% for field in form %}
+                <div class="input-field col s12 m6">
+                    {{ field|add_class:"validate" }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+                {% endfor %}
+
+                <div class="col s12">
+                    <button class="btn waves-effect waves-light amber darken-2" type="submit">
+                        Guardar <i class="material-icons right">save</i>
+                    </button>
+                </div>
+            </form>            
+        </div>
+        <div id="products" class="col s12">
+            <a class="btn waves-effect waves-light amber" href="{% url 'offer_create' %}">
+                Agregar <i class="material-icons right">add</i>
+            </a> 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in products %}
+                    <tr>
+                        <td>{{ offer.name }}</td>
+                        <td>{{ offer.description }}</td>            
+                        <td>{{ offer.price }}</td>            
+                        <td>{{ offer.image }}</td>            
+                        <td>
+                            <a class="btn" href="{% url 'offer_update' offer.id %}">
+                                <i class="material-icons">edit</i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr colspan="2">
+                        <td>"Sin registros."</td>                
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="services" class="col s12">
+            <a class="btn waves-effect waves-light amber" href="{% url 'offer_create' %}">
+                Agregar <i class="material-icons right">add</i>
+            </a> 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Acciones</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in services %}
+                    <tr>
+                        <td>{{ offer.name }}</td>
+                        <td>{{ offer.description }}</td>            
+                        <td>{{ offer.price }}</td>            
+                        <td>{{ offer.image }}</td>            
+                        <td>
+                            <a class="btn" href="{% url 'offer_update' offer.id %}">
+                                <i class="material-icons">edit</i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr colspan="2">
+                        <td>"Sin registros."</td>                
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block js %}	
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>   
+{% endblock %}
