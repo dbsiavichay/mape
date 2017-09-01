@@ -157,7 +157,7 @@ class EventDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(EventDetailView, self).get_context_data(**kwargs)
-		organizers = self.object.guests.filter(guest__profile=self.request.profile, guest__is_organizer=True)
+		organizers = self.object.guests.filter(guest__profile=self.request.user.profile, guest__is_organizer=True)
 
 		context.update({
 			'guests': context['event'].guests.filter(guest__is_creator=False),
@@ -169,7 +169,7 @@ class EventDetailView(DetailView):
 	def get(self, request, *args, **kwargs):
 		#Redirecciona si no es invitado
 		self.object = self.get_object()		
-		invited = self.object.guests.filter(guest__profile=request.profile)
+		invited = self.object.guests.filter(guest__profile=request.user.profile)
 
 		if len(invited) <= 0:
 			return redirect('/map/')
