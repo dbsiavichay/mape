@@ -80,3 +80,7 @@ html {
 .indicators .indicator-item.active{
   background-color: white !important; 
 }
+
+a.modal-action {
+  font-size: 12px;
+}

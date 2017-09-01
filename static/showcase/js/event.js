@@ -53,7 +53,7 @@ var addFriend = function (id, name) {
 	$('.selected-friends').append($item);
 	
 	$('.friends').find('li[data-id=' + id +']')
-		.append('<span class="secondary-content"><i class="material-icons">done</i></span>');
+		.append('<span class="secondary-content"><i class="material-icons cyan-text">done</i></span>');
 
 	$('.remove-friend').on('click', function (e) {
 		e.preventDefault();
@@ -69,7 +69,7 @@ var removeFriend = function (id) {
 
 var getItem = function (id, name) {
 	var itemTemplate = '<li class="collection-item"></li>';
-	var contentTemplate = '<div><a href="#" class="secondary-content remove-friend"><i class="material-icons">close</i></a></div>';
+	var contentTemplate = '<div><a href="#" class="secondary-content remove-friend"><i class="material-icons red-text">close</i></a></div>';
 
 	var $item = $(itemTemplate).clone();
 	var $content = $(contentTemplate).clone();

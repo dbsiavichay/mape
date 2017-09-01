@@ -13,10 +13,10 @@
   
 <!-- Imagen de portada -->
 <div class="front-image">        
-    {% if object.front_image %}      
-    <img src="{{ object.front_image.url }}">
+    {% if not object.front_image %}      
+    <img src="{{ object.front_image.url }}" ref="{{ comment.profile }} comment">
     {% else %}
-    <img src="{% static 'showcase/img/event-header.jpg' %}">
+    <img src="{% static '/showcase/img/Fondo-colores.jpg' %}" ref="{{ comment.profile }} comment">
     {% endif %}
     <div class="title center opacado">
         <h3 class="white">{{ event.name }}</h3>        
@@ -32,23 +32,17 @@
 <!-- Imagenes -->
 {%if object.profile_image or object.front_image %}
 <div class="carousel grey col s12 m12 l6">
-
-  {%if object.profile_image %}
-    <a class="carousel-item" href="{{ object.profile_image.url }}">
-        <img src="{{ object.profile_image.url }}">
-    </a>
-  {%endif%}
-  {% if object.front_image %}
+    {% if object.front_image %}
     <a class="carousel-item" href="{{ object.front_image.url }}">
         <img src="{{ object.front_image.url }}">
     </a>
-  {% endif %}
-    {% for comment in object.comments %}
-    {% if comment.image %}
-    <a class="carousel-item" href="{{ comment.image.url }}">
-        <img src="{{ comment.image.url }}">
-    </a>
     {% endif %}
+    {% for comment in object.comments %}
+      {% if comment.image %}
+    <a class="carousel-item" href="{{ comment.image.url }}">
+        <img src="{{ comment.image.url }}" ref="{{ comment.profile }} comment">
+    </a>
+      {% endif %}
     {% endfor %}
 </div>
 {%endif%}
@@ -58,10 +52,17 @@
       <div class="right-align fringe tiny-text" >{{ event.get_information }} {% if not object.is_public %} * Privado {% endif %} </div>
         <!-- Opciones de evento -->
         <div class="center row">
-          <div class="col l6 m6 s12 valign-wrapper highter">
-            {% if true %}
+            {% if False %}
+            <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
             <h4 class="red-text">Cancelado</h4>
-            {%elif falser%}
+            {% elif False %}
+            <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
+            <h4 class="blue-text">Completado</h4>
+            {% elif False %}
+            <div class="col l3 m4 s9 offset-s3 offset-l2 offset-m2 valign-wrapper highter">
+            <h4 class="timeuntil red-text pulse">En vivo</h4>
+            {% elif True %}
+            <div class="col l4 m5 s10 offset-s1 offset-l1 offset-m1 valign-wrapper highter">
             <h4 class="timeuntil">En {{ event.start|timeuntil }}</h4>
             {% endif %}
           </div>  
@@ -75,15 +76,15 @@
             </div>
             {% endif %}
             <p>Organizado por</p>
-            <div class="chip truncate">                        
-                {% for organizer in event.get_organizers %}
-                {% if organizer.profile.avatar %}
-                <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
-                {% else %}
-                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                {% endif %}
-                <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
-                {% endfor %}
+            {% for organizer in event.get_organizers %}
+            <div class="chip truncate"> 
+            {% if organizer.profile.avatar %}
+            <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
+            {% else %}
+            <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+            {% endif %}
+            <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
+            {% endfor %}
             </div>
           </div>
           <div class="col s12">
@@ -91,11 +92,11 @@
               {{ event.start }}
           </div>  
           <div class="col s12">
-            {% if not is_organizer and not object.is_public %}
-            <a href="#guests_modal" class="waves-effect waves-light btn"><i class="material-icons tiny">supervisor_account</i>Invitar</a>
+            {% if is_organizer and not object.is_public %}
+            <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
             {% else %}
             <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</a>
-            <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_box</i>Asistiré</a>
+            <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>Asistiré</a>
             <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
             <a href="/event/{{ event.id }}/not_atttend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
             {% endif %}
