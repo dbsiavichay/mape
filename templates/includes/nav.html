@@ -56,7 +56,7 @@
                 <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
                 <li><a href=""> <i class="material-icons">notifications</i> Notificaciones <span class="badge">4</span></a>  </li>
                 {% if user.profile.commercial %}
-                <li><a href="{% url 'commercial_account' user.username %}"><i class="material-icons">store</i> Mi comercial</a></li> 
+                <li><a href="{% url 'commercial_update' %}"><i class="material-icons">store</i> Mi comercial</a></li> 
                 {% else %}
                 <li><a href="{% url 'commercial_account' user.username %}" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
                 {%endif%}

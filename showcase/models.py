@@ -54,27 +54,27 @@ class Commercial(models.Model):
 	def __unicode__(self):
 		return self.locality.name
 
-class Group(models.Model):
+class Offer(models.Model):
+	PRODUCT = 1
+	SERVICE = 2
+
 	KIND_CHOICES = (
-		(1, 'Producto'),
-		(2, 'Servicio')
+		(PRODUCT, 'Producto'),
+		(SERVICE, 'Servicio')
 	)
 
-	name = models.CharField(max_length=64)
-	kind = models.PositiveSmallIntegerField(choices = KIND_CHOICES)
+	name = models.CharField(max_length=64, verbose_name='nombre')
+	description = models.TextField(null=True, blank=True, verbose_name='descripción')
+	price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='precio')	
+	image = models.ImageField(upload_to='showcase/offers/', null=True, blank=True)
+	kind = models.PositiveSmallIntegerField(choices = KIND_CHOICES, verbose_name='tipo')	
 	commercial = models.ForeignKey(Commercial)
 
 	def __unicode__(self):
-		return self.name
-
-class Offer(models.Model):
-	name = models.CharField(max_length=64)
-	price = models.DecimalField(max_digits=10, decimal_places=2, default=0)	
-	image = models.ImageField(upload_to='showcase/offers/', null=True, blank=True)
-	group = models.ForeignKey(Group)
-
-	def __unicode__(self):
 		return unicode(self.name)
+
+	def get_kind(self):
+		return 'producto' if self.kind == Offer.PRODUCT else 'servicio'
 
 
 

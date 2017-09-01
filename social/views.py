@@ -11,7 +11,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, F
 from .models import *
 from .forms import *
 
-from showcase.forms import CommercialForm
+from showcase.forms import CommercialAccountForm
 from showcase.models import Locality
 
 class UserCreateView(CreateView):
@@ -154,7 +154,7 @@ class CommercialAccountView(UpdateView):
 	model = Profile
 	form_class = ProfileForm
 	template_name = 'social/commercial_account.html'
-	success_url = ''
+	success_url = '/commercial/'
 
 	def form_valid(self, form):
 		commercial_form = self.get_commercial_form()
@@ -162,36 +162,37 @@ class CommercialAccountView(UpdateView):
 		if commercial_form.is_valid():
 			self.object = form.save()
 			commercial = commercial_form.save()
-
-			self.success_url = '/profiles/%s/commercial-account/?success=true' % self.request.user.username
-			return redirect(self.success_url)			
+			
+			return redirect('commercial_update')			
 			
 		return self.form_invalid(form)
-
 
 	def get_context_data(self, **kwargs):
 		context = super(CommercialAccountView, self).get_context_data(**kwargs)
 
-		success = self.request.GET.get('success') or self.kwargs.get('success') or None
-
+		#success = self.request.GET.get('success') or self.kwargs.get('success') or None
 		commercial_form = self.get_commercial_form()
-
 		context.update({			
 			'commercial_form':commercial_form,
-			'success': success
+		#	'success': success
 		})
 
 		return context
 
 	def get_commercial_form(self):
 		current_profile = self.request.user.profile	
-
 		instance = current_profile.commercial()
-		form = CommercialForm(instance=instance, profile=current_profile)
+		form = CommercialAccountForm(instance=instance, profile=current_profile)
 		if self.request.method == 'POST':
-			form = CommercialForm(self.request.POST, self.request.FILES, instance=instance, profile=current_profile)
+			form = CommercialAccountForm(self.request.POST, self.request.FILES, instance=instance, profile=current_profile)
 
 		return form
+
+	def get(self, request, *args, **kwargs):
+		if request.user.profile.commercial() is not None:
+			return redirect('map')
+
+		return super(CommercialAccountView, self).get(request, *args, **kwargs)
 
 	def get_object(self, queryset=None):
 		return self.request.user.profile

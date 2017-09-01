@@ -65,19 +65,13 @@
                 </div>
             </div>
 
-            
-            <!-- <div class="input-field col s12">
-                {{ form.categories|add_class:"validate" }}
-                <label for="{{ form.categories.id_for_label }}">{{ form.categories.label }}</label>
-            </div> -->   
-
             <div class="input-field col s12">
                 {{ form.categories|add_class:"select2" }}
             </div>
 
             {{ form.latitude }}
             {{ form.longitude }}
-            {{ form.owner }}
+            {{ form.owner }}            
 
             <div class="col s12 center">
                 <button class="btn amber waves-effect waves-light" type="submit" name="action">Guardar

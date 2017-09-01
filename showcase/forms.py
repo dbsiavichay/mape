@@ -35,23 +35,26 @@ class EventForm(forms.ModelForm):
 class LocalityForm(forms.ModelForm):
 	class Meta:
 		model = Locality
-		fields = '__all__'
+		exclude = ['is_commercial']
 		widgets = {
 			'latitude': forms.HiddenInput,
 			'longitude': forms.HiddenInput,
-			'owner': forms.HiddenInput,
+			'owner': forms.HiddenInput,			
 		}
 
 	def save(self, commit=True):		
-		obj = super(LocalityForm, self).save()				
-		obj.point = Point(obj.longitude, obj.latitude)			
+		obj = super(LocalityForm, self).save()						
+		obj.point = Point(obj.longitude, obj.latitude)
+
+		if obj.is_commercial:
+			obj.is_public = True	
 
 		if commit:
 			obj.save()
 			
 		return obj
 
-class CommercialForm(forms.ModelForm):
+class CommercialAccountForm(forms.ModelForm):
 	class Meta:
 		model = Commercial
 		fields = '__all__'
@@ -80,5 +83,18 @@ class CommercialForm(forms.ModelForm):
 		if commit:
 			obj.save()
 		return obj
+
+class CommercialForm(forms.ModelForm):
+	class Meta:
+		model = Commercial
+		exclude = ['locality',]
+
+class OfferForm(forms.ModelForm):
+	class Meta:
+		model = Offer
+		fields = '__all__'
+		widgets = {
+			'commercial': forms.HiddenInput
+		}
 
 SubscriberForm = forms.modelform_factory(Subscriber, fields='__all__')

@@ -22,6 +22,12 @@ urlpatterns = [
     url(r'^locality/(?P<pk>\d+)/update/$', login_required(LocalityUpdateView.as_view()), name='locality_update'),
     url(r'^locality/(?P<pk>\d+)/$', LocalityDetailView.as_view(), name='locality_detail'),
     url(r'^locality/add/comment/$', login_required(add_locality_comment), name='add_locality_comment'),
+    
+
+    url(r'^commercial/$', login_required(CommercialUpdateView.as_view()), name='commercial_update'),    
+    url(r'^commercial/offers/$', login_required(OfferCreateView.as_view()), name='offer_create'),    
+    url(r'^commercial/offers/(?P<pk>\d+)/update/$', login_required(OfferUpdateView.as_view()), name='offer_update'),    
+
 
     url(r'^subscriber/add/$', login_required(add_subscriber), name='subscriber_create'),
     url(r'^send-invitation/(?P<event>\d+)/$', login_required(send_invitation), name='send_invitation'),

@@ -170,36 +170,23 @@
                 <span class="card-title">{{ object.name }}</span>
                 <p align="justify"><span>{{ object.description }}</span></p>
               </div>
-              <!-- Productos / Servicios-->
-              <div class="card col l3 m4 s12 product no-padding">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="{% static 'showcase/img/temporal/data3466221.jpg' %}">
-                  <span class="card-title">Caldo de gallina</span>
-                  
-                </div>
-                <div class="card-content">
-                  <span class="activator right white-text">2,50</span>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Producto<i class="material-icons right">close</i></span>
-                  <p>Plato tipico de la zona, hecho con pollo runa y especias.</p>
-                </div>
-              </div>
-
+              <!-- Productos / Servicios-->            
+              {% for offer in  user.profile.commercial.offer_set.all %}
               <div class="card col l3 m4 s12 service no-padding">
                 <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="{% static 'showcase/img/temporal/cerveza-y-probioticos.jpg' %}">
-                  <span class="card-title">Taxi</span>
+                  <span class="card-title">{{ offer.name }}</span>
                   
                 </div>
                 <div class="card-content">
-                  <span class="activator right white-text">1,00</span>
+                  <span class="activator right white-text">{{ offer.price }}</span>
                 </div>
                 <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Servicio<i class="material-icons right">close</i></span>
-                  <p>Ofrecemos servicio de taxi.</p>
+                  <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
+                  <p>{{ offer.description }}</p>
                 </div>
               </div>
+              {% endfor %}
               
               <!-- Grupo de colacoracion en la localidad -->
               <div class="card-panel grey lighten-2 col s12">
