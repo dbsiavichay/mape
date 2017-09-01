@@ -5,6 +5,8 @@ from django.db import models
 
 from django.contrib.contenttypes.models import ContentType
 
+from notifications.mixins import NotificationMixin
+
 from PIL import Image
 
 class Profile(models.Model):
@@ -85,8 +87,9 @@ class Profile(models.Model):
 
 class FriendshipManager(models.Manager):
 	def send_request(self, from_profile, to_profile):
+		from notifications.models import Notification
 		if from_profile == to_profile:
-			raise ValidationError("No se puede enviar una solicitud el mismo")
+			raise ValidationError("No se puede enviar una solicitud el mismo.")
 
 		friendships = Friendship.objects.filter(
 			models.Q(from_profile=from_profile) | models.Q(to_profile=from_profile),
@@ -152,7 +155,7 @@ class FriendshipManager(models.Manager):
 		else:
 			return 'Bloqueado'
 
-class Friendship(models.Model):
+class Friendship(NotificationMixin, models.Model):
 	FRIENDSHIP_REQUEST = 1
 	FRIENDSHIP_FRIEND = 2
 	FRIENDSHIP_BLOCKED = 3

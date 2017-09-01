@@ -21,6 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),    
+    url(r'', include('notifications.urls')),
     url(r'', include('social.urls')),
     url(r'', include('showcase.urls')),
     #url(r'^mape/$', TemplateView.as_view(template_name='base.html')),

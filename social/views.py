@@ -85,6 +85,17 @@ class ProfileUpdateView(UpdateView):
 	def get_object(self, queryset=None):
 		return self.request.user
 
+
+class ProfileDetailView(DetailView):
+	model = Profile
+
+	def get_object(self, queryset=None):
+		username = self.request.GET.get('username') or self.kwargs.get('username') or None
+		if username is None:
+			return redirect('map')
+
+		return self.model.objects.get(user__username=username)
+
 class RelationshipListView(ListView):
 	model = Profile
 	template_name = 'social/relationship.html'

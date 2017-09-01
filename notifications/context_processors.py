@@ -1,8 +1,9 @@
-from social.models import Profile
+from .models import Notification
 
-def profile_requests(request):
-	requests = []
-	if not request.user.is_anonymous:
-		requests = request.user.profile.requests()	
+def get_notifications(request):
+	if request.user.is_anonymous:
+		return []
 
-	return { 'profile_requests':requests }
+	notifications = Notification.objects.filter(to_profile=request.user.profile, status=1)
+	
+	return { 'notifications':notifications }

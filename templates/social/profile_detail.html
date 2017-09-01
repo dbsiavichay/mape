@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %} 
+
+{% block css %}    
+{% endblock %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+{% load widget_tweaks %}
+
+<div class="row container">
+    {{ object.user.username }}    
+</div>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
