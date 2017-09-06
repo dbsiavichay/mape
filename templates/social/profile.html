@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+{% load widget_tweaks %}
+
+<!--(Restringido)Caso de uso para invitado: CUI
+    Caso de uso para usuario: CUU
+    Caso de uso para usuario/comercial: CUC  -->
+
+<div class="container">    
+    {% include 'includes/success_message.html' %}
+    <div class="row center">
+        {% if profile.avatar %}
+        <div class="col s12">                                
+            <img src="{{ user.profile.avatar.url }}" class="circle" width="100">
+        </div>
+        {% endif %}
+        <div class="col s12">                                
+            {% if not is_friendship %}
+            <a href="" class="btn cyan waves-light waves-effect truncate">Enviar solicitud de amistad</a>
+            {% else %}
+            <a href="" class="btn red waves-light waves-effect truncate">Eliminar contacto</a>
+            {% endif %}
+        </div>
+        <div class="col s12">
+            {% if profile.is_complete %}
+            <h5>{{ profile.get_full_name }} </h5>
+            <h6>{{ profile.cellphone }} </h6>
+                {% if user.is_commercial %}
+            <h6>{{ profile.charter }} </h6>
+                {% endif %}
+            {% else %}
+            <h5>{{ profile }} </h5>
+            {%endif%}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

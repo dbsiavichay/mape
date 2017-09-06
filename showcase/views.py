@@ -18,7 +18,7 @@ from .models import *
 from .forms import *
 
 from notifications.models import Notification
-from social.models import Profile
+from social.models import Profile, Comment
 
 class EventListView(ListView):
 	model = Event	
@@ -296,10 +296,12 @@ class CommercialUpdateView(UpdateView):
 		locality_form = self.get_locality_form()
 		products = Offer.objects.filter(kind=Offer.PRODUCT, commercial=self.object)
 		services = Offer.objects.filter(kind=Offer.SERVICE, commercial=self.object)
+
 		context.update({
 			'locality_form': locality_form,
 			'products': products,
-			'services': services
+			'services': services,
+			'locality': self.object.locality
 		})
 
 		return context

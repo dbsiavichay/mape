@@ -3,7 +3,7 @@
     {% for profile in profiles %}
     <li class="collection-item avatar">
         {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" alt="{{ profile }}" class="circle">
+        <img src="{{ profile.avatar.url }}" alt="{{ profile.user }}" class="circle">
         {% else %}
         <i class="material-icons circle cyan ">perm_identity</i>
         {% endif %}

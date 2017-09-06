@@ -16,15 +16,15 @@
             <img src="{{ user.profile.avatar.url }}" class="circle" width="100">
         </div>
         {% endif %}
-        <div class="col s12">                                
+        <div class="col s12">   
+            {% if user.get_full_name %}                             
             <h5>{{ user.get_full_name }}</h5>
+            {% else %}
+            <h5>{{ user }}</h5>
+            {% endif %}
         </div>
-        <a href="/profiles/{{ user.username }}/friends/" class="waves-effect waves-light btn cyan">Amigos
-        <span class="badge">{{ user.profile.friends|length }}</span>
-        </a>
     </div>
 
-    
     {% include "includes/errors.html" with form=form %}
     {% include "includes/errors.html" with form=profile_form %}
 

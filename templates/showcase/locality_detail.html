@@ -6,74 +6,22 @@
     <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block nav-left %}
-<li><a class="" href="{% url 'map' %}">
-<div class="horizontal"> <img class="mape-tiny materialboxed " src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></div></a></li>
-{% if not request.session %}
-    <li><a href="{%url 'signup' %}" class="amber darken-1">Resgistrarse</a></li>
-{% endif %}
-{%endblock%}
 
-{% block nav-right %}
-    {% if not request.session %}
-      <div class="row fullscreen">
-      <li><a href="{% url 'login' %}" class="btn blue darken-1">Iniciar Sesi&oacute;n</a></li>
-    {%else%}
-        <li><a class="dropdown-button" data-activates="menu-1"> <i class="material-icons medium">info</i></a></li>
-        <li><span class="new badge cyan darken-1">4</span></li>
-        {%if user.profile.avatar %} 
-            <li><a class="dropdown-button" data-activates="menu-2"><img class="responsive-img circle" src="{{ user.profile.avatar.url }}" width="60"></a>  </li>
-            {%else%}
-                <li><a class="dropdown-button" data-activates="menu-2"> <i class="material-icons medium">person_pin</i></a></li>
-        {%endif%}
-    {% endif %}
-{%endblock%}
-
-
-{% block nav-center %}
-<!-- Boton de Busqueda -->
-  <div class="input-field">
-      <i class="material-icons prefix ">search</i>
-      <input id="search2" type="search" class="validate no-padding">
-      <label for="search2"  data-error="wrong"> buscar<label>
-  </div>
-{%endblock%}
-
-{%if not request.session %}
-    <!-- Contenido del dropdown Notificaciones -->
-    {% block dropDown-content-1 %}
-    <li><div class="collection">
-        <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
-        <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
-        <a href="#!" class="collection-item">Alan</a>
-        <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
-      </div></li>
-    <li class="divider"></li>
-    <li><a href="" class="center"> Ver mas </a></li>
-    {%endblock%}
-
-    <!-- Contenido del dropdown Configuraciones de cuenta -->
-    {% block dropDown-content-2 %}
-    <li><a href="/profiles/{{ user.username }}/" class="center"> <i class="material-icons">settings_applications</i>Configuraciones </a></li>
-    <li><a href="" class="center"> <i class="material-icons">group</i>Contactos </a></li>
-
-        <!-- Links genericos para cuentas comerciales -->
-        {% if user_commertial %}
-        <li><a href="" class="center"> <i class="material-icons">assignment_ind</i>{{ user_commertial.commertial_name }}</a></li>
-        {% endif %}
-    <li class="divider"></li>
-    <li><a href="/logout/" class="center"> <i class="material-icons">power_settings_new</i>Salir</a></li>
-    {% endblock%}
-{%endif%}
 
 {% block content %}
+{% include 'includes/nav.html' %}
 <!-- Parallax -->
 <div class="parallax-container no-padding fullscreen">
-    <div class="parallax "><img src="{% static 'showcase/img/event-header.jpg' %}"></div>
+<h3 class="header sombra grey-text text-lighten-3 center-align">{{ object.name }}</h3>
+{% if  object.front_image %}    
+  <div class="parallax "><img class="opacado" src="{{ object.front_image.url }}" width="100%"></div>
+{% else %}
+  <div class="parallax "><img src="{% static 'showcase/img/event-header.jpg' %}" width="100%"></div>
+{% endif %}
 </div>
 
 <!-- Informacion extra -->
-<div class="right-align fringe tiny-text">
+<div class="right-align fringe tiny-text low-border">
     {% for category in object.categories.all %}
     {{ category.name }} &#8226;
     {% endfor %}
@@ -89,158 +37,175 @@
     {% if object.verified %}
     Verificado
     {% endif %}
-    
+    ingresado: {{ object.date_joined|date }}
 </div>
+<!-- boton de editar -->
+
+<div class="right">
+{% if object.owner == user.profile %}
+<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
+<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
+{%endif%}
+</div>
+
 
 <!-- Seccion central -->
 <div class="section white no-padding row">
-    <div class="">
-        <div class="card">
-            <!-- Cabecera de la localidad -->
-            <div class="card-content row">
-                <div class="col s12 m12 l6 ">
-                    {% if  not object.profile_image %}                    
-                    <div class="col s6 m12 offset-m4 offset-l3 offset-s3">
-                        <img class="responsive-img circle" width="200" src="{% static 'showcase/img/temporal/alcaldia_morona.png' %}">
+    <div class="card">
+    <!-- Cabecera de la localidad -->
+        <div class="card-content row fullscreen">
+            <div class="card col s12 m12 l6 row ">
+            <!-- Imagen de perfil -->
+                {% if  object.profile_image %}                    
+                <div class="col center-align col s6 l4 m4">
+                    <img class="event responsive-img circle" src="{{ object.profile_image.url }}" >
+                </div>
+                {% endif %}
+                <h4 class="grey-text"> #{{ object.name }} </h4>
+                
+                <div class="left-align">
+                    {% if not user.is_anonymous %}
+                      {% if is_subscribed or object.owner == user.profile %}
+                    <button class="btn amber darken-3" type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Suscrito</button>
+                      {% else %}
+                    <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
+                      {% csrf_token %}
+                      <input type="hidden" name="profile" value="{{ user.profile.id }}">
+                      <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
+                      <input type="hidden" name="object_id" value="{{ object.id }}">
+                      <input type="hidden" name="next" value="/locality/{{ object.id }}/">
+                      <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
+                    </form>
+                      {% endif %}
+                    {% endif %}
+                    <!-- Contador de suscriptores -->                        
+                    <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
+                    {% if not object.is_commercial %}
+                    <span class="card-title grey-text">Ingresado por:</span>
+                    <div class="chip">
+                        <img src="{{ object.owner.avatar.url }}" alt="Contact Person">
+                        <a href="">{{ object.owner.user }}</a>
                     </div>
                     {% endif %}
-                    <h3 class="header">{{ object.name }}</h3>
-
-                    <h4 class="grey-text"> #{{ object.name }} </h4>
-                    
-                    <div class="left-align">
-                        {% if not user.is_anonymous %}
-                        {% if is_subscribed %}
-                        <button class="btn amber darken-3" type="submit" class="waves-effect waves-light btn"><i class="material-icons right">grade</i>Suscrito</button>
-                        {% else %}
-                        <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
-                          {% csrf_token %}
-                          <input type="hidden" name="profile" value="{{ user.profile.id }}">
-                          <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
-                          <input type="hidden" name="object_id" value="{{ object.id }}">
-                          <input type="hidden" name="next" value="/locality/{{ object.id }}/">
-                          <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
-                        </form>
-                        {% endif %}
-                        {% endif %}
-                        <!-- Contador de suscriptores -->                        
-                        <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
-                        {% if object.owner == user.profile %}
-                        <a href="{% url 'locality_update' object.id %}" class="btn grey darken-3">Editar</a>
-                        {%endif%}
-                    </div>                    
-                </div>
-                <!-- Imagenes -->
-                {%if object.profile_image or front_image %}
-                <div class="carousel col s12 m12 l6">
-
-                  {%if object.profile_image %}
-                    <a class="carousel-item" href="{{ object.profile_image.url }}">
-                        <img src="{{ object.profile_image.url }}">
-                    </a>
-                  {%endif%}
-                  {% if object.front_image %}
-                    <a class="carousel-item" href="{{ object.front_image.url }}">
-                        <img src="{{ object.front_image.url }}">
-                    </a>
-                  {% endif %}
-                    {% for comment in object.comments %}
-                    {% if comment.image %}
-                    <a class="carousel-item" href="{{ comment.image.url }}">
-                        <img src="{{ comment.image.url }}">
-                    </a>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                {%endif%}
+                </div>                    
             </div>
+            <div class="divider col"></div>
+            <!-- Imagenes -->
+            {%if object.profile_image or front_image %}
+            <div class="black carousel col s12 m12 l6">
 
-            <!-- Tabs de la tarjeta -->
-            <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width">
-                  <li class="tab"><a class="active" href="#description">Descripción</a></li>
-                  <li class="tab {% if object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
-                </ul>
-            </div>
-          <!-- Contenido de los tabs -->
-          <div class="card-content row grey lighten-4">
-            <div id="description row">
-              <!-- Descripcion -->
-              <div class="card-panel col s12">
-                <span class="card-title">{{ object.name }}</span>
-                <p align="justify"><span>{{ object.description }}</span></p>
-              </div>
-              <!-- Productos / Servicios-->            
-              {% if object.is_commercial %}
-              {% for offer in  object.commercial.offer_set.all %}
-              <div class="card col l3 m4 s12 {% if offer.kind == 1 %} product {% else %} service {% endif %} no-padding">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="{% static 'showcase/img/temporal/cerveza-y-probioticos.jpg' %}">
-                  <span class="card-title">{{ offer.name }}</span>
-                  
-                </div>
-                <div class="card-content">
-                  <span class="activator right white-text">{{ offer.price }}</span>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
-                  <p>{{ offer.description }}</p>
-                </div>
-              </div>
-              {% endfor %}
+              {%if object.profile_image %}
+                <a target="_blank" class="carousel-item" href="{{ object.profile_image.url }}">
+                    <img src="{{ object.profile_image.url }}">
+                </a>
+              {%endif%}
+              {% if object.front_image %}
+                <a target="_blank" class="carousel-item" href="{{ object.front_image.url }}">
+                    <img src="{{ object.front_image.url }}">
+                </a>
               {% endif %}
-              
-              <!-- Grupo de colacoracion en la localidad -->
-              <div class="card-panel grey lighten-2 col s12">
-                <span class="card-title grey-text">En colaboración con:</span>
-                <div class="chip">
-                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                    <a href="">Denis Siavichay</a>
-                </div>
-                <div class="chip">
-                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                    <a href="">Pepe Lucho</a>
-                </div>
-                <div class="chip amber lighten-2">
-                    <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                    <a href="">Alcaldia de Morona</a>
-                </div>
-              </div>
-              
-              <!-- Informacion Comercial -->              
-              {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
-              
-              
+                {% for comment in object.comments %}
+                {% if comment.image %}
+                <a target="_blank" class="carousel-item" href="{{ comment.image.url }}">
+                    <img src="{{ comment.image.url }}">
+                </a>
+                {% endif %}
+                {% endfor %}
             </div>
-            <!-- Media 
-            <div id="media" class="row">
-                <div class="col s12 ">
-                    {% for comment in object.comments %}
-                    {% if comment.image %}
-                    <div class="col s2">
-                        <img class="materialboxed" style="width: 100%" src="{{ comment.image.url }}">
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </div> -->
-            <!-- Eventos de la Localidad -->
-            <div id="events" class="row">
-              <div class="section col s12 m12 l6 offset-l3">
-                <!-- Tarjeta de evento -->
-                {% include 'includes/event_card.html'%}
+            {%endif%}
+        </div>
+
+        <!-- Tabs de la tarjeta -->
+        <div class="card-tabs">
+            <ul class="tabs tabs-fixed-width">
+              <li class="tab"><a class="active" href="#description">Descripción</a></li>
+              <li class="tab {% if object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
+            </ul>
+        </div>
+        <!-- Contenido de los tabs -->
+        <div class="card-content row grey lighten-4">
+          <div id="description row">
+            <!-- Descripcion -->
+            <div class="card-panel col s12">
+              <span class="card-title">{{ object.name }}</span>
+              <p align="justify"><span>{{ object.description }}</span></p>
+            </div>
+            <!-- Productos / Servicios-->            
+            {% if object.is_commercial %}
+            <p class="grey-text"> Ofrece:</p>
+              {% for offer in  object.commercial.offer_set.all %}
+            <div class="card col l3 m4 s12 {% if offer.kind == 1 %} product {% else %} service {% endif %} no-padding">
+                {% if offer.image %}
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="{{ offer.image.url }}">
+                  {% elif offer.kind == 2 %}
+              <div class="activator waves-effect waves-block waves-light">
+                  <i class="opacado material-icons mape-medium large">room_service</i>
+                  {% elif offer.kind == 1 %}
+              <div class="activator waves-effect waves-block waves-light">
+                  <i class="opacado material-icons large ">local_mall</i>
+                {% endif %}
+                <span class="activator card-title sombra white-text">{{ offer.name }}</span>
               </div>
-            </div> 
-          </div><!-- Fin tarjeta evento -->
+              <div class="card-content">
+                <span class="activator right white-text link">{{ offer.price }}</span>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
+                <p>{{ offer.description }}</p>
+              </div>
+            </div>
+              {% endfor %}
+            {% endif %}
+            
+            {% if object.commercial %}
+            <!-- Grupo de colacoracion en la localidad -->
+            <div class="card-panel grey lighten-3 col s12">
+              <span class="card-title grey-text">Administrado por:</span>
+              <div class="chip  z-depth-1 {% if object.commercial. %} amber lighten-3 {% endif %}">
+                  {% if object.owner.avatar %}
+                  <img src="{{ object.owner.avatar.url }} " alt="Contact Person">
+                  {% else %}
+                  <i class="material-icons cyan circle">link</i>
+                  {% endif %}
+                  <a href="/profile/{{ object.owner.id }} ">{{ object.owner.get_full_name }} </a>
+              </div>
+            </div>
+            {% endif %}
+            <!-- Informacion Comercial -->              
+            {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
+            
+            
           </div>
-        </div>
-        <!-- Comentarios -->
-        <div class="section col s12 m8 l8 offset-m2 offset-l2">
-            {% include 'includes/comments.html' with comments=object.comments model_name="locality" model_id=object.id %}        
-        </div>
+          <!-- Media 
+          <div id="media" class="row">
+              <div class="col s12 ">
+                  {% for comment in object.comments %}
+                  {% if comment.image %}
+                  <div class="col s2">
+                      <img class="materialboxed" style="width: 100%" src="{{ comment.image.url }}">
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+          </div> -->
+          <!-- Eventos de la Localidad -->
+          {% if eventos %}
+          <div id="events" class="row">
+            <div class="section col s12 m12 l6 offset-l3">
+              <!-- Tarjeta de evento -->
+              {% include 'includes/event_card.html'%}
+            </div>
+          </div> 
+          {% endif %}
+        </div><!-- Fin tarjeta evento -->
     </div>
-    {% include 'includes/footer.html' %}
+    <!-- Comentarios -->
+    <div class="section col s12 m8 l8 offset-m2 offset-l2">
+        {% include 'includes/comments.html' with comments=object.comments model_name="locality" model_id=object.id %}        
+    </div>
 </div>
+        {% include 'includes/footer.html' %}
 {% endblock %}
 
 {% block js %}

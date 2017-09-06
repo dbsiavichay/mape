@@ -50,3 +50,9 @@
 .highter{
 	height: 250px;
 }
+
+/* Bordes suavizados */
+.low-border {
+  border-radius: 12px;
+  }
+

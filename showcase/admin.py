@@ -11,5 +11,9 @@ class CategoryAdmin(admin.ModelAdmin):
 class LocalityAdmin(admin.ModelAdmin):
     model = Locality
 
+class EventAdmin(admin.ModelAdmin):
+	model = Event
+
 admin.site.register(Locality, LocalityAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Event, EventAdmin)

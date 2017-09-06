@@ -23,15 +23,17 @@
     </div>
 </div>
 
-{% if is_organizer %}
-<!-- Opciones para organizador -->
+
+<!-- Opciones del evento -->
 <div class="right">
-    <a class="waves-effect waves-cyan btn-flat" href="/event/{{ event.id }}/update/" >Editar</a>
+<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
+{% if is_organizer %}
+<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
+{%endif%}
 </div>
-{% endif %}
 <!-- Imagenes -->
 {%if object.front_image %}
-<div class="carousel grey col s12 m12 l6">
+<div class="carousel black col s12 m12 l6">
     <a class="carousel-item" href="{{ object.front_image.url }}">
         <img src="{{ object.front_image.url }}">
     </a>
@@ -47,7 +49,7 @@
 <div class="row">
     <div class="col s12">
       <div class="center">
-      <div class="right-align fringe tiny-text" >{{ event.get_information }} </div>
+      <div class="right-align fringe tiny-text low-border" >{{ event.get_information }} </div>
         <!-- Opciones de evento -->
         <div class="center row">
             {% if False %}
@@ -86,13 +88,13 @@
             </div>
           </div>
           <div class="col s12">
-              <p><i class="small material-icons tiny">query_builder</i>
+              <p><i class="tiny material-icons ">query_builder</i>
               {{ event.start }}</p>
-              <p><i class="small material-icons tiny">{% if event.cover == 0 %}money_off {% else%} attach_money {% endif %}</i>{% if event.cover == 0 %}Gratis {% else%} Precio: {{ event.cover }} {% endif %}
+              <p><i class="tiny material-icons ">{% if event.cover == 0 %}money_off {% else%} attach_money {% endif %}</i>{% if event.cover == 0 %}Gratis {% else%} Precio: {{ event.cover }} {% endif %}
               {% if not object.is_public %} <i class="material-icons tiny">lock</i> Privado {% else %} <i class="material-icons tiny">public</i> Público {% endif %}</p>
           </div>  
           <div class="col s12">
-            {% if not is_organizer %}
+            {% if is_organizer %}
             <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Invitar</a>
             {% else %}
               {% if not object.is_public %}
@@ -121,11 +123,13 @@
             <!-- Host account -->
             <li class="cyan">
               <img class="opacado" src="{% static 'showcase/img/mar.jpg' %}"> 
-              <div class="caption row ">
-                <h5 class="col s6 offset-s4 white-text shadow"> Un evento de:</h5>
-                <div class="col s12 m6 l5 offset-m3 offset-l4"><a href="#">
-                  {% if True %} <img class="circle" src="{% static 'showcase/img/mar.jpg' %}" alt="commertial profile image">{%else%}<i class="circle white large material-icons">store</i>{%endif%}</a></div>
-                <h5 class="col offset-s3">Comercial de organizador</h5>
+              <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
+              <div class="caption center-align row ">
+                <h5 class="col s6 offset-s2 white-text sombra"> Un evento de:</h5>
+                <!-- Imagen circular si tiene imagen de perfil -->
+                <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#">
+                  {% if True %} <img class="circle z-depth-5" src="{% static 'showcase/img/mar.jpg' %}" alt="commertial profile image ">{%else%}<i class="circle z-depth-5 white large material-icons">store</i>{%endif%}</a></div>
+                <h5 class="col offset-s3 light sombra amber-text lighten-3">Comercial de organizador</h5>
               </div>
             </li>
             <!-- Sponsors slides  -->
@@ -135,10 +139,14 @@
             {% else %}
               <img class="opacado" src="{% static '/showcase/img/Fondo-colores.jpg' %}" alt="commertial profile image">
             {% endif %} 
-              <div class="caption row ">
-                <h5 class="col s6 offset-s4 white-text shadow"> Con el auspicio de:</h5>
-                <div class="col s12 m6 l5 offset-m3 offset-l4"><a href="#"> {% if True %} <img class="circle" src="{% static '/showcase/img/mar.jpg' %}"  alt="commertial profile image">{%else%}<i class="circle white large material-icons">store</i>{%endif%}</a> </div>
-                <h5 class="col center-align s10 offset-s1">Mape </h5>
+            <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
+              <div class="caption row right-align">
+                <h5 class="col s8 l8 offset-s2 white-text sombra left-align"> Con el auspicio de:</h5>
+                <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#"> 
+                <!-- Imagen circular si tiene imagen de perfil -->
+                {% if True %} 
+                <img class="circle z-depth-5 " src="{% static '/showcase/img/mar.jpg' %}"  alt="commertial profile image">{%else%}<i class="circle white large material-icons">store</i>{%endif%}</a> </div>
+                <h5 class="col center-align s10 offset-s1 amber-text lighten-3 light sombra">Nombre comercial </h5>
               </div>
             </li>
           </ul>

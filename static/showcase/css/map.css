@@ -140,25 +140,25 @@ color: #80deea;}
 }
 /* label color */
    .input-field label {
-     color: #0097a7;
+     color: #0097a7 !important;
    }
    /* label focus color */
    .input-field input[type=text]:focus + label {
-     color: #ff1744 ;
+     color: #0097a7 !important;
    }
    /* valid color */
    .input-field input[type=text].valid {
-     border-bottom: 1px solid #00bcd4 ;
-     box-shadow: 0 1px 0 0 #00bcd4 ;
+     border-bottom: 1px solid #00bcd4 !important;
+     box-shadow: 0 1px 0 0 #00bcd4 !important;
    }
    /* invalid color */
    .input-field input[type=text].invalid {
-     border-bottom: 1px solid #ff1744 ;
-     box-shadow: 0 1px 0 0 #ff1744 ;
+     border-bottom: 1px solid #ff1744 !important;
+     box-shadow: 0 1px 0 0 #ff1744 !important;
    }
    /* icon prefix focus color */
    .input-field .prefix.active {
-     color: #b2ebf2 ;
+     color: #b2ebf2 !important;
    }
    
    /* Parallax height */

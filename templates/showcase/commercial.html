@@ -24,6 +24,7 @@
             </ul>
         </div>
         <div id="commercial" class="col s12">
+        
             <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
 
@@ -36,27 +37,39 @@
                     <label for="{{ locality_form.description.id_for_label }}">{{ locality_form.description.label }}</label>
                 </div>
 
-                <div class="file-field input-field col s12">
-                    <div class="btn cyan waves-effect waves-light">
+                <div class="file-field input-field col s12 row">
+                    {% if locality.front_image %}
+                    <div class="card col s12 l4 ">
+                        <img src="{{ locality.front_image.url }} " class="responsive-img">    
+                    </div>
+                    
+                    {% endif %}
+                    <div class="btn col s6 cyan waves-effect waves-light">
                         <span>Portada</span>
                         {{ locality_form.front_image }}
                     </div>
-                    <div class="file-path-wrapper">
+                    <div class="file-path-wrapper col s6">
                         <input class="file-path validate" type="text">
                     </div>
                 </div>
 
-                <div class="file-field input-field col s12">
-                    <div class="btn cyan waves-effect waves-light">
+                <div class="file-field input-field col s12 row">
+                    {% if locality.profile_image %}
+                    <div class="col s12 l4 center-align ">
+                        <img src="{{ locality.profile_image.url }} " class="circle responsive-img">
+                    </div>
+                    {% endif %}
+                    <div class="btn col s6 cyan waves-effect waves-light">
                         <span>Perfil</span>
                         {{ locality_form.profile_image }}
                     </div>
-                    <div class="file-path-wrapper">
+                    <div class="file-path-wrapper col s6 ">
                         <input class="file-path validate" type="text" >
                     </div>
                 </div>
 
-                <div class="input-field col s12">
+                <div class="input-field col s12 center-align">
+                    <p class="grey-text text-ligten-1"> Categorias: </p>
                     {{ locality_form.categories|add_class:"select2" }}
                 </div>   
 
@@ -72,7 +85,7 @@
                 </div>
                 {% endfor %}
 
-                <div class="col s12">
+                <div class="col s12 center-align">
                     <button class="btn waves-effect waves-light amber darken-2" type="submit">
                         Guardar <i class="material-icons right">save</i>
                     </button>
@@ -100,9 +113,12 @@
                         <td>{{ offer.name }}</td>
                         <td>{{ offer.description }}</td>            
                         <td>{{ offer.price }}</td>            
-                        <td>{{ offer.image }}</td>            
                         <td>
-                            <a class="btn" href="{% url 'offer_update' offer.id %}">
+                        {% if offer.image %}
+                        <img src="{{ offer.image.url }}" class="responsive-img"></td>            
+                        {% endif %}
+                        <td>
+                            <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
                                 <i class="material-icons">edit</i>
                             </a>
                         </td>
@@ -136,10 +152,19 @@
                         <td>{{ offer.name }}</td>
                         <td>{{ offer.description }}</td>            
                         <td>{{ offer.price }}</td>            
-                        <td>{{ offer.image }}</td>            
                         <td>
-                            <a class="btn" href="{% url 'offer_update' offer.id %}">
+                        {% if offer.image %}
+                        <img src="{{ offer.image.url }}" class="responsive-img"></td>            
+                        {% endif %}
+                        <!-- Opciones -->
+                        <td>
+                            <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
                                 <i class="material-icons">edit</i>
+                            </a>
+                        </td>            
+                        <td>
+                            <a class="btn red waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
+                                <i class="material-icons">delete</i>
                             </a>
                         </td>
                     </tr>
