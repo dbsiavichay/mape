@@ -13,7 +13,7 @@
   
 <!-- Imagen de portada -->
 <div class="front-image">        
-    {% if not object.front_image %}      
+    {% if object.front_image %}      
     <img src="{{ object.front_image.url }}" alt="{{ comment.profile }} comment">
     {% else %}
     <img src="{% static '/showcase/img/Fondo-colores.jpg' %}" alt="{{ comment.profile }} comment">
@@ -27,8 +27,8 @@
 <!-- Opciones del evento -->
 <div class="right">
 <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
-{% if is_organizer %}
-<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
+{% if is_owner %}
+<a href="{% url 'event_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
 {%endif%}
 </div>
 <!-- Imagenes -->
@@ -71,21 +71,24 @@
             {% if object.locality %}
             <p>Lugar: </p>
             <div class="chip truncate {% if object.locality.commercial %} amber {% endif %} lighten-2">
+                {% if object.locality.profile_image %}
                 <img src="{{ object.locality.profile_image.url }}" alt="{{ object.locality }}">
+                {% else %}
+                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                {% endif %}                
                 <a class="collection-item" href="/locality/{{ object.locality.id }}">{{ object.locality }} </a>
             </div>
             {% endif %}
-            <p>Organizado por</p>
-            {% for organizer in event.get_organizers %}
+            <p>Organizado por</p>            
             <div class="chip truncate"> 
-              {% if organizer.profile.avatar %}
-              <img src="{{ organizer.profile.avatar.url }}" alt="Contact Person">
+              {% if object.owner.avatar %}
+              <img src="{{ object.owner.avatar.url }}" alt="Contact Person">
               {% else %}
               <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
               {% endif %}
-              <a href="/profiles/{{ organizer.username }}/">{{ organizer.get_full_name }}</a>
-            {% endfor %}
+              <a href="/profiles/{{ object.owner.user.username }}/">{{ object.owner.get_full_name }}</a>
             </div>
+            
           </div>
           <div class="col s12">
               <p><i class="tiny material-icons ">query_builder</i>
@@ -94,8 +97,11 @@
               {% if not object.is_public %} <i class="material-icons tiny">lock</i> Privado {% else %} <i class="material-icons tiny">public</i> Público {% endif %}</p>
           </div>  
           <div class="col s12">
-            {% if is_organizer %}
+            {% if is_owner %}
             <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Invitar</a>
+              {% if object.is_public %}
+            <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
+              {% endif %}
             {% else %}
               {% if not object.is_public %}
             <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
@@ -154,7 +160,8 @@
     </div>
   </div>
 
-{% include "includes/guests_modal.html" %}
+{% include "showcase/components/event_guests_modal.html" %}
+{% include "showcase/components/event_sponsors_modal.html" %}
 {% include "includes/footer.html" %}
 
 {% endblock %}

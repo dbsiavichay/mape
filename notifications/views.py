@@ -7,6 +7,11 @@ from .models import *
 class NotificationListView(ListView):
 	model = Notification
 
+	def get_queryset(self):
+		queryset = super(NotificationListView, self).get_queryset()
+		queryset = queryset.filter(to_profile=self.request.user.profile)		
+		return queryset
+
 
 ####FUNCTION VIEWS#####
 def read_notification(request, pk):

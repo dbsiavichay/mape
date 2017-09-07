@@ -80,7 +80,7 @@
                     <div class="switch">
                         <label>
                             Privada
-                            {% if is_commercial %}
+                            {% if user.profile.commercial %}
                             {{ form.is_public }}
                             {% else %}
                             {{ form.is_public|attr:"disabled" }}
@@ -89,7 +89,7 @@
                             Pública
                         </label>
                     </div>
-                    {% if not is_commercial %} <p class="amber tiny-text col s9 m5 l5 low-border">Activa tu cuenta comercial para habilitar esta opción </p> {% endif %}
+                    {% if not user.profile.commercial %} <p class="amber tiny-text col s9 m5 l5 low-border">Activa tu cuenta comercial para habilitar esta opción </p> {% endif %}
                 </div>
             </div>
 

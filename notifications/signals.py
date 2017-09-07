@@ -13,17 +13,17 @@ def notification_log(sender, instance, created, raw, update_fields, **kwargs):
     user = get_user()
     if created:
         instance.save_notification()
-    elif not raw:
-        instance.save_notifaction()
+    # elif not raw:
+    #     instance.save_notifaction()
 
-# @receiver(post_delete)
-# def audit_delete_log(sender, instance, **kwargs):
-#     #Lista de los modelos que se requienran que escuche  
-#     list_of_models = ['Friendship',]
-#     if sender.__name__ not in list_of_models:
-#         return
-#     user = get_user() 
-#     instance.save_deletion(user)
+@receiver(post_delete)
+def notification_delete_log(sender, instance, **kwargs):
+    #Lista de los modelos que se requienran que escuche  
+    list_of_models = ['Friendship',]
+    if sender.__name__ not in list_of_models:
+        return
+    user = get_user() 
+    instance.delete_notification()
 
 def get_user():
     thread_local = RequestMiddleware.thread_local

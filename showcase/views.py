@@ -82,15 +82,13 @@ class EventCreateView(CreateView):
 		Guest.objects.create(
 			profile = self.request.user.profile,
 			event = self.object,
-			is_creator = True,
-			is_organizer = True,
+			is_owner = True,			
 			status = Guest.ATTEND
 		)
 
 
-		self.success_url = '/event/%s/' % (self.object.id)		
-		
-		return super(EventCreateView, self).form_valid(form)
+		self.success_url = '/event/%s/' % (self.object.id)				
+		return redirect(self.success_url)
 
 	def get_form_kwargs(self):	    
 		kwargs = super(EventCreateView, self).get_form_kwargs()
@@ -157,11 +155,15 @@ class EventDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(EventDetailView, self).get_context_data(**kwargs)
-		organizers = self.object.guests.filter(guest__profile=self.request.user.profile, guest__is_organizer=True)
+		owners = self.object.guests.filter(guest__profile=self.request.user.profile, guest__is_owner=True)
+
+		#commercials = Commercial.objects.exclude(locality__owner=self.request.user.profile)
+		commercials = Commercial.objects.all()
 
 		context.update({
-			'guests': context['event'].guests.filter(guest__is_creator=False),
-			'is_organizer': True if len(organizers) > 0 else False
+			'guests': context['event'].guests.filter(guest__is_owner=False),
+			'is_owner': True if len(owners) > 0 else False,
+			'commercials':commercials
 		})
 
 		return context

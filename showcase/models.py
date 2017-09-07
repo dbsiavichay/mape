@@ -111,8 +111,8 @@ class Event(models.Model):
 	def is_free(self):
 		return False if self.cover > 0 else True
 
-	def get_organizers(self):
-		return self.guests.filter(guest__is_organizer=True)
+	def owner(self):
+		return self.guests.get(guest__is_owner=True)
 
 	def get_information(self):
 		invited = self.guests.all()
@@ -134,7 +134,7 @@ class Guest(models.Model):
 	LIKE = 3
 	MAYBE_ATTEND = 4
 	NOT_ATTEND = 5
-
+	SPONSOR_REQUEST = 6
 
 	STATE_CHOICES = (
 		(INVITED, 'Invitado'),
@@ -149,8 +149,8 @@ class Guest(models.Model):
 	
 	profile = models.ForeignKey('social.Profile', on_delete=models.CASCADE)
 	event = models.ForeignKey(Event, on_delete=models.CASCADE)
-	is_creator = models.BooleanField(default=False)
-	is_organizer = models.BooleanField(default=False)
+	is_owner = models.BooleanField(default=False)
+	is_sponsor = models.BooleanField(default=False)
 	status = models.PositiveSmallIntegerField(default = INVITED, choices = STATE_CHOICES) 
 	date = models.DateTimeField(auto_now_add=True)	
 
