@@ -227,3 +227,10 @@ text-shadow: -3px -3px 3px #fff , 3px -3px 3px #fff , -3px 3px 3px #fff , 3px 3p
   height: 13px;
   background-color: grey; 
 }
+strong { 
+    font-weight: bold;
+    font-size: 14;
+}
+.capitalize {
+  text-transform: capitalize;
+}

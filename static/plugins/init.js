@@ -22,7 +22,8 @@ $(function () {
 	if (datepickers.length) {
 		datepickers.pickadate({
 		    selectMonths: true, // Creates a dropdown to control month
-		    selectYears: 15, // Creates a dropdown of 15 years to control year
+		    selectYears: 65, // Creates a dropdown of 15 years to control year
+		    max: new Date(),
 		    format:'dd/mm/yyyy',
 		    today: 'Hoy',
 		    clear: 'Limpiar',

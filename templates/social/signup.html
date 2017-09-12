@@ -23,7 +23,7 @@
     <div class="cyan section row no-margin no-padding lighten-2">
         <!-- Slides -->
         <div class="slider cyan lighten-2 col l6 s12 no-padding">
-            <ul class="slides">
+            <ul class="slides z-depth-2 ">
               <li>
                 <img class="opacado" src="{% static 'showcase/img/mar.jpg' %}"> 
                 <div class="caption center-align">
@@ -35,7 +35,7 @@
                 <img class="opacado" src="{% static 'showcase/img/atardecell.jpg' %}"> 
                 <div class="caption left-align">
                   <h3 class="white-text ">Conoces un lugar especial?</h3>
-                  <h5 class="light grey-text text-lighten-3"> Puedes ubicar lugares y eventos en el mape :).</h5>
+                  <h5 class="light grey-text text-lighten-3"> Puedes ubicar lugares y eventos en mape :).</h5>
                 </div>
               </li>
               <li>
@@ -57,8 +57,8 @@
        
         <!-- Formulario de registro inicial -->
          <div class="col l6 s12 center-align row no-margin">
-            <p class="white-text">Estoy regristrado, <a class="btn" href="/">iniciar sesi&oacute;n</a>. | Registrate gratis o ingresa como <a href="">invitado</a>. </p>
-            <div class="col s12 m8 l8 offset-m2 offset-l2 white low-border">
+            <p class="white-text">Estoy regristrado, <a class="btn white cyan-text" href="/">iniciar sesi&oacute;n</a>. | Registrate gratis o ingresa como <a href="/map/">invitado</a>. </p>
+            <div class="col s12 m8 l8 offset-m2 offset-l2 white low-border z-depth-2">
                 {% load widget_tweaks %}        
                 <form action="" method="POST" class="center-align" novalidate>
                     {% csrf_token %}

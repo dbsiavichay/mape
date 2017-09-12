@@ -270,10 +270,12 @@ class LocalityDetailView(DetailView):
 				)
 			except Subscriber.DoesNotExist:
 				subscriber = None		
-
+		locality = "La concretera"
+		hash_name = locality.replace(" ", "_")
 		context.update({
 			'contenttype': contenttype,
-			'is_subscribed': True if subscriber is not None else False
+			'is_subscribed': True if subscriber is not None else False,
+			'hash_name' : hash_name
 		})
 
 		return context

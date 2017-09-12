@@ -11,20 +11,29 @@ $(function () {
 
 		$.get('/events/', function(data) {			
 			for (index in data)  {				
+				var eventIcon = L.icon({
+					
+				    //iconUrl: '/showcase/img/gif_mape_live.gif',
+					//iconSize: [53, 75],
+					//iconAnchor: [25, 25],
+					//popupAnchor: [-3, -76],
+					//shadowUrl: '/showcase/img/logo_mape_glass.png',
+					//shadowRetinaUrl: 'showcase/img/logo_mape_glass-01.png',
+					//shadowSize: [53, 75],
+					//shadowAnchor: [53, 75]
+				});
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
 				    	'marker-symbol': 'star',
-		                'marker-color': '#fa0'
+		                'marker-color': '#00bcd4'
 				    })
-				})		
-				.addTo(map);
+				}).addTo(map);
 
-				var content = '<h3 class="cyan-text text-darken-4">' + data[index].name+ '</h3>' +
-					'<strong>Descripcion: </strong>' + data[index].description +					
-					'<a href="/event/'+data[index].id+'/" class="white-text waves-effect waves-light btn">'+
-					'<i class="material-icons right">search</i>Ver'+
-					'</a>';
+				var content = '<h3 class="cyan-text ">' + data[index].name+ '</h3>' +
+					'<p>' + data[index].description +					
+					'</p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan flat-btn">'+
+					'<strong> Ver </strong></a>';
 
 				marker.bindPopup(content);
             }
@@ -37,17 +46,16 @@ $(function () {
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
-				    	'marker-symbol': 'bar',
+				    	'marker-symbol': 'marker',
 		                'marker-color': '#fa0'
 				    })
 				})		
 				.addTo(map);
 
-				var content = '<h3 class="cyan-text text-darken-4">' + data[index].name+ '</h3>' +
-					'<strong>Descripcion: </strong>' + data[index].description +					
-					'<a href="/locality/'+data[index].id+'/" class="white-text waves-effect waves-light btn">'+
-					'<i class="material-icons right">search</i>Ver'+
-					'</a>';
+				var content = '<h3 class="cyan-text">' + data[index].name+ '</h3>' +
+					'<p>' + data[index].description +					
+					' </p> <a href="/locality/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan flat-btn">'+
+					'<strong> Ver </strong></a>';
 
 				marker.bindPopup(content);
             }

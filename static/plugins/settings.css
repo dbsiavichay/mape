@@ -95,10 +95,15 @@ a.modal-action {
 /* Header para eventos */
 .header {
   padding-top: 45px;
+  font-variant: small-caps;
 }
 
-.circle .event{
+.circle.event{
   width: 100px;
   height: 100px !important;
   overflow: hidden;
+}
+
+.ui-datepicker .ui-widget-content {
+    background: #00bcd4 none;
 }

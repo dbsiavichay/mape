@@ -5,18 +5,27 @@
     {% for comment in comments %}
     <li class="collection-item left-align">
         
-        <div class="card-panel comentario-izq">
+        <div class="card-panel ">
+        <!-- Comprobar si el usuario es dueño del comentario o el administrador del objeto (evento o localidad) -->
+        {% if comment.profile.user == user %}
+        <a href="#1" class="dropdown-button right" data-activates="comment-options" ><i class="material-icons">more_vert</i></a>
+        <ul id="comment-options" class="dropdown-content">
+            <li><a href="!1" class="flat-btn red-text"><i class="material-icons">delete</i> Eliminar</a></li>
+        </ul>
+        {% endif %}
+        <!-- Perfil del usuario -->
             <div class="chip">                        
             {% if comment.profile.avatar %}
                 <img src="{{ comment.profile.avatar.url }}" alt="Contact Person">
             {% else %}
-                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
+                <i class="circle material-icons">person</i>
             {% endif %}
                 <a href="/profiles/{{ comment.profile.user }}/">{{ comment.profile.user }}</a>
             </div>
             : {{ comment.text }}
+            <!-- Imagen del comentario -->
             {% if comment.image %}
-            <img class="materialboxed" data-caption="{{ comment.text }}" src="{{ comment.image.url }}" width="100%">
+            <img class="materialboxed mape-large" data-caption="{{ comment.text }}" src="{{ comment.image.url }}" width="100%">
             {% endif %}
         </div>                
         <p class="no-margin tiny-text">Hace <strong>{{ comment.date_joined|timesince }}</strong></p>

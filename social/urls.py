@@ -21,6 +21,12 @@ urlpatterns = [
     url(r'^friends/(?P<target>\d+)/delete/$', login_required(delete_friend), name='delete_friend'),
     
     url(r'^profiles/(?P<username>[\w.@+-]+)/commercial-account/$', login_required(CommercialAccountView.as_view()), name='commercial_account'),
+    
+    url(r'^conditions/$', ConditionsView , name='conditions'),
+
+    url(r'^principles/$', PrinciplesView , name='principles'),
+    url(r'^politics/$', PoliticsView , name='politics'),
+
     #url(r'^user/profile/$', login_required(UserProfileView.as_view()), name='user_profile'),
     #url(r'^user/change-avatar/$', change_user_avatar),
 ]

@@ -23,14 +23,9 @@
     </div>
 </div>
 
+<div class="right-align fringe tiny-text low-border" >{{ event.get_information }} </div>
 
-<!-- Opciones del evento -->
-<div class="right">
-<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
-{% if is_owner %}
-<a href="{% url 'event_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
-{%endif%}
-</div>
+
 <!-- Imagenes -->
 {%if object.front_image %}
 <div class="carousel black col s12 m12 l6">
@@ -44,12 +39,28 @@
     </a>
       {% endif %}
     {% endfor %}
+    {% if object.locality.front_image %}
+      <a class="carousel-item" href="{{ object.locality.front_image.url }}">
+        <img src="{{ object.locality.front_image.url }}" alt="{{ object.locality }}">
+    </a>
+    {% endif %}
+    {% if object.locality.profile_image %}
+      <a class="carousel-item" href="{{ object.locality.profile_image.url }}">
+        <img src="{{ object.locality.profile_image.url }}" alt="{{ object.locality }}">
+    </a>
+    {% endif %}
 </div>
 {%endif%}
 <div class="row">
+  <!-- Opciones del evento -->
+  <div class="right">
+    <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
+  {% if is_owner %}
+    <a href="{% url 'event_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
+  {%endif%}
+  </div>
     <div class="col s12">
       <div class="center">
-      <div class="right-align fringe tiny-text low-border" >{{ event.get_information }} </div>
         <!-- Opciones de evento -->
         <div class="center row">
             {% if False %}
@@ -98,9 +109,9 @@
           </div>  
           <div class="col s12">
             {% if is_owner %}
-            <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Invitar</a>
+            <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
               {% if object.is_public %}
-            <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
+            <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
               {% endif %}
             {% else %}
               {% if not object.is_public %}
@@ -120,7 +131,7 @@
     
 </div>
 
-
+{% if object.is_public %}
 <div class="section grey lighten-4">
     <div class="row container">
       <!-- Slides -->
@@ -159,6 +170,7 @@
       </div>
     </div>
   </div>
+{% endif %}
 
 {% include "showcase/components/event_guests_modal.html" %}
 {% include "showcase/components/event_sponsors_modal.html" %}

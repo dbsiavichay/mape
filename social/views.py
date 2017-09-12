@@ -207,3 +207,12 @@ class CommercialAccountView(UpdateView):
 
 	def get_object(self, queryset=None):
 		return self.request.user.profile
+
+def ConditionsView(request):
+	return render(request, 'showcase/components/conditions.html')
+
+def PrinciplesView(request):
+	return render(request, 'showcase/components/principles.html')
+	
+def PoliticsView(request):
+	return render(request, 'showcase/components/politics.html')

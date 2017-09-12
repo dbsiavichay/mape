@@ -27,11 +27,9 @@
         
         <!-- Errors -->
         {% if form.errors %}
-        <div class="row">
-            <div class="col s6">
-                <div class="card-panel red white-text">
+        <div class="col s12 m4 offset-m4 ">
+            <div class="card-panel red white-text no-padding">
                     Usuario o contraseña incorrectos.
-                </div>
             </div>
         </div>
         {% endif %}
@@ -50,14 +48,14 @@
                 <label class="white-text darken-3" for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
             </div>
                             
-            <button type="submit" class="waves-effect waves-light amber darken-3 btn">
+            <button type="submit" class="waves-effect waves-light amber darken-3 btn marginado">
                 <i class="material-icons right">send</i>
                 Enviar
             </button>
         </form>   
         <!-- Botones extras-->
         <a href="#modal-forgotpass" class="col s12 modal-trigger cyan-text text-darken-4"> Olvidé mi contraseña</a>
-        <a href="{% url 'signup' %}" class="col s4 offset-s4 l2 offset-l5 amber darken-1 btn"> Registrarse </a>
+        <a href="{% url 'signup' %}" class="col s4 offset-s4 l2 offset-l5 amber darken-1 btn capitalize"> Registrarse </a>
         <a href="" class="col s12 modal-trigger cyan-text text-darken-4"> Ingresar como invitado </a>
     </div>     
     </div>

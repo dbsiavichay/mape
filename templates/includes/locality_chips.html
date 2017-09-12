@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% for locality in localities %}
+<div class="chip z-depth-1 {% if locality.commercial %} amber lighten-2 {% endif %} ">
+  {% if locality.profile_image %}
+    <img src="{{ locality.profile_image.url }}" alt="{{ object.locality }}">
+  {% else %}
+  <i class="material-icons cyan circle">person</i>
+  {% endif %}
+  <a class="collection-item" href="/locality/{{ locality.id }}">{{ locality }} </a>
+</div>
+{% endfor %}
