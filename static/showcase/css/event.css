@@ -31,10 +31,6 @@
 	min-height: 65px!important;
 }
 
-.select-friend:hover {
-	cursor:pointer; 
-}
-
 .timeuntil{
     border-radius: 12px;
     border-style: groove;
@@ -53,6 +49,10 @@
 
 /* Bordes suavizados */
 .low-border {
-  border-radius: 12px;
-  }
+	border-radius: 12px;
+}
+
+.collection.available .collection-item:hover {
+	cursor:pointer; 
+}
 

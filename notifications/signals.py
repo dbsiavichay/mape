@@ -6,7 +6,7 @@ from django.dispatch import receiver
 @receiver(post_save)
 def notification_log(sender, instance, created, raw, update_fields, **kwargs):
     #Lista de los modelos que se requienran que escuche
-    list_of_models = ['Friendship',]
+    list_of_models = ['Friendship', 'Guest']
     model_name = sender.__name__
     if model_name not in list_of_models:
         return
@@ -19,7 +19,7 @@ def notification_log(sender, instance, created, raw, update_fields, **kwargs):
 @receiver(post_delete)
 def notification_delete_log(sender, instance, **kwargs):
     #Lista de los modelos que se requienran que escuche  
-    list_of_models = ['Friendship',]
+    list_of_models = ['Friendship', 'Guest']
     if sender.__name__ not in list_of_models:
         return
     user = get_user() 
