@@ -30,6 +30,9 @@ urlpatterns = [
 
 
     url(r'^subscriber/add/$', login_required(add_subscriber), name='subscriber_create'),
-    url(r'^send-invitation/(?P<event>\d+)/$', login_required(send_invitation), name='send_invitation'),
+
+    url(r'^event/(?P<event>\d+)/invitation/$', login_required(event_invitation), name='event_invitation'),
+    url(r'^event/(?P<event>\d+)/sponsor-request/$', login_required(event_sponsor), name='sponsor_invitation'),
+    url(r'^event/(?P<event>\d+)/sponsor-request/accept/$', login_required(event_sponsor_accept), name='sponsor_accept'),
     #url(r'^user/change-avatar/$', change_user_avatar),
 ]

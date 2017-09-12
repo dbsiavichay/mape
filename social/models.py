@@ -193,7 +193,8 @@ class Comment(models.Model):
 class Subscriber(models.Model):
 	object_id = models.IntegerField()
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)	
+	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+	date = models.DateTimeField(auto_now_add=True)	
 
 
 

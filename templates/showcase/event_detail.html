@@ -75,6 +75,10 @@
             {% elif True %}
             <div class="col l4 m5 s10 offset-s1 offset-l1 offset-m1 valign-wrapper highter">
             <h4 class="timeuntil">En {{ event.start|timeuntil }}</h4>
+            {% if is_sponsor_request %}
+            <a href="{% url 'sponsor_accept' event.id %}" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Auspiciar</a>
+            {% endif %}
+
             {% endif %}
           </div>  
           <div class="card col l6 m6 s12">
@@ -131,47 +135,7 @@
     
 </div>
 
-{% if object.is_public %}
-<div class="section grey lighten-4">
-    <div class="row container">
-      <!-- Slides -->
-      <div class="section slider col m10 l10 offset-l1 offset-m1 s12 ">
-          <ul class="slides">
-            <!-- Host account -->
-            <li class="cyan">
-              <img class="opacado" src="{% static 'showcase/img/mar.jpg' %}"> 
-              <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
-              <div class="caption center-align row ">
-                <h5 class="col s6 offset-s2 white-text sombra"> Un evento de:</h5>
-                <!-- Imagen circular si tiene imagen de perfil -->
-                <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#">
-                  {% if True %} <img class="circle z-depth-5" src="{% static 'showcase/img/mar.jpg' %}" alt="commertial profile image ">{%else%}<i class="circle z-depth-5 white large material-icons">store</i>{%endif%}</a></div>
-                <h5 class="col offset-s3 light sombra amber-text lighten-3">Comercial de organizador</h5>
-              </div>
-            </li>
-            <!-- Sponsors slides  -->
-            <li class="cyan">
-            {% if true %}
-              <img class="opacado" src="{% static '/showcase/img/Fondo-colores.png' %}" alt="commertial profile image">
-            {% else %}
-              <img class="opacado" src="{% static '/showcase/img/Fondo-colores.jpg' %}" alt="commertial profile image">
-            {% endif %} 
-            <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
-              <div class="caption row right-align">
-                <h5 class="col s8 l8 offset-s2 white-text sombra left-align"> Con el auspicio de:</h5>
-                <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#"> 
-                <!-- Imagen circular si tiene imagen de perfil -->
-                {% if True %} 
-                <img class="circle z-depth-5 " src="{% static '/showcase/img/mar.jpg' %}"  alt="commertial profile image">{%else%}<i class="circle white large material-icons">store</i>{%endif%}</a> </div>
-                <h5 class="col center-align s10 offset-s1 amber-text lighten-3 light sombra">Nombre comercial </h5>
-              </div>
-            </li>
-          </ul>
-      </div>
-    </div>
-  </div>
-{% endif %}
-
+{% include "showcase/components/sponsors.html" with sponsors=sponsors %}
 {% include "showcase/components/event_guests_modal.html" %}
 {% include "showcase/components/event_sponsors_modal.html" %}
 {% include "includes/footer.html" %}

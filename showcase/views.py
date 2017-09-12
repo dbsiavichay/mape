@@ -156,13 +156,15 @@ class EventDetailView(DetailView):
 	def get_context_data(self, **kwargs):
 		context = super(EventDetailView, self).get_context_data(**kwargs)
 		owners = self.object.guests.filter(guest__profile=self.request.user.profile, guest__is_owner=True)
-
-		#commercials = Commercial.objects.exclude(locality__owner=self.request.user.profile)
-		commercials = Commercial.objects.all()
+		sponsors = self.object.guests.filter(guest__is_sponsor=True)
+		sponsors_request = self.object.guests.filter(guest__profile=self.request.user.profile, guest__status=Guest.SPONSOR_REQUEST)
+		commercials = Commercial.objects.exclude(locality__owner=self.request.user.profile)		
 
 		context.update({
 			'guests': context['event'].guests.filter(guest__is_owner=False),
 			'is_owner': True if len(owners) > 0 else False,
+			'sponsors': sponsors,
+			'is_sponsor_request': True if len(sponsors_request) > 0 else False,
 			'commercials':commercials
 		})
 
@@ -418,19 +420,14 @@ def add_subscriber(request):
 		else:
 			print form.errors
 
-def send_invitation(request, event):
+def event_invitation(request, event):
 	if request.is_ajax() and request.method == 'POST':				
 		friends = request.POST.getlist('friends[]')
 
 		for profile_id in friends:
 
 			profile = Profile.objects.get(pk=profile_id)
-			Notification.objects.create(
-				from_profile = request.user.profile,
-				to_profile = profile,				
-				type = 3
-			)
-
+			
 			Guest.objects.create(
 				profile=profile,
 				event_id = event
@@ -439,6 +436,42 @@ def send_invitation(request, event):
 		return JsonResponse({})
 	else:
 		pass
+
+def event_sponsor(request, event):
+	if request.is_ajax() and request.method == 'POST':				
+		commercials = request.POST.getlist('commercials[]')
+		
+		for id in commercials:
+			commercial = Commercial.objects.get(pk=id)
+
+			Guest.objects.create(
+				profile=commercial.locality.owner,
+				event_id = event,
+				status = Guest.SPONSOR_REQUEST
+			)
+
+		return JsonResponse({})
+	else:
+		pass
+
+def event_sponsor_accept(request, event):
+	event = Event.objects.get(pk=event)
+	profile = request.user.profile
+
+	invitation = Guest.objects.get(profile = profile, status = Guest.SPONSOR_REQUEST)
+	invitation.status = Guest.ATTEND
+	invitation.is_sponsor = True
+	invitation.save()
+
+	subscribers = profile.commercial().locality.subscribers()
+
+	for subscriber in subscribers:
+		Guest.objects.create(
+			profile=subscriber.profile,
+			event = event
+		)
+
+	return redirect('event_detail', pk=event.id)
 
 ###Utilities
 
