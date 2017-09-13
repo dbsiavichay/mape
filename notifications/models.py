@@ -4,9 +4,9 @@ from __future__ import unicode_literals
 from django.db import models
 from social.models import Profile
 
-class Notification(models.Model):
-	class Meta:
-		unique_together = ('object_id', 'contenttype')
+class Notification(models.Model):	
+	UNREAD = 1
+	READ = 2
 		
 	TYPE_CHOICES = (
 		(1, 'Like'),
@@ -15,8 +15,8 @@ class Notification(models.Model):
 	)
 
 	STATUS_CHOICES = (
-		(1, 'Sin leer'),
-		(2, 'Leida'),
+		(UNREAD, 'Sin leer'),
+		(READ, 'Leida'),
 	)
 
 	from_profile = models.ForeignKey(Profile)

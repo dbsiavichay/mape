@@ -79,6 +79,10 @@ class Profile(models.Model):
 		except Locality.DoesNotExist:
 			return None
 
+	def get_absolute_url(self):
+		from django.urls import reverse
+		return reverse('profile_detail', args=[str(self.user.username)])
+
 	def save(self, *args, **kwargs):
 		super(Profile, self).save(*args, **kwargs)
 
@@ -174,7 +178,7 @@ class Friendship(NotificationMixin, models.Model):
 	status = models.PositiveSmallIntegerField(default=1, choices=STATE_CHOICES)
 	date_joined = models.DateTimeField(auto_now=True)
 
-	objects = FriendshipManager()
+	objects = FriendshipManager()	
 
 class Comment(models.Model):
 	text = models.TextField(blank=True, null=True)

@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^profiles/(?P<username>[\w.@+-]+)/commercial-account/$', login_required(CommercialAccountView.as_view()), name='commercial_account'),
     
     url(r'^conditions/$', ConditionsView , name='conditions'),
-
     url(r'^principles/$', PrinciplesView , name='principles'),
     url(r'^politics/$', PoliticsView , name='politics'),
 

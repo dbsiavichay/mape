@@ -1,44 +1,64 @@
+# -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 
 class NotificationMixin(object):
-    def save_notification(self):
-    	from .models import Notification    	
+    def get_notification_kwargs(self, launcher, model_class):
+        list_of_models = ['Friendship', 'Guest']
 
-        contenttype = ContentType.objects.get_for_model(self)
-        model_class = contenttype.model_class()
+        if model_class.__name__ not in list_of_models:
+            return None
 
-        if model_class.__name__ == 'Friendship':
-            message = '%s te ha enviado una solicitud de amistad' % self.from_profile.user.username
-            url = '/p/%s/' % self.from_profile.user.username
-            profile1 = self.from_profile
-            profile2 = self.to_profile
+        if model_class.__name__ == 'Friendship':            
+            url = launcher.get_absolute_url()
+
+            if self.status == model_class.FRIENDSHIP_REQUEST:
+                profile2 = self.to_profile
+                message = '%s te ha enviado una solicitud de amistad' % launcher.user.username
+            elif self.status == model_class.FRIENDSHIP_FRIEND:
+                profile2 = self.from_profile
+                message = '%s ha aceptado tu solicitud de amistad' % launcher.user.username                
+            else:
+                return None                
         elif model_class.__name__ == 'Guest':
-            profile1 = self.event.owner()
-            profile2 = self.profile
+            event_owner = self.event.owner()            
+            url = self.event.get_absolute_url()
 
             if self.status == model_class.INVITED:
-                message = '%s te ha invitado a su evento. %s' % (profile1.user.username, self.event.name)                                
+                profile2 = self.profile
+                message = '%s te ha invitado a su evento. %s' % (launcher.user.username, self.event.name)
+            elif self.status == model_class.ATTEND and launcher != event_owner:
+                profile2 = event_owner
+                message = '%s te ha indicado que va a asistir a tu evento. %s' % (launcher.user.username, self.event.name)
+            elif self.status == model_class.LIKE and launcher != event_owner:
+                profile2 = event_owner
+                message = '%s te ha indicado que le gusta tu evento. %s' % (launcher.user.username, self.event.name)
             elif self.status == model_class.SPONSOR_REQUEST:
                 message = '%s te ha invitado a ser auspiciante de su evento. %s' % (profile1.user.username, self.event.name)            
             else:
-                pass
+                return None
 
-            url = self.event.get_absolute_url()
-
-        else:
-            pass
-
-        kwargs = {
-        	'from_profile':profile1,
-        	'to_profile':profile2,
-        	'message': message,
-        	#'type': 1,
-        	'url':url,
-            'status': 1,
-            'object_id': self.id,
-            'contenttype':contenttype
+        return {
+            'from_profile': launcher,
+            'to_profile': profile2,
+            'message': message,
+            'url':url
         }
 
+    def save_notification(self, launcher):
+    	from .models import Notification    	
+
+        contenttype = ContentType.objects.get_for_model(self)
+        model_class = contenttype.model_class()        
+        kwargs = self.get_notification_kwargs(launcher, model_class)
+
+        if kwargs is None:
+            return
+
+        kwargs.update({        	
+            'status': Notification.UNREAD,
+            'object_id': self.id,
+            'contenttype':contenttype
+        })
         notification = Notification.objects.create(**kwargs)
 
         return notification

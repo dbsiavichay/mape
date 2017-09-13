@@ -12,9 +12,9 @@ def notification_log(sender, instance, created, raw, update_fields, **kwargs):
         return
     user = get_user()
     if created:
-        instance.save_notification()
-    # elif not raw:
-    #     instance.save_notifaction()
+        instance.save_notification(user.profile)
+    elif not raw: #Cuando edita un objeto
+        instance.save_notification(user.profile)
 
 @receiver(post_delete)
 def notification_delete_log(sender, instance, **kwargs):
@@ -22,7 +22,7 @@ def notification_delete_log(sender, instance, **kwargs):
     list_of_models = ['Friendship', 'Guest']
     if sender.__name__ not in list_of_models:
         return
-    user = get_user() 
+    #user = get_user() 
     instance.delete_notification()
 
 def get_user():

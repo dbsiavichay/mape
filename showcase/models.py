@@ -165,4 +165,5 @@ class Guest(NotificationMixin, models.Model):
 	date = models.DateTimeField(auto_now_add=True)	
 
 	def attend(self, action=True):
-		self.state = 2 if action else 3		
+		self.state = 2 if action else 3	
+
