@@ -1,0 +1,35 @@
+<ul class="collection center-align">        
+    {% if not user.is_anonymous %}
+    <li class="collection-item">
+        <form action="{% url 'add_comment' %}" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {{ form.object_id }}
+            {{ form.contenttype }}
+
+            <div class="input-field">        
+                {{ form.content }}
+                <label for="comment">Nueva postal </label>
+            </div>
+
+            <div class="file-field input-field">
+                <div class="btn cyan">
+                    <span>Imagen</span>
+                    {{ form.image }}
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            
+            <button type="submit" class="waves-effect waves-light cyan darken-2 btn right marginado">
+                <i class="material-icons right">send</i>
+                Enviar
+            </button>
+        </form>    
+    </li>
+    {% else %}
+    <li class="collection-item">
+        Logueate para comentar.
+    </li>
+    {% endif %}
+</ul>

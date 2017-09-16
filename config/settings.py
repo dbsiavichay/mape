@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'widget_tweaks',
+    'comments',
     'notifications',
     'social',
     'showcase',
