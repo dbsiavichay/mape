@@ -123,8 +123,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = '483493942013362'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '07e2f06fee3a0861af41b5a41dd1e6dc'  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_KEY']  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_SECRET']  # App Secret
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
