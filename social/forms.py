@@ -100,12 +100,14 @@ class ProfileForm(forms.ModelForm):
         
         raise forms.ValidationError('Ingrese una cédula válida.')
 
-    def save(self, commit=True):
+    def save(self, username, email, commit=True):
         obj = super(ProfileForm, self).save(commit=False)
         obj.is_complete = True
 
         obj.user.first_name = self.cleaned_data['first_name']
         obj.user.last_name = self.cleaned_data['last_name']
+        obj.user.username = username
+        obj.user.email = email
 
         obj.user.save()
         

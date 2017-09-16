@@ -63,12 +63,12 @@ class ProfileUpdateView(UpdateView):
 
 	def form_valid(self, form):
 		profile_form = self.get_profile_form()
-		if profile_form.is_valid():
-			self.object = form.save()			
-			self.object.save()
-			profile_form.save()
+		if profile_form.is_valid():						
+			username = form.cleaned_data['username']
+			email = form.cleaned_data['email']
+			profile_form.save(username, email)
 			
-			self.success_url = '/profiles/%s/?success=true' % (self.request.user.username)
+			self.success_url = '/profiles/%s/?success=true' % username
 			return redirect(self.success_url)
 			
 		return self.form_invalid(form)
@@ -82,7 +82,7 @@ class ProfileUpdateView(UpdateView):
 
 		return form
 		
-	def get_object(self, queryset=None):
+	def get_object(self, queryset=None):		
 		return self.request.user
 
 

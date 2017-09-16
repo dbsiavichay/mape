@@ -358,26 +358,6 @@ def event_not_attend(request, pk):
 
 	return redirect('/event/%s/' % pk)
 
-
-
-def add_subscriber(request):	
-	if request.method == 'POST':		
-		form = SubscriberForm(request.POST)		
-		if form.is_valid():
-			form.save()
-			return redirect(form.data.get('next'))
-		else:
-			print form.errors
-
-def delete_subscriber(request):	
-	if request.method == 'POST':		
-		form = SubscriberForm(request.POST)		
-		if form.is_valid():
-			form.save()
-			return redirect(form.data.get('next'))
-		else:
-			print form.errors
-
 def event_invitation(request, event):
 	if request.is_ajax() and request.method == 'POST':				
 		friends = request.POST.getlist('friends[]')
