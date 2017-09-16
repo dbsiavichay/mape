@@ -142,7 +142,10 @@
           <div id="events" class="row">
             <div class="section col s12 m12 l6 offset-l3">
               <!-- Tarjeta de evento -->
-              {% include 'includes/event_card.html'%}
+              {% for event in object.event_set.all %}
+                {% include 'includes/event_card.html'%}
+              {% endfor %}
+
             </div>
           </div> 
           {% endif %}

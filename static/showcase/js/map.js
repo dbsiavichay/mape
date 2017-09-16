@@ -8,8 +8,37 @@ $(function () {
 
 		L.mapbox.accessToken = token;
 		var map = L.mapbox.map('map', 'mapbox.light').setView([point.latitude,point.longitude], 15);		
+		 map.setMaxZoom(19);
+		 map.setMinZoom(9);
 
-		$.get('/events/', function(data) {			
+		 var zoomThreshold = 12;
+
+		 map.on('zoom', function() {
+		    if (map.getZoom() > zoomThreshold) {
+		        $.get('/localities/', function(data) {			
+					for (index in data)  {				
+						var marker = L.marker([data[index].latitude, data[index].longitude], {
+						    icon: L.mapbox.marker.icon({
+						    	'marker-size': 'medium',
+						    	'marker-symbol': 'circle',
+				                'marker-color': '#fa0'
+						    })
+						})		
+						.addTo(map);
+
+						var content = '<h3 class="cyan-text">' + data[index].name+ '</h3>' +
+							'<p>' + data[index].description +					
+							' </p> <a href="/locality/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
+							'<strong> Ver </strong></a>';
+
+						marker.bindPopup(content);
+		            }
+				});
+
+		    } 
+		});
+
+		 $.get('/events/', function(data) {			
 			for (index in data)  {				
 				var eventIcon = L.icon({
 					
@@ -32,7 +61,7 @@ $(function () {
 
 				var content = '<h3 class="cyan-text ">' + data[index].name+ '</h3>' +
 					'<p>' + data[index].description +					
-					'</p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan flat-btn">'+
+					'</p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 
 				marker.bindPopup(content);
@@ -40,27 +69,7 @@ $(function () {
 		});
 
 
-
-		$.get('/localities/', function(data) {			
-			for (index in data)  {				
-				var marker = L.marker([data[index].latitude, data[index].longitude], {
-				    icon: L.mapbox.marker.icon({
-				    	'marker-size': 'medium',
-				    	'marker-symbol': 'circle',
-		                'marker-color': '#fa0'
-				    })
-				})		
-				.addTo(map);
-
-				var content = '<h3 class="cyan-text">' + data[index].name+ '</h3>' +
-					'<p>' + data[index].description +					
-					' </p> <a href="/locality/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan flat-btn">'+
-					'<strong> Ver </strong></a>';
-
-				marker.bindPopup(content);
-            }
-		});
-
+		
 
 
 		map.on('contextmenu', function(e) {		  	

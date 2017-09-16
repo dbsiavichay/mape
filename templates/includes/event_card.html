@@ -1,6 +1,6 @@
 {% load staticfiles %}
 
-{% for event in object.event_set.all %}
+{% if event %}
 <div class="card">
     <!-- Imagen de la tarjeta -->
     <div class="card-image z-depth-3 waves-effect waves-block waves-light ">
@@ -105,7 +105,7 @@
 
         <ul class="col s12 collapsible" data-collapsible="accordion">
             <li>
-                <div class="collapsible-header"><i class="material-icons">perm_data_setting</i>Mas opciones</div>
+                <div class="collapsible-header"><i class="material-icons">perm_data_setting</i>Más opciones</div>
                 <div class="collapsible-body row no-margin">
                     <a href="#Auspiciar" class="btn col s6 cyan waves-light"> <i class="material-icons right">trending_up</i>Auspiciar</a>
                     <a href="#Denunciar-modal" class="btn col s6 amber-text text-darken-4 red darken-2 waves-light"> <i class="material-icons right">not_interested</i>Denunciar</a>
@@ -121,7 +121,7 @@
         <a href="#Invitar" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">supervisor_account</i>Invitar </a>
     </div>   
 </div>
-{% endfor %}
+{% endif %}
 
 <!-- Modal Denunciar -->
 <div id="Denunciar-modal" class="modal">
