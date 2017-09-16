@@ -66,7 +66,7 @@
                 <div class="left-align">
                     {% if not user.is_anonymous %}
                       {% if is_subscribed or object.owner == user.profile %}
-                    <button class="btn-flat amber-text text-darken-3 disabled" type="submit"><i class="material-icons right">grade</i>Suscrito</button>
+                    <button class="btn-flat amber-text text-darken-3 waves-effect waves-red " ><i class="material-icons right">do_not_disturb_on</i>Cancelar suscripcion</button>
                       {% else %}
                     <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
                       {% csrf_token %}
@@ -82,7 +82,7 @@
                     <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
                     <div class="right ">
                         <p>De: </p>
-                        {% include 'includes/profile_chips.html' with profile=object.owner %}
+                        {% include 'includes/profile_chip.html' with profile=object.owner %}
                     </div>
                 </div>                    
             </div>
@@ -131,51 +131,12 @@
             {% if object.is_commercial and object.commercial.offer_set %}
             <p class="grey-text"> Ofrece:</p>
               {% for offer in  object.commercial.offer_set.all %}
-            <div class="card col l3 m4 s12 {% if offer.kind == 1 %} product {% else %} service {% endif %} no-padding">
-                {% if offer.image %}
-              <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="{{ offer.image.url }}">
-                  {% elif offer.kind == 2 %}
-              <div class="activator waves-effect waves-block waves-light">
-                  <i class="opacado material-icons mape-medium large">room_service</i>
-                  {% elif offer.kind == 1 %}
-              <div class="activator waves-effect waves-block waves-light">
-                  <i class="opacado material-icons large ">local_mall</i>
-                {% endif %}
-                <span class="activator card-title sombra white-text">{{ offer.name }}</span>
-              </div>
-              <div class="card-content">
-
-                {% if not offer.price == 0 %} <span class="activator right white-text "><i class="material-icons">attach_money</i> {{ offer.price }}</span>
-                {%else%}
-                <span class="activator right white-text "><i class="material-icons">spa</i>Gratis</span>
-                {% endif %}
-
-              </div>
-              <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
-                <p>{{ offer.description }}</p>
-              </div>
-            </div>
+                {% include 'showcase/components/offer_template.html' with offer=offer %}
               {% endfor %}
             {% endif %}
             <!-- Informacion Comercial -->              
             {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
-            
-            
           </div>
-          <!-- Media 
-          <div id="media" class="row">
-              <div class="col s12 ">
-                  {% for comment in object.comments %}
-                  {% if comment.image %}
-                  <div class="col s2">
-                      <img class="materialboxed" style="width: 100%" src="{{ comment.image.url }}">
-                  </div>
-                  {% endif %}
-                  {% endfor %}
-              </div>
-          </div> -->
           <!-- Eventos de la Localidad -->
           {% if eventos %}
           <div id="events" class="row">
@@ -189,7 +150,7 @@
     </div>
     <!-- Comentarios -->
     <div class="no-padding">
-        {% include 'includes/comments.html' with comments=object.comments model_name="locality" model_id=object.id %}        
+        {% include 'includes/comments.html' with comments=object.comments model_name="locality" model_id=object.id is_commertial_owner=True %}        
     </div>
 </div>
         {% include 'includes/footer.html' %}

@@ -27,14 +27,7 @@
             </div>
             <div id="selected">
                 {% if object.locality %}
-                <div class="chip {% if object.locality.commercial %} amber {% endif %} lighten-2">
-                    {% if object.locality.profile_image %}
-                    <img src="{{ object.locality.profile_image.url }}" alt="{{object.locality}}">
-                    {% else %}                        
-                    <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{objec.tlocality}}">
-                    {% endif %}
-                    <a class="collection-item" href="#!">{{ object.locality }} </a>
-                </div>
+                {% include "includes/locality_chip.html" with localities=object.locality %}
                 {% else %}
                 <p>Latitud: {{ form.latitude.value }}</p>
                 <p>Longitud: {{ form.longitude.value }}</p>
@@ -43,15 +36,9 @@
             {% if localities %}
             <div id="privates" class="col s12">
                 <div id="localities" class="container no-margin">
+                
                 {% for locality in localities %}
-                    <div class="chip {% if locality.commercial %} amber {% endif %} lighten-2">
-                        {% if locality.profile_image %}
-                        <img src="{{ locality.profile_image.url }}" alt="{{locality}}">
-                        {% else %}                        
-                        <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{locality}}">
-                        {% endif %}
-                        <a class="collection-item" href="#!" pk="{{ locality.id }}" x="{{ locality.point.x }}" y="{{ locality.point.y }}">{{ locality }} </a>
-                    </div>
+                    {% include "includes/locality_chip.html" with locality=locality %}
                 {% endfor %}            
                 </div>
             {% endif %}                  
@@ -60,14 +47,7 @@
             <div id="closer" class="col s12">
                 <div id="close" class="container no-margin">
                 {% for locality in close %}
-                    <div class="chip {% if locality.commercial %} amber {% endif %} lighten-2">
-                        {% if locality.profile_image %}
-                        <img src="{{ locality.profile_image.url }}" alt="{{locality}}">
-                        {% else %}
-                        <img src="{% static 'showcase/img/locality_default.jpg' %}" alt="{{locality}}">
-                        {% endif %}
-                        <a class="collection-item" href="#!" pk="{{ locality.id }}" x="{{ locality.point.x }}" y="{{ locality.point.y }}">{{ locality }} </a>
-                    </div>
+                    {% include "includes/locality_chip.html" with locality=locality %}
                 {% endfor %}            
                 </div>
             {% endif %}              

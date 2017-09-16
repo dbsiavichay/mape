@@ -1,5 +1,13 @@
 $(document).ready(function() {
-	$('.modal').modal();
+	$('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '4%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+    }
+  );
     $('input#input_text, textarea#textarea1').characterCounter();
     $('.parallax').parallax();
     $('select').material_select('destroy');

@@ -1,4 +1,5 @@
-﻿<footer class="footer-container">
+﻿{% load staticfiles %}
+<footer class="footer-container">
     <div class="grey lighten-3 fullscreen ">
         <div class="row">
             <div class="col l3 s6 tiny-text">
@@ -17,11 +18,11 @@
                 <a class="btn blue waves-effects  modal-trigger" href="#modal_donation"> Donar </a>
             </div>
             <div class="col l3 s6 marginado cyan-text">
-                <a class="" href="#"> <i class="material-icons ">done</i> facebook</a>
+                <a target="_blank" href="#"> <img class="" src="{% static 'showcase/img/facebook.png' %}" width="20"> mape </a>
                 <br/>
-                <a class="" href="#"> <i class="material-icons ">done</i> Twitter</a>
+                <a target="_blank" href="#"> <i src="{% static 'showcase/img/instagram.png' %}" width="20"> instagram</a>
                 <br/>
-                <a class="" href="#"> <i class="material-icons ">done</i> Youtube</a>
+                <a target="_blank" href="#"> <i src="{% static 'showcase/img/Youtube.png' %}" width="20"> Twitter</a>
             </div>
             <div class="col s12 divider cyan marginado"></div>
             <div class="col s12 center align cyan-text">

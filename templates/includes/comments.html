@@ -7,7 +7,7 @@
         
         <div class="card-panel ">
         <!-- Comprobar si el usuario es dueño del comentario o el administrador del objeto (evento o localidad) -->
-        {% if comment.profile.user == user %}
+        {% if comment.profile.user == user or is_commertial_owner %}
         <a href="#1" class="dropdown-button right" data-activates="comment-options" ><i class="material-icons">more_vert</i></a>
         <ul id="comment-options" class="dropdown-content">
             <li><a href="!1" class="flat-btn red-text"><i class="material-icons">delete</i> Eliminar</a></li>

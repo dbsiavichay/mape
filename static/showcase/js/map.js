@@ -46,7 +46,7 @@ $(function () {
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
-				    	'marker-symbol': 'marker',
+				    	'marker-symbol': 'circle',
 		                'marker-color': '#fa0'
 				    })
 				})		

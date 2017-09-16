@@ -1,0 +1,25 @@
+
+<div class="card col l3 m4 s12 {% if offer.kind == 1 %} product {% else %} service {% endif %} no-padding">
+    {% if offer.image %}
+  <div class="card-image waves-effect waves-block waves-light">
+    <img class="activator" src="{{ offer.image.url }}">
+      {% elif offer.kind == 2 %}
+  <div class="activator waves-effect waves-block waves-light">
+      <i class="opacado material-icons mape-medium large">room_service</i>
+      {% elif offer.kind == 1 %}
+  <div class="activator waves-effect waves-block waves-light">
+      <i class="opacado material-icons large ">local_mall</i>
+    {% endif %}
+    <span class="activator card-title sombra white-text">{{ offer.name }}</span>
+  </div>
+  <div class="card-content">
+    {% if not offer.price == 0 %} <span class="activator right white-text "><i class="material-icons">attach_money</i> {{ offer.price }}</span>
+    {%else%}
+    <span class="activator right white-text "><i class="material-icons">spa</i>Gratis</span>
+    {% endif %}
+  </div>
+  <div class="card-reveal">
+    <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
+    <p>{{ offer.description }}</p>
+  </div>
+</div>
