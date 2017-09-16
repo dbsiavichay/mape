@@ -150,7 +150,9 @@
     </div>
     <!-- Comentarios -->
     <div class="no-padding">
-        {% include 'includes/comments.html' with comments=object.comments model_name="locality" model_id=object.id is_commertial_owner=True %}        
+        {% load comments %}
+        {% comment_list object %}
+        {% comment_form object %}        
     </div>
 </div>
         {% include 'includes/footer.html' %}

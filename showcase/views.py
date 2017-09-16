@@ -18,7 +18,8 @@ from .models import *
 from .forms import *
 
 from notifications.models import Notification
-from social.models import Profile, Comment
+from social.models import Profile
+from comments.models import Comment
 
 class EventListView(ListView):
 	model = Event	
@@ -383,33 +384,7 @@ def event_not_attend(request, pk):
 
 	return redirect('/event/%s/' % pk)
 
-def add_event_comment(request):
-	if request.method != 'POST':
-		return redirect('/map/')
 
-	contenttype = ContentType.objects.get_for_model(Event)
-	object_id = request.POST.get('event')
-	text = request.POST.get('text', '') 
-	image = request.FILES.get('image', None)
-	profile = request.user.profile
-
-	Comment.objects.create(text = text, image=image,profile = profile, object_id = object_id, contenttype = contenttype)
-
-	return redirect('/event/%s/' % object_id)
-
-def add_locality_comment(request):
-	if request.method != 'POST':
-		return redirect('/map/')
-
-	contenttype = ContentType.objects.get_for_model(Locality)
-	object_id = request.POST.get('locality')
-	text = request.POST.get('text', '') 
-	image = request.FILES.get('image', None)
-	profile = request.user.profile
-
-	Comment.objects.create(text = text, image=image,profile = profile, object_id = object_id, contenttype = contenttype)
-
-	return redirect('/locality/%s/' % object_id)
 
 def add_subscriber(request):	
 	if request.method == 'POST':		

@@ -131,7 +131,9 @@
             {% endif %}
           </div>
           <div class="card col s12">       
-            {% include 'includes/comments.html' with comments=object.comments model_name="event" model_id=object.id %}
+            {% load comments %}
+            {% comment_list object %}
+            {% comment_form object %}
           </div>
         </div>
       </div>

@@ -178,31 +178,13 @@ class Friendship(NotificationMixin, models.Model):
 	status = models.PositiveSmallIntegerField(default=1, choices=STATE_CHOICES)
 	date_joined = models.DateTimeField(auto_now=True)
 
-	objects = FriendshipManager()	
-
-class Comment(models.Model):
-	text = models.TextField(blank=True, null=True)
-	image = models.ImageField(upload_to='showcase/events/',blank=True, null=True)
-	profile = models.ForeignKey(Profile)
-	object_id = models.IntegerField()
-	date_joined = models.DateTimeField(auto_now_add=True)
-	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-
-	def save(self, *args, **kwargs):
-		super(Comment, self).save(*args, **kwargs)
-
-		if self.image:
-			process_image(self.image, 1500)
+	objects = FriendshipManager()
 
 class Subscriber(models.Model):
 	object_id = models.IntegerField()
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 	contenttype = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-	date = models.DateTimeField(auto_now_add=True)	
-
-
-
-
+	date = models.DateTimeField(auto_now_add=True)		
 
 def process_image(image_field, size):
 	image = Image.open(image_field)

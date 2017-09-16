@@ -34,7 +34,7 @@ class Locality(models.Model):
 		return self.name
 
 	def comments(self):
-		from social.models import Comment
+		from comments.models import Comment
 		contenttype = ContentType.objects.get_for_model(self)
 		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
 		return comments
@@ -50,6 +50,10 @@ class Locality(models.Model):
 		contenttype = ContentType.objects.get_for_model(self)
 		count = Subscriber.objects.filter(contenttype = contenttype, object_id=self.id).count()
 		return count
+
+	def get_absolute_url(self):
+		from django.urls import reverse
+		return reverse('locality_detail', args=[str(self.id)])
 
 class Commercial(models.Model):
 	ruc = models.CharField(max_length=13)
