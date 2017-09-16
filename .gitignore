@@ -2,7 +2,7 @@
 *~
 *.pyc
 media/
-#comments/migrations/
+comments/migrations/
 notifications/migrations/
 social/migrations/
 showcase/migrations/
