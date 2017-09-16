@@ -3,6 +3,7 @@
 *.pyc
 media/
 comments/migrations/
+subscribers/migrations/
 notifications/migrations/
 social/migrations/
 showcase/migrations/

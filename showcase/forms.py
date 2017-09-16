@@ -4,7 +4,8 @@ from django import forms
 from django.contrib.gis.geos import Point
 
 from .models import *
-from social.models import Subscriber
+
+from subscribers.models import Subscriber
 
 class EventForm(forms.ModelForm):
 	class Meta:

@@ -2,9 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.gis.db import models
 
-from django.contrib.contenttypes.models import ContentType
 from notifications.mixins import NotificationMixin
-
 from django.contrib.gis.geos import Point
 
 class Category(models.Model):
@@ -33,23 +31,8 @@ class Locality(models.Model):
 	def __unicode__(self):
 		return self.name
 
-	def comments(self):
-		from comments.models import Comment
-		contenttype = ContentType.objects.get_for_model(self)
-		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
-		return comments
-
-	def subscribers(self):
-		from social.models import Subscriber
-		contenttype = ContentType.objects.get_for_model(self)
-		count = Subscriber.objects.filter(contenttype = contenttype, object_id=self.id)
-		return count
-
-	def subscribers_count(self):
-		from social.models import Subscriber
-		contenttype = ContentType.objects.get_for_model(self)
-		count = Subscriber.objects.filter(contenttype = contenttype, object_id=self.id).count()
-		return count
+	def get_hash_name(self):
+		return self.name.replace(" ", "_")
 
 	def get_absolute_url(self):
 		from django.urls import reverse
@@ -131,12 +114,6 @@ class Event(models.Model):
 		liked = self.guests.filter(guest__status=Guest.LIKE)		
 
 		return '%s invitados * %s asistirán * %s les gusta' % (len(invited) - 1, len(attend), len(liked))
-
-	def comments(self):
-		from social.models import Comment
-		contenttype = ContentType.objects.get_for_model(Event)
-		comments = Comment.objects.filter(contenttype = contenttype, object_id=self.id)
-		return comments
 
 	def get_absolute_url(self):
 		from django.urls import reverse

@@ -26,9 +26,6 @@ urlpatterns = [
     url(r'^commercial/offers/$', login_required(OfferCreateView.as_view()), name='offer_create'),    
     url(r'^commercial/offers/(?P<pk>\d+)/update/$', login_required(OfferUpdateView.as_view()), name='offer_update'),    
 
-
-    url(r'^subscriber/add/$', login_required(add_subscriber), name='subscriber_create'),
-
     url(r'^event/(?P<event>\d+)/invitation/$', login_required(event_invitation), name='event_invitation'),
     url(r'^event/(?P<event>\d+)/sponsor-request/$', login_required(event_sponsor), name='sponsor_invitation'),
     url(r'^event/(?P<event>\d+)/sponsor-request/accept/$', login_required(event_sponsor_accept), name='sponsor_accept'),

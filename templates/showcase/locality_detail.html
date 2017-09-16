@@ -61,25 +61,11 @@
                     <img class="event circle z-depth-3" src="{{ object.profile_image.url }}" >
                 </div>
                 {% endif %}
-                <h4 class="grey-text"> #{{ hash_name }} </h4>
+                <h4 class="grey-text"> #{{ object.get_hash_name }} </h4>
                 
                 <div class="left-align">
-                    {% if not user.is_anonymous %}
-                      {% if is_subscribed or object.owner == user.profile %}
-                    <button class="btn-flat amber-text text-darken-3 waves-effect waves-red " ><i class="material-icons right">do_not_disturb_on</i>Cancelar suscripcion</button>
-                      {% else %}
-                    <form action="/subscriber/add/" method="POST" enctype="multipart/form-data" novalidate>
-                      {% csrf_token %}
-                      <input type="hidden" name="profile" value="{{ user.profile.id }}">
-                      <input type="hidden" name="contenttype" value="{{ contenttype.id }}">
-                      <input type="hidden" name="object_id" value="{{ object.id }}">
-                      <input type="hidden" name="next" value="/locality/{{ object.id }}/">
-                      <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
-                    </form>
-                      {% endif %}
-                    {% endif %}
-                    <!-- Contador de suscriptores -->                        
-                    <p class="flow-text"> {{ object.subscribers_count }} Suscriptores</p>
+                    {% load subscribers %}
+                    {% subscription object %}
                     <div class="right ">
                         <p>De: </p>
                         {% include 'includes/profile_chip.html' with profile=object.owner %}
