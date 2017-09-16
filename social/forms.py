@@ -41,8 +41,7 @@ class UserCreationForm(forms.ModelForm):
         user = super(UserCreationForm, self).save(commit=False)        
         user.set_password(self.cleaned_data.get('password1'))
         if commit:
-            user.save()
-            Profile.objects.create(user=user)
+            user.save()            
         return user
 
 class ProfileForm(forms.ModelForm):

@@ -28,6 +28,7 @@ urlpatterns = [
 
 
     url(r'^subscriber/add/$', login_required(add_subscriber), name='subscriber_create'),
+    url(r'^subscriber/delete/$', login_required(delete_subscriber), name='subscriber_delete'),
 
     url(r'^event/(?P<event>\d+)/invitation/$', login_required(event_invitation), name='event_invitation'),
     url(r'^event/(?P<event>\d+)/sponsor-request/$', login_required(event_sponsor), name='sponsor_invitation'),

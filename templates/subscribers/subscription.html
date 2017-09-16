@@ -1,0 +1,20 @@
+{% load subscribers %}                
+{% if not user.is_anonymous %}
+    {% if is_subscribed %}
+    <form action="{% url 'delete_subscriber' subscriber.id %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <button type="submit" class="btn-flat amber-text text-darken-3 waves-effect waves-red" >
+            <i class="material-icons right">do_not_disturb_on</i>Cancelar suscripcion
+        </button>        
+    </form>
+    {% else %}
+    <form action="{% url 'add_subscriber' %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.contenttype }}
+        {{ form.object_id }}
+        <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
+    </form>
+    {% endif %}
+{% endif %}
+<!-- Contador de suscriptores -->
+<p class="flow-text"> {% subscribers_count object %} Suscriptores</p>

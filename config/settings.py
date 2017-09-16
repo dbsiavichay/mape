@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'widget_tweaks',
     'comments',
+    'subscribers',
     'notifications',
     'social',
     'showcase',

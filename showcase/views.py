@@ -4,22 +4,18 @@ from __future__ import unicode_literals
 import datetime
 
 from django.http import JsonResponse
-from django.forms.models import model_to_dict
 
 from django.db.models import Q
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
-from django.contrib.contenttypes.models import ContentType
 
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import *
 from .forms import *
 
-from notifications.models import Notification
 from social.models import Profile
-from comments.models import Comment
 
 class EventListView(ListView):
 	model = Event	
@@ -261,28 +257,6 @@ class LocalityUpdateView(UpdateView):
 class LocalityDetailView(DetailView):
 	model = Locality
 
-	def get_context_data(self, **kwargs):
-		context = super(LocalityDetailView, self).get_context_data(**kwargs)
-		contenttype = ContentType.objects.get_for_model(Locality)
-
-		subscriber = None
-		if not self.request.user.is_anonymous():
-			try:
-				subscriber = Subscriber.objects.get(
-					contenttype=contenttype, profile=self.request.user.profile, object_id=self.object.id
-				)
-			except Subscriber.DoesNotExist:
-				subscriber = None		
-		locality = "La concretera"
-		hash_name = locality.replace(" ", "_")
-		context.update({
-			'contenttype': contenttype,
-			'is_subscribed': True if subscriber is not None else False,
-			'hash_name' : hash_name
-		})
-
-		return context
-
 class CommercialUpdateView(UpdateView):
 	model = Commercial
 	form_class = CommercialForm
@@ -387,6 +361,15 @@ def event_not_attend(request, pk):
 
 
 def add_subscriber(request):	
+	if request.method == 'POST':		
+		form = SubscriberForm(request.POST)		
+		if form.is_valid():
+			form.save()
+			return redirect(form.data.get('next'))
+		else:
+			print form.errors
+
+def delete_subscriber(request):	
 	if request.method == 'POST':		
 		form = SubscriberForm(request.POST)		
 		if form.is_valid():
