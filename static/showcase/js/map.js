@@ -6,11 +6,11 @@ $(function () {
 		var point = position.coords;
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';
 
-		$('#btn-event-register').attr('lat', point.latitude);
-	  	$('#btn-event-register').attr('lng', point.longitude);
+		$('#btn-event-register-float').attr('lat', point.latitude);
+	  	$('#btn-event-register-float').attr('lng', point.longitude);
 
-	  	$('#btn-locality-register').attr('lat', point.latitude);
-	  	$('#btn-locality-register').attr('lng', point.longitude);
+	  	$('#btn-locality-register-float').attr('lat', point.latitude);
+	  	$('#btn-locality-register-float').attr('lng', point.longitude);
 
 		L.mapbox.accessToken = token;
 		var map = L.mapbox.map('map', 'mapbox.light').setView([point.latitude,point.longitude], 15);		
@@ -70,14 +70,14 @@ $(function () {
 	  console.warn('ERROR(' + error.code + '): ' + error.message);
 	};
 
-	$('#btn-event-register').on('click', function(e) {
+	$('a[id*=btn-event-register]').on('click', function(e) {
 		e.preventDefault();
 		lat = $(this).attr('lat');
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/event/add/?lat='+lat+'&lng='+lng);
 	});	
 
-	$('#btn-locality-register').on('click', function(e) {
+	$('a[id*=btn-locality-register]').on('click', function(e) {
 		e.preventDefault();
 		lat = $(this).attr('lat');
 		lng = $(this).attr('lng');

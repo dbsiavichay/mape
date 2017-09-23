@@ -118,10 +118,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = (    
-    'social_core.backends.facebook.FacebookOAuth2',
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-)
+    'social_core.backends.facebook.FacebookOAuth2',
+]
 
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_KEY']  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_SECRET']  # App Secret

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db.models import Q
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
@@ -22,7 +22,11 @@ class UserCreateView(CreateView):
 
 	def form_valid(self, form):	   
 		self.object = form.save()
-		auth_login(self.request, self.object)
+		user = authenticate(
+			username=form.cleaned_data['username'], 
+			password=form.cleaned_data['password1']
+		)
+		auth_login(self.request, user)
 		return redirect(self.success_url)
 
 class LoginView(FormView):
@@ -35,7 +39,7 @@ class LoginView(FormView):
 		next_param = self.request.GET.get('next') or self.kwargs.get('next') or None
 		if next_param is not None:
 			self.success_url = next_param
-		return super(LoginView, self).form_valid(form)		
+		return redirect(self.success_url)
 
 	def get(self, request, *args, **kwargs):
 		if not request.user.is_authenticated:
