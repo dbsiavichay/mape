@@ -1,18 +1,47 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %} 
-
-{% block css %}    
-{% endblock %}
+{% load staticfiles %}
 
 {% block content %}
 {% include 'includes/nav.html' %}
 {% load widget_tweaks %}
 
-<div class="row container">
-    {{ object.user.username }}    
-</div>
+<!--(Restringido)Caso de uso para invitado: CUI
+    Caso de uso para usuario: CUU
+    Caso de uso para usuario/comercial: CUC  -->
 
+<div class="center row container">
+    {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }} " alt="Contact Person {{profile.get_full_name}} ">
+    {% else %}
+    <i class="material-icons cyan circle mape-medium">person</i>
+      {% endif %}
+    <h4>{{ profile.user }} </h4>
+      <nav class="nav-extended col s12 cyan">
+        <div class="nav-content">
+          <ul class="tabs tabs-transparent">
+            <li class="tab"><a href="#test1">Perfil de usuario</a></li>
+            {% if profile.is_complete %}
+            <li class="tab"><a class="active" href="#test2">Información básica</a></li>{% endif %}
+            {% if profile.is_commertial %}
+            <li class="tab {% if True %} disabled {% endif %} "><a href="#test3">Actividad comercial</a></li> {% endif %}
+          </ul>
+        </div>
+      </nav>
+      <div id="test1" class="col s12"> 
+        <p>
+            {{ profile.get_full_name }}
+         </p>
+      </div>
+      <div id="test2" class="col s12">{% if profile.is_complete %} <p> {{ profile.birthday }} </p>
+      <p> {{ profile.cellphone }} </p>{% endif %}</div>
+      <div id="test3" class="col s12">{% if profile.is_commertial %} {% endif %}</div>
+    <div class="col s12 ">
+        <a href="#" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
+        <a href="#" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
+        <a href="#" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}

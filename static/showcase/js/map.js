@@ -6,16 +6,17 @@ $(function () {
 		var point = position.coords;
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';
 
+		$('#btn-event-register').attr('lat', point.latitude);
+	  	$('#btn-event-register').attr('lng', point.longitude);
+
+	  	$('#btn-locality-register').attr('lat', point.latitude);
+	  	$('#btn-locality-register').attr('lng', point.longitude);
+
 		L.mapbox.accessToken = token;
 		var map = L.mapbox.map('map', 'mapbox.light').setView([point.latitude,point.longitude], 15);		
-		 map.setMaxZoom(19);
-		 map.setMinZoom(9);
+		 
+		 $.get('/localities/', function(data) {	
 
-		 var zoomThreshold = 12;
-
-		 map.on('zoom', function() {
-		    if (map.getZoom() > zoomThreshold) {
-		        $.get('/localities/', function(data) {			
 					for (index in data)  {				
 						var marker = L.marker([data[index].latitude, data[index].longitude], {
 						    icon: L.mapbox.marker.icon({
@@ -35,22 +36,8 @@ $(function () {
 		            }
 				});
 
-		    } 
-		});
-
 		 $.get('/events/', function(data) {			
-			for (index in data)  {				
-				var eventIcon = L.icon({
-					
-				    //iconUrl: '/showcase/img/gif_mape_live.gif',
-					//iconSize: [53, 75],
-					//iconAnchor: [25, 25],
-					//popupAnchor: [-3, -76],
-					//shadowUrl: '/showcase/img/logo_mape_glass.png',
-					//shadowRetinaUrl: 'showcase/img/logo_mape_glass-01.png',
-					//shadowSize: [53, 75],
-					//shadowAnchor: [53, 75]
-				});
+			for (index in data)  {	
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
@@ -68,10 +55,6 @@ $(function () {
             }
 		});
 
-
-		
-
-
 		map.on('contextmenu', function(e) {		  	
 		  	$('#btn-event-register').attr('lat', e.latlng.lat);
 		  	$('#btn-event-register').attr('lng', e.latlng.lng);
@@ -86,7 +69,6 @@ $(function () {
 	function error(error) {
 	  console.warn('ERROR(' + error.code + '): ' + error.message);
 	};
-	//
 
 	$('#btn-event-register').on('click', function(e) {
 		e.preventDefault();
