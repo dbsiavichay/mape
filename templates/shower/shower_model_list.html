@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">    
+    <link href="{% static 'plugins/clockpicker/clockpicker.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block content %}
+{% include 'includes/nav.html' %}
+<div class="container">    
+    {% load shower_tags %}    
+    
+    {% if model == 'profile' %}
+    {% shower_profile_list keyword %}
+    {% else %}
+    {% shower_list model keyword %}    
+    {% endif %}
+    
+</div>
+
+{% include 'includes/footer.html' %}
+{% endblock %}
+
+{% block js %}    
+    <script src="{% static 'showcase/js/rango-jquery.js' %}"></script> 
+{% endblock %}

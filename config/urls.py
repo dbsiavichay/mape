@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'', include('subscribers.urls')),
     url(r'', include('social.urls')),
     url(r'', include('showcase.urls')),
+    url(r'', include('shower.urls')),
     #url(r'^mape/$', TemplateView.as_view(template_name='base.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

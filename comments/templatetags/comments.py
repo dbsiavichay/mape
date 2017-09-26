@@ -17,8 +17,8 @@ class CommentListNode(template.Node):
 
         context_dict = context.flatten()        
         context_dict['comments'] = comments
-        formstr = render_to_string(['comments/comment_list.html'], context_dict)
-        return formstr        
+        liststr = render_to_string(['comments/comment_list.html'], context_dict)
+        return liststr        
 
 class CommentFormNode(template.Node):
     def __init__(self, obj):    	
@@ -48,7 +48,7 @@ def comment_list(parser, token):
 	return CommentListNode(obj)
 
 @register.tag(name='comment_form')
-def comment_list(parser, token):
+def comment_form(parser, token):
 	"""
 	Syntax:
 		{% comment_form [object] %}

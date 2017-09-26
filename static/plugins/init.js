@@ -49,4 +49,11 @@ $(function () {
 		})
 	}
 
+	//Search on navbar
+	$('#search2').on('keypress', function (event) {
+		if(event.keyCode!=13) return;
+		var keyword = $(this).val()
+		$(location).attr('href', '/shower/all/?keyword='+ keyword)
+	});
+
 });

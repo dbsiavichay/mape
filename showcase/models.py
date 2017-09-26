@@ -5,6 +5,8 @@ from django.contrib.gis.db import models
 from notifications.mixins import NotificationMixin
 from django.contrib.gis.geos import Point
 
+from shower.managers import ShowerManager
+
 class Category(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 
@@ -12,6 +14,10 @@ class Category(models.Model):
 		return self.name
 
 class Locality(models.Model):
+	class Meta:
+		verbose_name = 'localidad'
+		verbose_name_plural = 'localidades'
+
 	name = models.CharField(max_length=45, verbose_name='nombre')
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
 	front_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)
@@ -27,6 +33,7 @@ class Locality(models.Model):
 	date_joined = models.DateTimeField(auto_now_add=True)	
 	owner = models.ForeignKey('social.Profile')	
 	categories = models.ManyToManyField(Category, verbose_name='categorias')
+	objects = ShowerManager()
 
 	def __unicode__(self):
 		return self.name
@@ -49,6 +56,9 @@ class Commercial(models.Model):
 		return self.locality.name
 
 class Offer(models.Model):
+	class Meta:
+		verbose_name='oferta'
+
 	PRODUCT = 1
 	SERVICE = 2
 
@@ -63,6 +73,7 @@ class Offer(models.Model):
 	image = models.ImageField(upload_to='showcase/offers/', null=True, blank=True)
 	kind = models.PositiveSmallIntegerField(choices = KIND_CHOICES, verbose_name='tipo')	
 	commercial = models.ForeignKey(Commercial)
+	objects = ShowerManager()
 
 	def __unicode__(self):
 		return unicode(self.name)
@@ -74,6 +85,10 @@ class Offer(models.Model):
 
 ##EVENTOS
 class Event(models.Model):
+	class Meta:
+		verbose_name = 'evento'
+		verbose_name_plural = 'eventos'
+
 	name = models.CharField(max_length=64, verbose_name='nombre')
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
 	front_image = models.ImageField(
@@ -95,6 +110,8 @@ class Event(models.Model):
 	date_joined = models.DateTimeField(auto_now_add=True)
 	locality = models.ForeignKey(Locality, blank=True, null=True)		
 	guests = models.ManyToManyField('social.Profile', through='Guest', blank=True)
+	objects = ShowerManager()
+
 
 	def __unicode__(self):
 		return self.name
