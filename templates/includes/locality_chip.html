@@ -5,5 +5,5 @@
   {% else %}
   <i class="material-icons circle amber-text text-darken-2">place</i>
   {% endif %}
-  <a class="collection-item" href="/locality/{{ locality.id }}">{{ locality }} </a>
+  <a class="collection-item" pk="{{ locality.id }}" x="{{ locality.longitude }}"" y="{{ locality.latitude }}" href="/locality/{{ locality.id }}">{{ locality }} </a>
 </div>

@@ -102,7 +102,7 @@
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
               <li class="tab"><a class="active" href="#description">Descripción</a></li>
-              <li class="tab {% if object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
+              <li class="tab"><a href="#events">Eventos</a></li>
             </ul>
         </div>
         <!-- Contenido de los tabs -->
@@ -124,17 +124,18 @@
             {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
           </div>
           <!-- Eventos de la Localidad -->
-          {% if eventos %}
-          <div id="events" class="row">
-            <div class="section col s12 m12 l6 offset-l3">
-              <!-- Tarjeta de evento -->
-              {% for event in object.event_set.all %}
-                {% include 'includes/event_card.html'%}
-              {% endfor %}
-
-            </div>
-          </div> 
-          {% endif %}
+          
+            <div id="events" class="row">            
+                <div class="section col s12 m12 l6 offset-l3">
+                <!-- Tarjeta de evento -->
+                {% for event in object.event_set.all %}                    
+                    {% include 'includes/event_card.html' with event=event %}
+                {% empty %}                    
+                <p>Aun no hay eventos.</p>
+                {% endfor %}
+                </div>
+            </div> 
+          
         </div><!-- Fin tarjeta evento -->
     </div>
     <!-- Comentarios -->
