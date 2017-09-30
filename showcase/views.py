@@ -169,13 +169,17 @@ class EventDetailView(DetailView):
 
 	def get(self, request, *args, **kwargs):
 		#Redirecciona si no es invitado
-		self.object = self.get_object()		
+		self.object = self.get_object()
+		if self.object.is_public:
+			return return super(EventDetailView, self).get(request, *args, **kwargs)
+
 		invited = self.object.guests.filter(guest__profile=request.user.profile)
 
-		if len(invited) <= 0:
-			return redirect('/map/')
+		if len(invited) > 0:
+			return super(EventDetailView, self).get(request, *args, **kwargs)
+		
+		return redirect('/map/')
 
-		return super(EventDetailView, self).get(request, *args, **kwargs)
 
 
 class LocalityListView(ListView):
