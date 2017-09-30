@@ -49,7 +49,7 @@ class Commercial(models.Model):
 	ruc = models.CharField(max_length=13)
 	telephone = models.CharField(max_length=30, verbose_name='telefono')
 	address = models.CharField(max_length=100, verbose_name='Dirección')
-	webpage = models.URLField(verbose_name='página web')
+	webpage = models.URLField(verbose_name='página web', blank=True, null=True)
 	locality = models.OneToOneField(Locality, on_delete=models.CASCADE)		
 	
 	def __unicode__(self):
