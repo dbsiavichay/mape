@@ -3,7 +3,8 @@
 *.pyc
 media/
 comments/migrations/
-subscribers/migrations/
 notifications/migrations/
-social/migrations/
 showcase/migrations/
+#shower/migrations/
+social/migrations/
+subscribers/migrations/
