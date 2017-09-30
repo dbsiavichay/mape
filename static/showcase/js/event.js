@@ -45,6 +45,24 @@ $(function () {
 		}
 	});
 
+	$('#input-all-friends').on('change', function () {		
+		if ($(this).is(':checked')) {
+			$.each($availableItems, function (index, value) {
+			 	if (!$(this).find('.secondary-content').length) {
+			 		$(value).trigger('click');
+			 	}
+			});
+		}else{
+			$.each($availableItems, function (index, value) {
+			 	if ($(this).find('.secondary-content').length) {
+			 		$(value).trigger('click');
+			 	}
+			});
+		}
+
+		console.log(selected)
+	})
+
 	//Invitación a participar en evento
 	$('#sendToFriends').on('click', function (e) {
 		e.preventDefault();

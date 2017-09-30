@@ -130,7 +130,10 @@ class Event(models.Model):
 		attend = self.guests.filter(guest__status=Guest.ATTEND)
 		liked = self.guests.filter(guest__status=Guest.LIKE)		
 
-		return '%s invitados * %s asistirán * %s les gusta' % (len(invited) - 1, len(attend), len(liked))
+		return '%s | %s invitados * %s asistirán * %s les gusta' % (
+			'Público' if self.is_public else 'Privado',
+			len(invited) - 1, len(attend), len(liked)
+		)
 
 	def get_absolute_url(self):
 		from django.urls import reverse

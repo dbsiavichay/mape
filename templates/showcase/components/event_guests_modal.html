@@ -7,7 +7,13 @@
 	    	<div class="col s12 m7">	    		
 	    		{% if  user.profile.friends %}
 	    		<ul class="collection with-header available">
-	    			<li class="collection-header"><h6>Amigos</h6></li>
+	    			<li class="collection-header">
+	    				<h6 style="display: inline-block;">Amigos</h6>
+	    				<p style="margin: 4px 0 0 0; float: right;">
+						    <input type="checkbox" class="filled-in" id="input-all-friends"/>
+						    <label for="input-all-friends">Todos</label>
+					    </p>
+	    			</li>
 	    			{% for profile in user.profile.friends %}
 	                <li add-to="#friends" data-id="{{ profile.id }}" data-name="{{ profile.get_full_name }}" class="collection-item small avatar">
 	                    {% if profile.avatar %}
