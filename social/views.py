@@ -17,26 +17,56 @@ from showcase.models import Locality
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
-	success_url = '/map/'
+	success_url = '/'
 	template_name= 'social/signup.html'
 
-	def form_valid(self, form):	   
+	def form_valid(self, form):
+		from .mails import send_activate_account
+
 		self.object = form.save()
-		user = authenticate(
-			username=form.cleaned_data['username'], 
-			password=form.cleaned_data['password1']
-		)
-		auth_login(self.request, user)
-		return redirect(self.success_url)
+		# user = authenticate(
+		# 	username=form.cleaned_data['username'], 
+		# 	password=form.cleaned_data['password1']
+		# )
+		# auth_login(self.request, user)
+		send_activate_account(self.object)
+		return redirect(self.success_url+'?action=emailsend')
+
+class ActivateAccountView(DetailView):
+	model = Profile
+	slug_field = 'user__username'
+	slug_url_kwarg = 'username'
+
+	def get(self, request, *args, **kwargs):
+		self.object = self.get_object()
+		self.object.active_by_email = True
+		self.object.save()
+
+		return redirect('/'+'?action=activationsuccess')
 
 class LoginView(FormView):
 	template_name= 'social/login.html'
 	form_class = AuthenticationForm
 	success_url = '/map/'
 
+	def get_context_data(self, **kwargs):
+		context = super(LoginView, self).get_context_data(**kwargs)
+
+		action = self.request.GET.get('action') or self.kwargs.get('action') or None
+
+		context.update({
+			'action': action
+		})
+
+		return context
+
 	def form_valid(self, form):
-		auth_login(self.request, form.get_user())
-		next_param = self.request.GET.get('next') or self.kwargs.get('next') or None
+		user = form.get_user()		
+		if not user.profile.active_by_email:
+			return redirect('/' + '?emailsend=true')
+
+		auth_login(self.request, user)
+		next_param = self.request.GET.get('next') or self.kwargs.get('next') or None		
 		if next_param is not None:
 			self.success_url = next_param
 		return redirect(self.success_url)
@@ -162,8 +192,6 @@ def delete_friend(request, target):
 
 	Friendship.objects.delete_friend(profile, target)
 	return redirect('relationship', username=request.user.username)
-
-
 	
 class CommercialAccountView(UpdateView):
 	model = Profile

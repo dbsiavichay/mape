@@ -17,15 +17,37 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">            
 </head>
 <body class="cyan">
-<div id="fb-root"></div>
-
+<div id="fb-root"></div>        
     <!-- Login -->
     <div class="center-align row marginado">
         <!--  logo -->
+        
         <div class="col s12">
             <img src="{% static 'showcase/img/logo_mape.png' %}" width="120">
             
         </div>
+
+        
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    {% if action == 'emailsend' %}
+                    <div class="card-panel green">
+                        <strong>Activa tu cuenta.</strong>
+                        <p>Hemos enviado un enlace a tu cuenta de correo registrada, por favor verifica tu correo.</p>
+                    </div>
+                    {% elif action == 'activationsuccess' %}
+                    <div class="card-panel green">
+                        <strong>Tu cuenta ha sido activada con exito.</strong>
+                        <p>Por favor inicia sessión en tu cuenta.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>            
+        </div>
+        
+
+
         
         <!-- Errors -->
         {% if form.errors %}

@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^friends/(?P<target>\d+)/delete/$', login_required(delete_friend), name='delete_friend'),
     
     url(r'^profiles/(?P<username>[\w.@+-]+)/commercial-account/$', login_required(CommercialAccountView.as_view()), name='commercial_account'),
+    url(r'^p/(?P<username>[\w.@+-]+)/activate/$', ActivateAccountView.as_view(), name='activate_account'),
+
     
     url(r'^conditions/$', ConditionsView , name='conditions'),
     url(r'^principles/$', PrinciplesView , name='principles'),

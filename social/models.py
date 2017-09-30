@@ -20,6 +20,7 @@ class Profile(models.Model):
 	cellphone = models.CharField(max_length=32, blank=True, null=True, verbose_name='número de celular')
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)	
 	is_complete = models.BooleanField(default=False)
+	active_by_email = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	objects = ShowerManager()
 

@@ -144,6 +144,13 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email', 
 }
 
+##Configuration for mails
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ['GOOGLE_EMAIL']
+EMAIL_HOST_PASSWORD = os.environ['GOOGLE_PASSWORD']
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
