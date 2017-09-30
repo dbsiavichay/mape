@@ -314,9 +314,11 @@ class OfferCreateView(CreateView):
 	form_class = OfferForm
 	success_url = '/commercial/'
 
-	def get_form_kwargs(self):	    		
+	def get_form_kwargs(self):
+		kind = 	self.request.GET.get('kind') or self.kwargs.get('kind') or None
 		kwargs = super(OfferCreateView, self).get_form_kwargs()	
-		initial = {			
+		initial = {
+			'kind':kind,
 			'commercial': self.request.user.profile.commercial(),			
 		}
 
