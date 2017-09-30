@@ -5,6 +5,6 @@ media/
 comments/migrations/
 notifications/migrations/
 showcase/migrations/
-#shower/migrations/
+shower/migrations/
 social/migrations/
 subscribers/migrations/
