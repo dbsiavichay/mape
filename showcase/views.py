@@ -171,7 +171,7 @@ class EventDetailView(DetailView):
 		#Redirecciona si no es invitado
 		self.object = self.get_object()
 		if self.object.is_public:
-			return return super(EventDetailView, self).get(request, *args, **kwargs)
+			return super(EventDetailView, self).get(request, *args, **kwargs)
 
 		invited = self.object.guests.filter(guest__profile=request.user.profile)
 
