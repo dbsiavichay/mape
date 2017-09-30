@@ -123,11 +123,12 @@
             {% else %}
               {% if not object.is_public %}
             <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
-              {% endif %}
-            <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</a>
+              {% endif %}            
+            {% load subscribers %}
+            {% like object %}
             <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>Asistiré</a>
             <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
-            <a href="/event/{{ event.id }}/not_atttend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
+            <a href="/event/{{ event.id }}/not_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
             {% endif %}
           </div>
           <div class="card col s12">       

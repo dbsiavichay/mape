@@ -28,10 +28,7 @@ class NotificationMixin(object):
                 message = '%s te ha invitado a su evento. %s' % (launcher.user.username, self.event.name)
             elif self.status == model_class.ATTEND and launcher != event_owner:
                 profile2 = event_owner
-                message = '%s te ha indicado que va a asistir a tu evento. %s' % (launcher.user.username, self.event.name)
-            elif self.status == model_class.LIKE and launcher != event_owner:
-                profile2 = event_owner
-                message = '%s te ha indicado que le gusta tu evento. %s' % (launcher.user.username, self.event.name)
+                message = '%s te ha indicado que va a asistir a tu evento. %s' % (launcher.user.username, self.event.name)            
             elif self.status == model_class.SPONSOR_REQUEST:
                 message = '%s te ha invitado a ser auspiciante de su evento. %s' % (profile1.user.username, self.event.name)            
             else:

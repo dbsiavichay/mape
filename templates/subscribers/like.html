@@ -1,0 +1,17 @@
+{% load subscribers %}                
+{% if not user.is_anonymous %}
+    {% if subscriber %}
+    <form action="{% url 'delete_subscriber' subscriber.id %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}        
+        <button type="submit" class="waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Ya no me gusta</button>
+    </form>
+    {% else %}
+    <form action="{% url 'add_subscriber' %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.contenttype }}
+        {{ form.object_id }}
+        <button type="submit" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</button>
+    </form>
+    {% endif %}
+{% endif %}
+
