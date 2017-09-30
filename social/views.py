@@ -122,13 +122,27 @@ class ProfileUpdateView(UpdateView):
 
 class ProfileDetailView(DetailView):
 	model = Profile
+	slug_field = 'user__username'
+	slug_url_kwarg = 'username'
 
-	def get_object(self, queryset=None):
-		username = self.request.GET.get('username') or self.kwargs.get('username') or None
-		if username is None:
-			return redirect('map')
+	def get_context_data(self, **kwargs):
+		context = super(ProfileDetailView, self).get_context_data(**kwargs)
+		profile = self.request.user.profile
 
-		return self.model.objects.get(user__username=username)
+		relationship = profile.get_status_with_profile(self.object)
+
+		if relationship is None: return context
+
+		if relationship.status == 1:
+			context.update({
+				'status': 'send' if relationship.from_profile == profile else 'received'
+			})	
+		else:
+			context.update({
+				'status': 'fried'
+			})
+
+		return context
 
 class RelationshipListView(ListView):
 	model = Profile

@@ -30,16 +30,22 @@
       </nav>
       <div id="test1" class="col s12"> 
         <p>
-            {{ profile.get_full_name }}
+            {{ profile.get_full_name }}            
          </p>
       </div>
       <div id="test2" class="col s12">{% if profile.is_complete %} <p> {{ profile.birthday }} </p>
       <p> {{ profile.cellphone }} </p>{% endif %}</div>
       <div id="test3" class="col s12">{% if profile.is_commertial %} {% endif %}</div>
     <div class="col s12 ">
-        <a href="#" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
-        <a href="#" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
-        <a href="#" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
+        {% if not status %}
+        <a href="{% url 'profile_send_request' profile.id %}" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
+        {% elif status == 'send' %}
+        <a href="{% url 'profile_delete_request' profile.id %}" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
+        {% elif status == 'received' %}
+        <a href="{% url 'profile_accept_request' profile.id %}" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
+        {% else %}
+        <a href="{% url 'delete_friend' profile.id %}" class="btn cyan wave-effects light-effect">Eliminar de mis amigos</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

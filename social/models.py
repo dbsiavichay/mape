@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Q
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -21,7 +22,7 @@ class Profile(models.Model):
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)	
 	is_complete = models.BooleanField(default=False)
 	active_by_email = models.BooleanField(default=False)
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)	
 	objects = ShowerManager()
 
 	def __unicode__(self):
@@ -29,6 +30,17 @@ class Profile(models.Model):
 
 	def get_full_name(self):
 		return self.user.get_full_name()
+
+	def get_status_with_profile(self, profile):
+		try:
+			friendship = Friendship.objects.get(
+				models.Q(from_profile=self) | models.Q(to_profile=self),
+				models.Q(from_profile=profile) | models.Q(to_profile=profile)
+			)
+		except Friendship.DoesNotExist:
+			return None
+
+		return friendship
 		
 	def get_profiles(self, status):
 		profiles = []
