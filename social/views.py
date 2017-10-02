@@ -23,7 +23,7 @@ class UserCreateView(CreateView):
 	def form_valid(self, form):
 		from .mails import send_activate_account
 
-		self.object = form.save()
+		# self.object = form.save()
 		# user = authenticate(
 		# 	username=form.cleaned_data['username'], 
 		# 	password=form.cleaned_data['password1']

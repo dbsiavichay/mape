@@ -27,11 +27,14 @@ $(function () {
 						})		
 						.addTo(map);
 
-						var content = '<h3 class="cyan-text">' + data[index].name+ '</h3>' +
-							'<p>' + data[index].description +					
-							' </p> <a href="/locality/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
-							'<strong> Ver </strong></a>';
-
+						var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
+							'<p>' + data[index].description +
+							'</p> <p> <img class="mape-large circle z-depth-3" src=" ' + data[index].locality_image_url + 
+							'" > </p> <p> De: <a class="collection-item" href="/p/'+ data[index].owner_name + '">'+ 
+							data[index].owner_name + 
+							'</a>  </p> <a href="/locality/'+data[index].id+
+							'/" class="right cyan-text waves-effect waves-cyan white btn">'+
+							'<strong> Ver </strong></a>  ';
 						marker.bindPopup(content);
 		            }
 				});
@@ -46,8 +49,10 @@ $(function () {
 				    })
 				}).addTo(map);
 
-				var content = '<h3 class="cyan-text ">' + data[index].name+ '</h3>' +
+				var content = '<strong class="cyan-text ">' + data[index].name+ '</strong>' +
 					'<p>' + data[index].description +					
+					'</p> <p> <a href="' + data[index].event_image_url +'																																																" target="_blank" > <img class="mape-large z-depth-3" src=" ' + data[index].event_image_url + '" > </a></p>' + 
+					'<p> De: <a class="collection-item" href="/p/'+ data[index].event_owner + '">'+ data[index].event_owner +
 					'</p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 

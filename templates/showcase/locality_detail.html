@@ -31,8 +31,6 @@
     {% else %}
     Privado &#8226;
     {%endif%}
-    <!-- si esta abierto -->
-    Abierto &#8226;
     <!-- Si esta verificado-->
     {% if object.verified %}
     Verificado
@@ -43,27 +41,27 @@
 
 <div class="right">
 {% if object.owner == user.profile %}
-<a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>
+<!-- <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>-->
 <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
 {%endif%}
 </div>
 
 
 <!-- Seccion central -->
-<div class="section white no-padding row">
+<div class="section container white no-padding row">
     <div class="card">
     <!-- Cabecera de la localidad -->
         <div class="card-content row fullscreen">
-            <div class="card col s12 m12 l6 row ">
+            <div class="col s12 m12 l6 row ">
             <!-- Imagen de perfil -->
                 {% if  object.profile_image %}                    
-                <div class="col center-align col s12 l3 m3 marginado">
+                <div class="col center-align col s12 l6 m3 offset-l3 marginado">
                     <img class="event circle z-depth-3" src="{{ object.profile_image.url }}" >
                 </div>
                 {% endif %}
-                <h4 class="grey-text"> #{{ object.get_hash_name }} </h4>
+                <h4 class="grey-text col"> {{ object.get_hash_name }} </h4>
                 
-                <div class="left-align">
+                <div class="left-align col">
                     {% load subscribers %}
                     {% subscription object %}
                     <div class="right ">
@@ -74,9 +72,8 @@
             </div>
             <div class="divider col"></div>
             <!-- Imagenes -->
-            <div class="black carousel col s12 m12 l6">
             {%if object.profile_image or front_image %}
-
+            <div class="black carousel col s12 m12 l6">
               {%if object.profile_image %}
                 <a target="_blank" class="carousel-item" href="{{ object.profile_image.url }}">
                     <img src="{{ object.profile_image.url }}">
@@ -102,15 +99,15 @@
         <div class="card-tabs">
             <ul class="tabs tabs-fixed-width">
               <li class="tab"><a class="active" href="#description">Descripción</a></li>
-              <li class="tab {% if object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
+              <li class="tab {% if not object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
             </ul>
         </div>
         <!-- Contenido de los tabs -->
-        <div class="card-content row grey lighten-4">
+        <div class="card-content row">
           <div id="description row">
             <!-- Descripcion -->
-            <div class="card-panel col s12">
-              <span class="card-title">{{ object.name }}</span>
+            <div class="card col s12">
+              <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
               <p align="justify"><span>{{ object.description }}</span></p>
             </div>
             <!-- Productos / Servicios-->            
@@ -124,7 +121,7 @@
             {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
           </div>
           <!-- Eventos de la Localidad -->
-          {% if eventos %}
+          {% if object.event_set %}
           <div id="events" class="row">
             <div class="section col s12 m12 l6 offset-l3">
               <!-- Tarjeta de evento -->
@@ -137,8 +134,8 @@
           {% endif %}
         </div><!-- Fin tarjeta evento -->
     </div>
-    <!-- Comentarios -->
-    <div class="no-padding">
+    <!-- Postales -->
+    <div class="no-padding container">
         {% load comments %}
         {% comment_list object %}
         {% comment_form object %}        

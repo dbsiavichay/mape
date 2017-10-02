@@ -1,6 +1,6 @@
-<ul class="collection center-align">        
+<ul class=" center-align">        
     {% if not user.is_anonymous %}
-    <li class="collection-item">
+    <li class="">
         <form action="{% url 'add_comment' %}" method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {{ form.object_id }}
@@ -23,12 +23,12 @@
             
             <button type="submit" class="waves-effect waves-light cyan darken-2 btn right marginado">
                 <i class="material-icons right">send</i>
-                Enviar
+                Publicar
             </button>
         </form>    
     </li>
     {% else %}
-    <li class="collection-item">
+    <li class="">
         Logueate para comentar.
     </li>
     {% endif %}

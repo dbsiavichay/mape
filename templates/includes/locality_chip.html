@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<div class="chip z-depth-1 {% if locality.commercial %} amber lighten-2 {% endif %} ">
+<div class="chip z-depth-1 {% if locality.commercial %} amber lighten-2 {% endif %} hoverable">
   {% if locality.profile_image %}
     <img src="{{ locality.profile_image.url }}" alt="{{ object.locality }}">
   {% else %}

@@ -1,12 +1,12 @@
 {% load staticfiles %}
 {% if profile %}
-<div class="chip truncate z-depth-1">
+<div class="chip truncate z-depth-1 hoverable">
   {% if profile.avatar %}
   <img src="{{ profile.avatar.url }} " alt="Contact Person {{profile.get_full_name}} ">
   {% else %}
   <i class="material-icons cyan circle">person</i>
   {% endif %}
-  <a class="collection-item" href="/profiles/{{ profile.id }} ">{{ profile.get_full_name }} </a>
+  <a class="collection-item" href="/p/{{ profile.user }} ">{{ profile.get_full_name }} </a>
 </div>
 {% endif %}
 

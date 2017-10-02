@@ -8,31 +8,31 @@
             <ul class="slides">
                 <!-- Host account -->
                 <li class="cyan">
-                  <img class="opacado" src="{% static 'showcase/img/mar.jpg' %}"> 
+                  <img class="opacado" src="{{ commercial_organizer.profile_image.url }}"> 
                   <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
                   <div class="caption center-align row ">
                     <h5 class="col s6 offset-s2 white-text sombra"> Un evento de:</h5>
                     <!-- Imagen circular si tiene imagen de perfil -->
                     <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#">
-                      {% if True %} <img class="circle z-depth-5" src="{% static 'showcase/img/mar.jpg' %}" alt="commertial profile image ">{%else%}<i class="circle z-depth-5 white large material-icons">store</i>{%endif%}</a></div>
-                    <h5 class="col offset-s3 light sombra amber-text lighten-3">Comercial de organizador</h5>
+                      {% if True %} <img class="circle z-depth-5" src="{{ commercial_organizer.profile_image.url }}" alt="{{ commercial_organizer.name }} profile image ">{%else%}<i class="circle z-depth-5 white large material-icons">store</i>{%endif%}</a></div>
+                    <h5 class="col offset-s3 light sombra amber-text lighten-3">{{ commercial_organizer.name }}</h5>
                   </div>
                 </li>
                 <!-- Sponsors slides  -->
                 {% for sponsor in sponsors %}
                 <li class="cyan">
-                {% if true %}
-                  <img class="opacado" src="{% static '/showcase/img/Fondo-colores.png' %}" alt="commertial profile image">
+                {% if sponsor.commercial.locality.profile_image %}
+                  <img class="opacado" src="{{ sponsor.commercial.locality.profile_image.url }}" alt="{{ sponsor.commercial.locality.name }} profile image">
                 {% else %}
-                  <img class="opacado" src="{% static '/showcase/img/Fondo-colores.jpg' %}" alt="commertial profile image">
+                  <img class="opacado" src="{% static '/showcase/img/Fondo-colores.jpg' %}">
                 {% endif %} 
                 <!-- Nota: para uso de slider 'caption' y 'left-align, right-align, center-align'-->
                   <div class="caption row right-align">
                     <h5 class="col s8 l8 offset-s2 white-text sombra left-align"> Con el auspicio de:</h5>
                     <div class="col s8 m6 l5 offset-s2 offset-m3 offset-l4"><a href="#"> 
                     <!-- Imagen circular si tiene imagen de perfil -->
-                    {% if True %} 
-                    <img class="circle z-depth-5 " src="{% static '/showcase/img/mar.jpg' %}"  alt="commertial profile image">{%else%}<i class="circle white large material-icons">store</i>{%endif%}</a> </div>
+                    {% if sponsor.commercial.locality.profile_image %} 
+                    <img class="circle z-depth-5 " src="{{ sponsor.commercial.locality.profile_image.url }}"  alt="{{ sponsor.commercial.locality.name }} profile image">{%else%}<i class="circle white-text large material-icons">store</i>{%endif%}</a> </div>
                     <h5 class="col center-align s10 offset-s1 amber-text lighten-3 light sombra">{{ sponsor.commercial.locality.name }}</h5>
                   </div>
                 </li>

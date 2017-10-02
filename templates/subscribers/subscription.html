@@ -1,5 +1,5 @@
-{% load subscribers %}                
-{% if not user.is_anonymous %}
+{% load subscribers %}     
+{% if not user.is_anonymous and object.is_public %}
     {% if is_subscribed %}
     <form action="{% url 'delete_subscriber' subscriber.id %}" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
@@ -15,6 +15,6 @@
         <button type="submit" class=" cyan waves-effect waves-light btn"><i class="material-icons">grade</i>Subscribirse</button>    
     </form>
     {% endif %}
-{% endif %}
 <!-- Contador de suscriptores -->
 <p class="flow-text"> {% subscribers_count object %} Suscriptores</p>
+{% endif %}

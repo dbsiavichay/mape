@@ -1,11 +1,11 @@
 {% load staticfiles %}
 
-<ul class="collection center-align">
+<ul class=" center-align">
     <b>Tarjetas Postales </b>
     {% for comment in comments %}
-    <li class="collection-item left-align">
+    <li class=" left-align">
         
-        <div class="card-panel ">
+        <div class="card-panel no-margin">
         <!-- Comprobar si el usuario es dueño del comentario o el administrador del objeto (evento o localidad) -->
         {% if comment.profile.user == user  %}
         <a href="#1" class="dropdown-button right" data-activates="comment-options" ><i class="material-icons">more_vert</i></a>
@@ -13,20 +13,13 @@
             <li>                
                 <form action="{% url 'delete_comment' comment.id %}" method="post">
                     {% csrf_token %}                    
-                    <button type="submit" class="flat-btn red-text"><i class="material-icons">delete</i> Eliminar</button>                    
+                    <button type="submit" class="btn red white-text"><i class="material-icons">delete</i> Eliminar</button>                   
                 </form>
             </li>
         </ul>
         {% endif %}
         <!-- Perfil del usuario -->
-            <div class="chip">                        
-            {% if comment.profile.avatar %}
-                <img src="{{ comment.profile.avatar.url }}" alt="Contact Person">
-            {% else %}
-                <i class="circle material-icons">person</i>
-            {% endif %}
-                <a href="/profiles/{{ comment.profile.user }}/">{{ comment.profile.user }}</a>
-            </div>
+            {% include 'includes/profile_chip.html' with profile=comment.profile %}
             : {{ comment.content }}
             <!-- Imagen del comentario -->
             {% if comment.image %}
@@ -36,7 +29,7 @@
         <p class="no-margin tiny-text">Hace <strong>{{ comment.date|timesince }}</strong></p>
     </li>
     {% empty %}
-    <li class="collection-item">
+    <li class="">
         Aún no han hecho una postal.
     </li>   
     {% endfor %}
