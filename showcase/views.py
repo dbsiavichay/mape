@@ -349,23 +349,47 @@ def event_like(request, pk):
 	return redirect('/event/%s/' % pk)
 
 def event_attend(request, pk):
-	invitation = Guest.objects.get(profile=request.user.profile, event=pk)
-	invitation.status = Guest.ATTEND
-	invitation.save()
+	event = Event.objects.get(pk=pk)
+	try:
+		invitation = Guest.objects.get(profile=request.user.profile, event=event)
+		invitation.status = Guest.ATTEND
+		invitation.save()
+	except Guest.DoesNotExist:
+		Guest.objects.create(
+			profile=request.user.profile,
+			event=event,
+			status=Guest.ATTEND
+		)	
 
 	return redirect('/event/%s/' % pk)
 
 def event_maybe_attend(request, pk):
-	invitation = Guest.objects.get(profile=request.user.profile, event=pk)
-	invitation.status = Guest.MAYBE_ATTEND
-	invitation.save()
+	event = Event.objects.get(pk=pk)
+	try:
+		invitation = Guest.objects.get(profile=request.user.profile, event=event)
+		invitation.status = Guest.MAYBE_ATTEND
+		invitation.save()
+	except Guest.DoesNotExist:
+		Guest.objects.create(
+			profile=request.user.profile,
+			event=event,
+			status=Guest.MAYBE_ATTEND
+		)	
 
 	return redirect('/event/%s/' % pk)
 
 def event_not_attend(request, pk):
-	invitation = Guest.objects.get(profile=request.user.profile, event=pk)
-	invitation.status = Guest.NOT_ATTEND
-	invitation.save()
+	event = Event.objects.get(pk=pk)
+	try:
+		invitation = Guest.objects.get(profile=request.user.profile, event=event)
+		invitation.status = Guest.NOT_ATTEND
+		invitation.save()
+	except Guest.DoesNotExist:
+		Guest.objects.create(
+			profile=request.user.profile,
+			event=event,
+			status=Guest.NOT_ATTEND
+		)
 
 	return redirect('/event/%s/' % pk)
 

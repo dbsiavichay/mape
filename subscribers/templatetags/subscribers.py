@@ -8,8 +8,10 @@ from ..forms import SubscriberForm
 register = template.Library()
 
 class SubscriptionNode(template.Node):
-    def __init__(self, obj):    	
+    def __init__(self, obj, template_name=None):    	
         self.obj = template.Variable(obj)
+        self.template_name = 'subscribers/subscription.html'
+        if template_name is not None: self.template_name = template_name
 
     def render(self, context):
         instance = self.obj.resolve(context)
@@ -31,7 +33,7 @@ class SubscriptionNode(template.Node):
             context_dict['form'] = form
 
         context_dict['is_subscribed'] = is_subscribed
-        subscriptionstr = render_to_string(['subscribers/subscription.html'], context_dict)
+        subscriptionstr = render_to_string([self.template_name], context_dict)
         return subscriptionstr           
 
 @register.tag(name='subscription')
@@ -52,3 +54,16 @@ def subscribers_count(object):
     ctype = ContentType.objects.get_for_model(object)
     count = Subscriber.objects.filter(contenttype = ctype, object_id=object.id).count()
     return count
+
+@register.tag(name='like')
+def like(parser, token):
+    """
+    Syntax:
+        {% subscription [object] %}
+    """
+    try:
+        tag_name, obj = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError("%r tag requires a single argument" % token.contents.split()[0])
+
+    return SubscriptionNode(obj, template_name='subscribers/like.html')

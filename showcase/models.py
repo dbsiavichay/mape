@@ -126,9 +126,14 @@ class Event(models.Model):
 		return self.guests.get(guest__is_owner=True)
 
 	def get_information(self):
+		from django.contrib.contenttypes.models import ContentType
+		from subscribers.models import Subscriber
 		invited = self.guests.all()
 		attend = self.guests.filter(guest__status=Guest.ATTEND)
-		liked = self.guests.filter(guest__status=Guest.LIKE)		
+		
+		ctype = ContentType.objects.get_for_model(self)
+		likers = Subscriber.objects.filter(contenttype = ctype, object_id=self.id).count()
+	    
 
 		return '%s | %s invitados * %s asistirán * %s les gusta' % (
 			'Público' if self.is_public else 'Privado',
@@ -140,16 +145,14 @@ class Event(models.Model):
 
 class Guest(NotificationMixin, models.Model):
 	INVITED = 1
-	ATTEND = 2
-	LIKE = 3
-	MAYBE_ATTEND = 4
-	NOT_ATTEND = 5
-	SPONSOR_REQUEST = 6
+	ATTEND = 2	
+	MAYBE_ATTEND = 3
+	NOT_ATTEND = 4
+	SPONSOR_REQUEST = 5
 
 	STATE_CHOICES = (
 		(INVITED, 'Invitado'),
-		(ATTEND, 'Asistirá'),
-		(LIKE, 'Me gusta'),
+		(ATTEND, 'Asistirá'),		
 		(MAYBE_ATTEND, 'Talvez asista'),
 		(NOT_ATTEND, 'No asistirá')
 	)
