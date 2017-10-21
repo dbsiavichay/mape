@@ -10,7 +10,7 @@ from subscribers.models import Subscriber
 class EventForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		exclude = ('start','guests')
+		exclude = ('start','guests', 'status')
 		widgets = {
 			'locality': forms.HiddenInput,
 			'latitude':forms.HiddenInput,

@@ -27,7 +27,7 @@ class EventListView(ListView):
 			self.object_list = self.model.objects.filter(
 				Q(guest__profile=profile) | 
 				Q(is_public=True)
-			)			
+			).exclude(status=2)			
 			
 			events = []
 
@@ -182,7 +182,14 @@ class EventDetailView(DetailView):
 		
 		return redirect('/map/')
 
-
+def cancel_event(request, pk):
+	try:
+		event = Event.objects.get(pk=pk)
+	except Event.DoesNotExist:
+		return redirect('map')
+	event.status = 3
+	event.save()
+	return redirect(event.get_absolute_url())
 
 class LocalityListView(ListView):
 	model = Locality
@@ -202,7 +209,7 @@ class LocalityListView(ListView):
 					'description': locality.description,
 					'longitude': locality.point.x,
 					'latitude': locality.point.y,
-					'locality_image_url': locality.profile_image.url,
+					'locality_image_url': locality.profile_image.url if locality.profile_image else '#',
 					'owner_name': locality.owner.user.username,
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
 				})

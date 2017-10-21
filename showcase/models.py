@@ -89,6 +89,12 @@ class Event(models.Model):
 		verbose_name = 'evento'
 		verbose_name_plural = 'eventos'
 
+	STATUS_CHOICES = (
+		(1, 'Activo'),
+		(2, 'Completado'),
+		(3, 'Cancelado'),		
+	)
+
 	name = models.CharField(max_length=64, verbose_name='nombre')
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
 	front_image = models.ImageField(
@@ -109,6 +115,7 @@ class Event(models.Model):
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
 	locality = models.ForeignKey(Locality, blank=True, null=True)		
+	status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
 	guests = models.ManyToManyField('social.Profile', through='Guest', blank=True)
 	objects = ShowerManager()
 
@@ -137,7 +144,23 @@ class Event(models.Model):
 
 		return '%s | %s invitados * %s asistirán * %s les gusta' % (
 			'Público' if self.is_public else 'Privado',
-			len(invited) - 1, len(attend), len(liked))
+			len(invited) - 1, len(attend), likers)
+
+	def get_is_comming(self):
+		from datetime import datetime
+		if self.status == 3: return 'Cancelado'
+		now = datetime.now().date()
+		delta = self.start.date() - now
+		days = delta.days
+		if days < 0 and self.status == 1:			
+			self.status = 2
+			self.save()
+		if days >= 0 and days < 7:
+			return 'Esta semana'
+		elif days > 7:
+			return 'Por venir'
+		else:
+			return 'Completado'
 
 	def get_absolute_url(self):
 		from django.urls import reverse
