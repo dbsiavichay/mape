@@ -10,6 +10,8 @@ class NotificationListView(ListView):
 	def get_queryset(self):
 		queryset = super(NotificationListView, self).get_queryset()
 		queryset = queryset.filter(to_profile=self.request.user.profile)		
+		qs = queryset.filter(status=Notification.UNREAD)
+		qs.update(status=Notification.VIEWED)
 		return queryset
 
 
