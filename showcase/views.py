@@ -39,7 +39,8 @@ class EventListView(ListView):
 					'latitude': event.latitude,
 					'longitude': event.longitude,
 					'event_image_url': event.front_image.url if event.front_image else '#',
-					'event_owner': event.owner().user.username
+					'event_owner': event.owner().user.username if not event.is_public else event.owner().user.commercial.locality,
+					'day': event.start
 				})
 
 			return JsonResponse(events, safe=False)
@@ -202,7 +203,7 @@ class LocalityListView(ListView):
 					'description': locality.description,
 					'longitude': locality.point.x,
 					'latitude': locality.point.y,
-					'locality_image_url': locality.profile_image.url,
+					'locality_image_url': locality.profile_image.url if locality.profile_image else '#',
 					'owner_name': locality.owner.user.username,
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
 				})

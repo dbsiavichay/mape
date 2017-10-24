@@ -20,6 +20,26 @@
   </div>
   <div class="card-reveal">
     <span class="card-title grey-text text-darken-4">{{ offer.get_kind }}<i class="material-icons right">close</i></span>
-    <p>{{ offer.description }}</p>
+    <p>{{ offer.description }} <br>
+    {% if True %}
+      <a href="#pay-modal" class="modal-trigger btn cyan">Realizar pago</a> 
+    {% endif %}
+    
+    </p>
+  </div>
+
+  <div class="modal" id="pay-modal">
+    <div class="modal-content">
+      <h5>Opciones de pago</h5>
+      <p>
+      <b class="cyan-text">Vía transferencia al número {{ offer.commercial.telephone }} con el valor de ${{ offer.price }}. (Llamar al *153#) <br>
+      <a target="_blank" href="{{ offer.commercial.webpage }}/{{ offer.price }}">Vía Paypal</a> </b> <br> <br>
+      <b class="red-text">Alerta!</b> Antes de realizar cualquier pago recuerda ponerte en contacto con el vendedor o asegurate de haber llegado a un acuerdo. 
+      </p>
+
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
   </div>
 </div>

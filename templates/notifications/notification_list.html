@@ -11,10 +11,10 @@
 {% load widget_tweaks %}
 
 <div class="row container">
-    <div class="collection with-header">
+    <div class="collection with-header col s12 l8 offset-l2">
         <div class="collection-header"><h4>Mis notificaciones</h4></div>        
         {% for notification in object_list %}
-        <a href="/notification/{{ notification.id }}/read/?next={{ notification.url }}" class="collection-item">
+        <a href="/notification/{{ notification.id }}/read/?next={{ notification.url }}" class="collection-item cyan-text scrollFire">
             {{ notification.message }}
             <p><i class="material-icons">access_time</i>Hace {{ notification.date|timesince }}</p>
         </a>        

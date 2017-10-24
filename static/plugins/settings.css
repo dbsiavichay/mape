@@ -107,3 +107,22 @@ a.modal-action {
 .ui-datepicker .ui-widget-content {
     background: #00bcd4 none;
 }
+
+footer{
+  padding-top: 4em;
+  bottom: 0px;
+}
+.footer{
+  position: absolute;
+ bottom: 0px;
+ right: 0px;
+}
+.mape-large{
+  width: 200px;
+}
+.mape-medium{
+  width: 80px;
+}
+.mape-tiny{
+  width: 42px;
+}

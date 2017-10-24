@@ -3,6 +3,7 @@ $(function () {
 	$('.modal').modal();
 	$('.parallax').parallax();
 	$('.carousel').carousel();
+	$('.collapsible').collapsible();
 	$("#boton").sideNav({
 		menuWidth: 300, // Default is 300
 	      edge: 'right', // Choose the horizontal origin
@@ -10,6 +11,19 @@ $(function () {
 	      draggable: false, // Choose whether you can drag to open on touch screens,
 	    }
 	  );
+	var options = [
+	    {selector: '.scrollFire', offset: 0, callback: function(el) {
+	      Materialize.showStaggeredList($(el));
+	    } }
+	  ];
+	Materialize.scrollFire(options);
+
+    $('.target').pushpin({
+      top: 0,
+      bottom: 99999,
+      offset: 0
+    });
+
 	Materialize.updateTextFields(); 
 	//Selects
 	$(document).ready(function() {
@@ -18,12 +32,31 @@ $(function () {
 	
 	//Material datetimepicker
 	datepickers = $('.datepicker');
+	maxDate = new Date();
+	console.log(maxDate);
+	maxDate.setYear(2017 - 12);
+
+	console.log(maxDate);
 
 	if (datepickers.length) {
 		datepickers.pickadate({
-		    selectMonths: true, // Creates a dropdown to control month
-		    selectYears: 65, // Creates a dropdown of 15 years to control year
-		    max: new Date(),
+		    selectMonths: true, 
+		    selectYears: 65,
+		    max: maxDate,
+		    format:'dd/mm/yyyy',
+		    today: 'Hoy',
+		    clear: 'Limpiar',
+		    close: 'Ok' 
+		});	
+	}
+
+	datepickers = $('.datepicker-event');
+
+	if (datepickers.length) {
+		datepickers.pickadate({
+		    selectMonths: true, 
+		    selectYears: 2, 
+		    min: new Date(),
 		    format:'dd/mm/yyyy',
 		    today: 'Hoy',
 		    clear: 'Limpiar',

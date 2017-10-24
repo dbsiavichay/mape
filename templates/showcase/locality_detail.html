@@ -40,8 +40,8 @@
 <!-- boton de editar -->
 
 <div class="right">
+<a href="" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
 {% if object.owner == user.profile %}
-<!-- <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Mapa <i class="material-icons tiny">location_on</i></a>-->
 <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
 {%endif%}
 </div>
@@ -65,7 +65,7 @@
                     {% load subscribers %}
                     {% subscription object %}
                     <div class="right ">
-                        <p>De: </p>
+                        <p>Administrador: </p>
                         {% include 'includes/profile_chip.html' with profile=object.owner %}
                     </div>
                 </div>                    
@@ -104,7 +104,7 @@
         </div>
         <!-- Contenido de los tabs -->
         <div class="card-content row">
-          <div id="description row">
+          <div id="description">
             <!-- Descripcion -->
             <div class="card col s12">
               <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
@@ -135,13 +135,16 @@
             </div> 
         </div><!-- Fin tarjeta evento -->
     </div>
+{% if not user.is_anonymous and object.is_public and is_subscribed %}
     <!-- Postales -->
     <div class="no-padding container">
         {% load comments %}
         {% comment_list object %}
         {% comment_form object %}        
     </div>
+{% endif %}
 </div>
+
         {% include 'includes/footer.html' %}
 {% endblock %}
 

@@ -4,17 +4,18 @@
 <div class="card">
     <!-- Imagen de la tarjeta -->
     <div class="card-image z-depth-3 waves-effect waves-block waves-light ">
-        {% if not event.front_image %}
-        <img class="activator" src="{% static 'showcase/img/event-header.jpg' %}">
+        {% if event.front_image %}
+        <img class="activator" src="{{ event.front_image.url }}">
         {% else %}
         <i class="activator material-icons large">perm_media</i>
         {% endif %}
+        <span class="card-title">{{ event.name }}</span>
     </div>
 
     <!-- Cabecera de la tarjeta -->
     <div class="card-content row event-card no-margin">
         <!-- Lista de franja -->
-        <div class="franja right-align col s12">
+        <div class="franja right-align col s12 tiny-text">
             <!-- Estados de proximidad: 
             1.- 1 mes de anticipacion: "Próximamente"
             2.- 2 semanas: "Próxima semana" -->
@@ -22,38 +23,44 @@
             <!-- Estados de Evento: 
             1.- Publico
             2.- Privado -->
+            {% if event.is_public %}
             Evento Publico &#8226;
+            {% endif %}
             <!-- Gratuito -->
+            {% if event.is_free %}
             Gratuito &#8226;
+            {% endif %}
             <!-- Numero total de invitados. (nos reservamos los contadores de [Asistentes, Me gusta]) -->
             {{ event.invited_count }} Invitados
         </div>
         <!-- Activador-Nombre del Evento -->
         <span class="card-title activator grey-text text-darken-4">
-            <a href="">{{ event.locality.name }}</a>
+            <a href="">{{ event.name }}</a>
             <i class="material-icons right">more_vert</i>
         </span>
         <!-- Fecha del evento -->
-        <div class="col s6 card comentario-izq grey lighten-2">
-            <i class="material-icons medium">today</i>
-            <p class="card-title">{{ event.start }}</p>
-            {% if event.link %}
+        <div class="col s12 row card grey lighten-2">
+            <div class="col s6">
+                <i class="material-icons medium">today</i>
+                <p class="">{{ event.start }}</p>
+                {% if event.link %}
                 <p><h2> {{ event.link }}</h2></p>
-            {% endif %}
+                {% endif %}
+            </div>
+            <div class="col s6">
+                {% if event.locality %}
+                <i class="material-icons medium">location_on</i>
+                <p>En:
+                {% include "includes/locality_chip.html" with locality=event.locality %}
+                </p>
+                <p><a class="" href="#1">Ver en mapa</a>
+                </p>
+                {% endif %}
+            </div>
+            <div class="col s6"></div>
         </div>
         <!-- Event Place -->
-        {% if event.locality %}
-        <div class="col s6 card comentario-der grey lighten-2">
-            <i class="material-icons medium">location_on</i>
-            <p>En:
-            <div class="chip">
-                <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-                <a href="{% url 'locality_detail' event.locality.id %}">{{ event.locality.name }}</a>
-            </div>
-            <p><a href="#">Ver en el mapa</a>
-            </p>
-        </div>
-        {% endif %}
+        
     </div>
 
     <!-- Card content -->
@@ -69,25 +76,27 @@
         </div>
         <!-- Date -->
         <div class="row">
-            <div class="col s2 "><i class="material-icons cyan-text large ">today</i></div><H5 class="col s10">{{ event.start }}</H5>
+            <div class="col s12"><i class="material-icons cyan-text ">today</i><b>{{ event.start }}</b> </div>
               
             {% if event.is_free %}
-            <div class="col s3 right "><i class="material-icons cyan-text large ">stars</i></div>
+            <div class="col s3 right "><i class="material-icons cyan-text ">spa</i></div>
             <h5 class="col s9 right-align">Gratuito</h5> 
             {% else %}
-            <div class="col s3 "><i class="material-icons cyan-text large right">shopping_basket</i></div>
-            <h5 class="col s9">Precio: {{ event.cover }} </h5> 
+            <div class="col s12 "><i class="material-icons cyan-text">attach_money</i> <b>Precio de entrada: {{ event.cover }} </b></div>
+             
             {% endif %}
 
-            {% if true %}
-            <div class="col s3 "><i class="material-icons cyan-text large ">assignment_ind</i></div>
-            <h5 class="col s9">{{ object.name }}</h5>
+            {% if event.is_public %}
+            <div class="col s3 "><i class="material-icons cyan-text medium ">assignment_ind</i></div>
+            Organizado por: <br>
+                {% include "includes/locality_chip.html" with locality=event.owner.commercial.locality %}
             {%else%}
-            <img class="materialboxed col s3 circle" src="{% static 'showcase/img/alcaldia_morona.png' %}" >
-            <h5 class="col s9">Organizado por: {{ object.name }}</h5>
-            {%endif%}
+            Organizado por: <br>
+            <div class="col s3 "><i class="material-icons cyan-text medium ">assignment_ind</i></div>
+            {% include "includes/profile_chip.html" with profile=event.owner %}
+            {%endif%} 
         </div>
-        <!-- Chips de Hashtags: Ofertas para el evento -->
+        <!-- Chips de Hashtags: Ofertas para el evento 
         <div class="col s12 grey lighten-3 comentario-izq">
             <h3><b class="cyan-text col s1">#</b></h3>
             <div class"col s11">
@@ -102,7 +111,10 @@
                 </div>                
             </div>
         </div>
-
+-->
+{% if event.is_public %}
+{% include "showcase/components/sponsors.html" with sponsors=sponsors commercial_organizer=event.owner.commercial.locality %}
+{% endif %}
         <ul class="col s12 collapsible" data-collapsible="accordion">
             <li>
                 <div class="collapsible-header"><i class="material-icons">perm_data_setting</i>Más opciones</div>
@@ -116,9 +128,9 @@
 
     <!-- Card Actions -->      
     <div class="card-action row">
-        <a href="" class="btn cyan waves-light col s4 "> <i class="material-icons right">thumb_up</i>Like</a>
-        <a href="" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">done</i>Asistir </a>
-        <a href="#Invitar" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">supervisor_account</i>Invitar </a>
+        <a href="" class="btn cyan waves-light col s4 "> <i class="material-icons right">thumb_up</i></a>
+        <a href="" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">done</i> </a>
+        <a href="#Invitar" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">supervisor_account</i></a>
     </div>   
 </div>
 {% endif %}

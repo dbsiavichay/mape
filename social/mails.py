@@ -24,7 +24,7 @@ def send_mail(to, subject, message):
 
 def send_activate_account(user):
 	from django.urls import reverse
-	link = 'http://localhost:8000' + reverse('activate_account', args=[str(user.username)])
+	link = 'http://localhost:8000' + reverse('activate_account', args=[str(user)])
 
 	message = """
 		Activa tu cuenta.

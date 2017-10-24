@@ -10,13 +10,7 @@
 	    			<li class="collection-header"><h6>Comerciales</h6></li>
 	    			{% for commercial in commercials %}
 	                <li add-to="#sponsors" data-id="{{ commercial.id }}" data-name="{{ commercial.locality.name }}" class="collection-item small avatar">
-	                    {% if commercial.locality.profile_image %}
-	                    <img src="{{ profile.avatar.url }}" alt="" class="circle">
-	                    {% else %}
-	                    <i class="material-icons circle cyan">location_on</i>
-	                    {% endif %}
-	                    <span class="full_name title">{{ commercial.locality.name }}</span>
-	                    <p>{{ commercial.locality.owner.user.username }}</p>	                    
+	                    {% include "includes/locality_item.html" with object=commercial.locality %}	                    
 	                </li>
 	                {% endfor %}
 	            </ul>
@@ -35,10 +29,7 @@
 	    <h6>Invitados</h6>
 	    <div class="center">
 	    	{% for user in guests %}
-		    <div class="chip">                        
-	            <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-	            <a href="/profiles/{{ user.username }}/">{{ user.get_full_name }}</a>
-	        </div>
+		    	{% include "includes/profile_chip.html" with profile=user %}
 	        {% endfor %}
 	    </div>
 	    {% endif %}

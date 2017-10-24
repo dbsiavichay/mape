@@ -1,9 +1,10 @@
 {% load staticfiles %}
+<a class="collection-item" pk="{{ locality.id }}" x="{{ locality.longitude }}"" y="{{ locality.latitude }}" href="/locality/{{ locality.id }}">
 <div class="chip z-depth-1 {% if locality.commercial %} amber lighten-2 {% endif %} hoverable">
   {% if locality.profile_image %}
     <img src="{{ locality.profile_image.url }}" alt="{{ object.locality }}">
   {% else %}
   <i class="material-icons circle amber-text text-darken-2">place</i>
   {% endif %}
-  <a class="collection-item" pk="{{ locality.id }}" x="{{ locality.longitude }}"" y="{{ locality.latitude }}" href="/locality/{{ locality.id }}">{{ locality }} </a>
-</div>
+  {{ locality }} 
+</div> </a>

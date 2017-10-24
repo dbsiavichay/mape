@@ -84,8 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
+# L8fzAsj9EZ*    s@gai3 thiCky capiTa mace
+# LaClave?es123
+# Database 
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {

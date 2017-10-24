@@ -3,12 +3,45 @@
     <li class="collection-header"><h5>{{ title|capfirst }}</h5></li>
     {% for object in object_list %}
     <li class="collection-item avatar">
-        <i class="material-icons circle cyan">location_on</i>
-        <span class="title">{{ object.name }}</span>
-        <p>{{ object.description }} <br>
-            {{ object.price }}
+        <!-- Offer -->
+        {% if object.kind %}
+        <a href="/locality/{{ object.commercial.locality.id }}" class="secondary-content "><i class="material-icons medium cyan-text">pageview</i></a>      
+            
+            {% if object.image %}
+        <img src="{{ object.image.url }}" class="circle" >
+            {% else %}
+        <i class="material-icons circle cyan">store</i>
+            {% endif %}
+        <a href="/locality/{{ object.commercial.locality.id }}"><span class="title">{{ object.name }}</span></a>
+        <p>
+            {% if not object.price %}
+        Gratis 
+            {% else %}
+        ${{ object.price }}
+            {% endif %}
         </p>
-        <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
+        <!-- Locality -->
+        {% elif object.categories %}
+        <a href="/locality/{{ object.id }}" class="secondary-content"><i class="material-icons medium cyan-text">pageview</i></a>
+        {% include "includes/locality_item.html" with object=object%}
+        <!-- Event -->
+        {% elif object.start %}
+        <a href="/event/{{ object.id }}" class="secondary-content"><i class="material-icons medium cyan-text">pageview</i></a>
+            {% if object.front_image %}
+        <img src="{{ object.front_image.url }}" class="circle" >
+            {% else %}
+        <i class="material-icons circle cyan">stars</i>
+            {% endif %}
+        <a href="/event/{{ object.id }}"><span class="title">{{ object.name }}</span></a>
+        <p>
+            {% if not object.cover %}
+        Gratis 
+            {%else%}
+        ${{ object.cover }}
+            {% endif %}     
+        {% endif %}
+
+        <p>{{ object.description }} </p>
     </li>
     {% endfor %}
     {% if show_all %}

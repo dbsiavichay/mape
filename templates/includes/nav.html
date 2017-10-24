@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<nav class="no-margin no-padding">
+<nav class="no-margin no-padding taget">
     <div class="nav-wrapper row cyan navigator">
         <!-- Espacio izquierdo -->
         <ul id="nav-left" class="col l4 m5 s2 " >
@@ -37,6 +37,7 @@
                 {%else%}
                 <li><a data-activates="slide-out" id="boton"> <i class="material-icons medium">person_pin</i></a></li>
                 {%endif%}
+            <!-- Right Nav side-nav-->
             <ul id="slide-out" class="side-nav">
                 <li>
                     <div class="user-view">
@@ -52,24 +53,29 @@
                       <span class="white-text email">{{ user.profile.cellphone }}</span>
                     </div>
                 </li>
-                <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
-                <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
+                <li><a href="{% url 'map' %}"><i class="material-icons">public</i> Mape </a></li> 
                 <li>
-                    <a href="{% url 'notifications' %}">
+                    <a class="{% if notifications %}cyan accent-3 {%endif%}" href="{% url 'notifications' %}">
                         <i class="material-icons">notifications</i> Notificaciones 
                         {% if notifications %}
                         <span class="badge">{{ notifications|length }}</span>
                         {% endif %}
                     </a>  
                 </li>
+                
+                <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
+                
                 {% if user.profile.commercial %}
                 <li><a href="{% url 'commercial_update' %}"><i class="material-icons">store</i> Mi comercial</a></li> 
                 {% else %}
                 <li><a href="{% url 'commercial_account' user.username %}" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
-                {%endif%}
+                {% endif %}
                 <li><div class="divider"></div></li>
-                <li><a class="subheader">Subheader</a></li>
+                <li><span class="subheader">Configuraciones</span></li>
+                <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
                 <li><a class="right" href="/logout/"> <i class="material-icons">power_settings_new</i>Salir</a></li>
+                <li class="footer"><div ><a href=""><i class="material-icons">store</i> ASDFSDFG </a> </div></li>
+                
             </ul>
             {% endif %}
         </ul>

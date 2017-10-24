@@ -11,44 +11,48 @@
     Caso de uso para usuario/comercial: CUC  -->
 
 <div class="center row container">
+    
     {% if profile.avatar %}
-    <img src="{{ profile.avatar.url }} " alt="Contact Person {{profile.get_full_name}} ">
+    <img class="col s12 m4 l4 offset-l4 responsive-img" src="{{ profile.avatar.url }} " alt="Contact Person {{profile.get_full_name}} ">
     {% else %}
-    <i class="material-icons cyan circle mape-medium">person</i>
+    <i class="material-icons col s12 m4 l4 offset-l4 cyan-text large container">person_pin</i>
+    {% endif %}
+    <div class="col s12 center-align"> <h3> {{ profile.user }} </h3> </div>
+    <div class="col s12 l6 offset-l3">
+      {% if not status %}
+      <a href="{% url 'profile_send_request' profile.id %}" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
+      {% elif status == 'send' %}
+      <a href="{% url 'profile_delete_request' profile.id %}" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
+      {% elif status == 'received' %}
+      <a href="{% url 'profile_accept_request' profile.id %}" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
+      {% else %}
+      <a href="#" class="dropdown-button right" data-activates="profile-options" ><i class="material-icons">more_vert</i></a>
+      <ul id="profile-options" class="dropdown-content">
+        <li>                
+            <a href="{% url 'delete_friend' profile.id %}" class="btn red wave-effects light-effect">Eliminar amigo</a>
+        </li>
+      </ul>
+      
       {% endif %}
-    <h4>{{ profile.user }} </h4>
-      <nav class="nav-extended col s12 cyan">
-        <div class="nav-content">
-          <ul class="tabs tabs-transparent">
-            <li class="tab"><a href="#test1">Perfil de usuario</a></li>
-            {% if profile.is_complete %}
-            <li class="tab"><a class="active" href="#test2">Información básica</a></li>{% endif %}
-            {% if profile.is_commertial %}
-            <li class="tab {% if True %} disabled {% endif %} "><a href="#test3">Actividad comercial</a></li> {% endif %}
-          </ul>
-        </div>
-      </nav>
-      <div id="test1" class="col s12"> 
-        <p>
-            {{ profile.get_full_name }}            
-         </p>
-      </div>
-      <div id="test2" class="col s12">{% if profile.is_complete %} <p> {{ profile.birthday }} </p>
-      <p> {{ profile.cellphone }} </p>{% endif %}</div>
-      <div id="test3" class="col s12">{% if profile.is_commertial %} {% endif %}</div>
-    <div class="col s12 ">
-        {% if not status %}
-        <a href="{% url 'profile_send_request' profile.id %}" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
-        {% elif status == 'send' %}
-        <a href="{% url 'profile_delete_request' profile.id %}" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
-        {% elif status == 'received' %}
-        <a href="{% url 'profile_accept_request' profile.id %}" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
-        {% else %}
-        <a href="{% url 'delete_friend' profile.id %}" class="btn cyan wave-effects light-effect">Eliminar de mis amigos</a>
-        {% endif %}
     </div>
+    {% if status %}
+    <!-- Informacion básica de perfil-->
+    <ul class="collapsible col s12 l6 offset-l3" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header active"> Información básica </div>
+        <div class="collapsible-body"> {% if profile.is_complete %} <p>Nombre completo: {{ profile.get_full_name }}</p>  <p> Teléfono: {{ profile.cellphone }} </p>{% endif %}</div>
+      </li>
+      <!-- Informacion de cuenta comercial-->
+      {% if not profile.is_commertial %}
+      <li>
+        <div class="collapsible-header">Actividad Comercial</div>
+        <div class="collapsible-body">Administrador de: {% include "includes/locality_chip.html" with locality= %}</div>
+      </li> 
+      {% endif %}
+    </ul>
+    {% endif %}
+    <div id="test2" class="col s12"></div>
+    <div id="test3" class="col s12">{% if profile.is_commertial %} {% endif %}</div>
+    
 </div>
-{% endblock %}
-
-{% block js %}
 {% endblock %}

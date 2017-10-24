@@ -11,18 +11,12 @@
 	    				<h6 style="display: inline-block;">Amigos</h6>
 	    				<p style="margin: 4px 0 0 0; float: right;">
 						    <input type="checkbox" class="filled-in" id="input-all-friends"/>
-						    <label for="input-all-friends">Todos</label>
+						    <label class="cyan-text" for="input-all-friends">Todos</label>
 					    </p>
 	    			</li>
 	    			{% for profile in user.profile.friends %}
 	                <li add-to="#friends" data-id="{{ profile.id }}" data-name="{{ profile.get_full_name }}" class="collection-item small avatar">
-	                    {% if profile.avatar %}
-	                    <img src="{{ profile.avatar.url }}" alt="" class="circle">
-	                    {% else %}
-	                    <i class="material-icons circle cyan">perm_identity</i>
-	                    {% endif %}
-	                    <span class="full_name title">{{ profile.user.get_full_name }}</span>
-	                    <p>{{ profile.user.username }}</p>	                    
+	                    {% include "includes/profile_item.html" with object=profile %}                   
 	                </li>
 	                {% endfor %}
 	            </ul>
@@ -40,11 +34,10 @@
 	    {% if guests %}
 	    <h6>Invitados</h6>
 	    <div class="center">
-	    	{% for user in guests %}
-		    <div class="chip">                        
-	            <img src="{% static 'showcase/img/event-header.jpg' %}" alt="Contact Person">
-	            <a href="/profiles/{{ user.username }}/">{{ user.get_full_name }}</a>
-	        </div>
+	    	{% for user in guests %} 
+	    	
+	    		{% include "includes/profile_chip.html" with profile=user %}
+
 	        {% endfor %}
 	    </div>
 	    {% endif %}

@@ -1,6 +1,6 @@
 {% load staticfiles %}
 
-<ul class=" center-align">
+<ul class="grey lighten-3 center-align ">
     <b>Tarjetas Postales </b>
     {% for comment in comments %}
     <li class=" left-align">
@@ -23,7 +23,7 @@
             : {{ comment.content }}
             <!-- Imagen del comentario -->
             {% if comment.image %}
-            <img class="materialboxed mape-large" data-caption="{{ comment.text }}" src="{{ comment.image.url }}" width="100%">
+            <img class="materialboxed mape-large" data-caption="{% if comment.profile.is_complete %}{{ comment.profile.get_full_name }}{% else %}{{ comment.profile.user.username }}{% endif %}: {{ comment.content }}" src="{{ comment.image.url }}" width="100%">
             {% endif %}
         </div>                
         <p class="no-margin tiny-text">Hace <strong>{{ comment.date|timesince }}</strong></p>

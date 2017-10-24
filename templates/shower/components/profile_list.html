@@ -3,10 +3,7 @@
     <li class="collection-header"><h5>{{ title|capfirst }}</h5></li>
     {% for object in object_list %}
     <li class="collection-item avatar">
-        <i class="material-icons circle cyan">location_on</i>
-        <span class="title">{{ object.get_full_name }}</span>
-        <p>{{ object.user.username }}</p>
-        <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
+        {% include "includes/profile_item.html" with object=object %}
     </li>
     {% endfor %}
     {% if more %}

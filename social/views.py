@@ -22,14 +22,13 @@ class UserCreateView(CreateView):
 
 	def form_valid(self, form):
 		from .mails import send_activate_account
-
-		# self.object = form.save()
-		# user = authenticate(
-		# 	username=form.cleaned_data['username'], 
-		# 	password=form.cleaned_data['password1']
-		# )
-		# auth_login(self.request, user)
-		send_activate_account(self.object)
+		self.object = form.save()
+		user = authenticate(
+			username=form.cleaned_data['username'], 
+			password=form.cleaned_data['password1']
+		)
+		auth_login(self.request, user)
+		#send_activate_account(self.object)
 		return redirect(self.success_url+'?action=emailsend')
 
 class ActivateAccountView(DetailView):
@@ -62,8 +61,8 @@ class LoginView(FormView):
 
 	def form_valid(self, form):
 		user = form.get_user()		
-		if not user.profile.active_by_email:
-			return redirect('/' + '?emailsend=true')
+		#if not user.profile.active_by_email:
+		#	return redirect('/' + '?emailsend=true')
 
 		auth_login(self.request, user)
 		next_param = self.request.GET.get('next') or self.kwargs.get('next') or None		
