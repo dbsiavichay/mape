@@ -6,7 +6,8 @@ from social.models import Profile
 
 class Notification(models.Model):	
 	UNREAD = 1
-	READ = 2
+	VIEWED = 2
+	READ = 3
 		
 	TYPE_CHOICES = (
 		(1, 'Like'),
@@ -16,6 +17,7 @@ class Notification(models.Model):
 
 	STATUS_CHOICES = (
 		(UNREAD, 'Sin leer'),
+		(VIEWED, 'Visto'),
 		(READ, 'Leida'),
 	)
 

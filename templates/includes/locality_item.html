@@ -1,0 +1,7 @@
+
+    {% if object.profile_image %}
+<img src="{{ object.profile_image.url }}" class="circle" >
+    {% else %}
+<i class="material-icons circle cyan">location_on</i>
+    {% endif %}
+<a href="/locality/{{ object.commercial.locality.id }}" ><span class="title">{{ object.commercial.locality }}</span></a>

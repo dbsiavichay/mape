@@ -10,7 +10,9 @@ urlpatterns = [
     url(r'^events/$', EventListView.as_view(), name='event_list'),
     url(r'^event/add/$', login_required(EventCreateView.as_view()), name='event_create'),
     url(r'^event/(?P<pk>\d+)/update/$', login_required(EventUpdateView.as_view()), name='event_update'),
-    url(r'^event/(?P<pk>\d+)/$', login_required(EventDetailView.as_view()), name='event_detail'),    
+    url(r'^event/(?P<pk>\d+)/$', login_required(EventDetailView.as_view()), name='event_detail'),
+    url(r'^event/(?P<pk>\d+)/cancel/$', login_required(cancel_event), name='event_cancel'),
+
     
     url(r'^event/(?P<pk>\d+)/attend/$', login_required(event_attend), name='event_attend'),
     url(r'^event/(?P<pk>\d+)/maybe_attend/$', login_required(event_maybe_attend), name='event_maybe_attend'),

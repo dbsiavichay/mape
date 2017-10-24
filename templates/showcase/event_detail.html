@@ -67,7 +67,7 @@
     <div class="center row">
       {% if True %}
       <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
-      <h4 class="red-text">Cancelado</h4>
+      <h4 class="red-text">{{ object.get_is_comming }}</h4>
         {% elif False %}
       <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
       <h4 class="blue-text">Completado</h4>
@@ -81,7 +81,7 @@
         <a href="{% url 'sponsor_accept' event.id %}" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Auspiciar</a>
         {% endif %}
 
-        {% endif %}
+        
       </div>  
       <!-- descripcion, informacion basica--> 
       <div class="card col l6 m6 s12">
@@ -104,27 +104,47 @@
           {{ event.start }}</p>
           <p><i class="tiny material-icons ">{% if event.cover == 0 %}money_off {% else%} attach_money {% endif %}</i>{% if event.cover == 0 %}Gratis {% else%} Precio: {{ event.cover }} {% endif %}
           {% if not object.is_public %} <i class="material-icons tiny">lock</i> Privado {% else %} <i class="material-icons tiny">public</i> Público {% endif %}</p>
-      </div>  
-      <!-- Botonera -->
-      <div class="col s12">
-        {% if is_owner %}
-        <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
-          {% if object.is_public %}
-        <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
-          {% endif %}
-        {% else %}
-          {% if not object.is_public %}
-        <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
-          {% endif %}            
-        {% load subscribers %}
-        {% like object %}
-        <!-- Definir estatus -->
-        <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>Asistiré</a>
-        <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
-        <a href="/event/{{ event.id }}/not_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
-        {% endif %}
-      </div>    
+
+      </div>      
     </div>
+      {% endif %}
+    </div>  
+    <!-- Tarjeta con descripcion, informacion basica del evento --> 
+    <div class="card col l6 m6 s12">
+      <p class="flow-text left-align">{{ event.description }} </p>
+      {% if object.locality %}
+      <p>Lugar: </p>
+        {% include "includes/locality_chip.html" with locality=object.locality %}
+      {% endif %}
+      <p>Organizado por</p>            
+      {% include "includes/profile_chip.html" with profile=object.owner %}
+      
+    </div>
+    <!-- Informacion de estados del evento -->
+    <div class="col s12">
+        <p><i class="tiny material-icons ">query_builder</i>
+        {{ event.start }}</p>
+        <p><i class="tiny material-icons ">{% if event.cover == 0 %}money_off {% else%} attach_money {% endif %}</i>{% if event.cover == 0 %}Gratis {% else%} Precio: {{ event.cover }} {% endif %}
+        {% if not object.is_public %} <i class="material-icons tiny">lock</i> Privado {% else %} <i class="material-icons tiny">public</i> Público {% endif %}</p>
+    </div>  
+    <!-- Botonera -->
+    <div class="col s12">
+      {% if is_owner %}
+        <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
+        {% if object.is_public %}
+        <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
+        {% endif %}
+        <a href="{% url 'event_cancel' object.id %}" class="modal-trigger waves-effect waves-light btn red"><i class="material-icons tiny">close </i>Cancelar evento</a>
+      {% else %}
+        {% if not object.is_public %}
+      <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
+        {% endif %}
+
+      <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</a>
+      <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>Asistiré</a>
+      <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
+      <a href="/event/{{ event.id }}/not_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
+      {% endif %}
     </div>
     <div class="container no-padding">
       {% load comments %}
