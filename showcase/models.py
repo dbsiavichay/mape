@@ -115,7 +115,7 @@ class Event(models.Model):
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
 	locality = models.ForeignKey(Locality, blank=True, null=True)		
-	status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
+	status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
 	guests = models.ManyToManyField('social.Profile', through='Guest', blank=True)
 	objects = ShowerManager()
 

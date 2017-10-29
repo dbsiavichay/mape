@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import datetime
+from datetime import datetime, timedelta, date
 
 from django.http import JsonResponse
 
@@ -23,15 +23,48 @@ class EventListView(ListView):
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
 			profile = request.user.profile if not request.user.is_anonymous() else None
+			today_number = datetime.weekday(datetime.now()) 
+			monday_date = datetime.today() - timedelta(days=today_number) 
+			tuesday = monday_date + timedelta(days=1)
+			wednesday = monday_date + timedelta(days=2)
+			thursday = monday_date + timedelta(days=3)
+			friday = monday_date + timedelta(days=4)
+			saturday = monday_date + timedelta(days=5)
+			sunday = monday_date + timedelta(days=6)
 
 			self.object_list = self.model.objects.filter(
+				Q(start__day=monday_date.day) |
+				Q(start__day=tuesday.day) |
+				Q(start__day=wednesday.day) |
+				Q(start__day=thursday.day) |
+				Q(start__day=friday.day) |
+				Q(start__day=saturday.day) |
+				Q(start__day=sunday.day),
 				Q(guest__profile=profile) | 
 				Q(is_public=True)
-			).exclude(status=2)			
+			).exclude(status=2).exclude(status=3)			
 			
 			events = []
 
 			for event in self.object_list:
+				event_day = ""
+				if event.start.day == datetime.now().day:
+					event_day = "Hoy" 
+				elif datetime.weekday(event.start) == 0:
+					event_day = "Lunes"
+				elif datetime.weekday(event.start) == 1:
+					event_day = "Martes"
+				elif datetime.weekday(event.start) == 2:
+					event_day = "Miercoles"
+				elif datetime.weekday(event.start) == 3:
+					event_day = "Jueves"
+				elif datetime.weekday(event.start) == 4:
+					event_day = "Viernes"
+				elif datetime.weekday(event.start) == 5:
+					event_day = "Sábado"
+				else:
+					event_day = "Domingo"
+
 				events.append({
 					'id': event.id,
 					'name': event.name,
@@ -39,8 +72,9 @@ class EventListView(ListView):
 					'latitude': event.latitude,
 					'longitude': event.longitude,
 					'event_image_url': event.front_image.url if event.front_image else '#',
-					'event_owner': event.owner().user.username if not event.is_public else event.owner().user.commercial.locality,
-					'day': event.start
+					'event_owner': event.owner().user.username,
+					'day': event_day, #obtener el dia // if not event.is_public else event.owner().user.commercial().locality.name
+					'month': event.start.month
 				})
 
 			return JsonResponse(events, safe=False)
@@ -70,7 +104,7 @@ class EventCreateView(CreateView):
 		return context
 
 	def form_valid(self, form):
-		start = datetime.datetime.combine(
+		start = datetime.combine(
 			form.cleaned_data['start_0'],
 			form.cleaned_data['start_1']
 		)

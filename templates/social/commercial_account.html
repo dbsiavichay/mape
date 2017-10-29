@@ -12,6 +12,46 @@
 
 <div class="container">
     {% include "includes/success_message.html" %}
+
+    <div class="card row ">
+        <img src="{% static 'showcase/img/recepcionista.png' %}" height="400">
+
+        <div class="card-content ">
+            <p class="flow-text " ALIGN="justify"> Por favor asegúrese de haber ingresado su localidad antes. Su cuenta se activará una vez comprobado el <a href="#pay-modal" class="modal-trigger "> pago </a> respectivo por el servicio de <a href="/locality/1" class="modal-trigger "> Cuenta Comercial Mape </a>.  <br> 
+            </p>
+            <p><strong class="amber-text text-darken-3 "> Procure ingresar correctamente la información otorgada en este formulario. </strong></p>
+        </div>
+        <div class="card-action">
+          <a href="#pay-modal" class="modal-trigger ">Realizar pago</a>
+        </div>
+    </div>
+
+    <div class="modal" id="pay-modal">
+    <div class="modal-content">
+      <ul class="collapsible" data-collapsible="accordion">
+        <li>
+          <div class="collapsible-header"><i class="material-icons"> tap_and_play </i> Dinero electrónico</div>
+          <div class="collapsible-body">Al número <span  class="cyan-text">{{ offer.commercial.telephone }} </span> por el monto de <span class="cyan-text"> ${{ offer.price }} </span> (Llamar al *153#)</div>
+        </li>
+        <li>
+          <div class="collapsible-header"> <i class="material-icons"> account_balance </i> Depósito en Cooperativa Jardín Azuayo</div>
+          <div class="collapsible-body"><p>Cuenta de ahorros número: <span  class="cyan-text"> 1400292 </span> <br> De: <span  class="cyan-text"> {{ offer.commercial.locality.owner.get_full_name }} </span> <br> Monto: <span class="cyan-text"> ${{ offer.price }}</p> <p> <br> <i class="red-text material-icons tiny">error_outline</i> Antes de realizar un pago vía depósito asegurese de ponerse en contacto con el vendedor. </p></div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons"> account_balance </i> Depósito en Banco del Austro </div>
+          <div class="collapsible-body"><p>Cuenta de ahorros número: <span  class="cyan-text"> 14613854 </span> <br> De: <span  class="cyan-text"> {{ offer.commercial.locality.owner.get_full_name }} </span> <br> Monto: <span class="cyan-text"> ${{ offer.price }}</p> <p> <br> <i class="red-text material-icons tiny">error_outline</i> Antes de realizar un pago vía depósito asegurese de ponerse en contacto con el vendedor. </p></div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons"> account_balance </i>Depósito en Ban Ecuador </div>
+          <div class="collapsible-body"><p>Cuenta de ahorros número: <span  class="cyan-text"> 4005511389 </span> <br> De: <span  class="cyan-text">{{ offer.commercial.locality.owner.get_full_name }} <br> Monto: <span class="cyan-text"> ${{ offer.price }}</p> </span> <p> <br> <i class="red-text material-icons tiny">error_outline</i> Se advierte que  </p></div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-cyan btn-flat">Cancelar</a>
+    </div> 
+    </div>             
+
     <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
         {% csrf_token %}        
         <div class="col s12">                                

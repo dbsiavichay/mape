@@ -16,13 +16,13 @@
     <div class="card-content row event-card no-margin">
         <!-- Lista de franja -->
         <div class="franja right-align col s12 tiny-text">
-            <!-- Estados de proximidad: 
-            1.- 1 mes de anticipacion: "Próximamente"
-            2.- 2 semanas: "Próxima semana" -->
-            Próximamente &#8226;
-            <!-- Estados de Evento: 
-            1.- Publico
-            2.- Privado -->
+             {% if event.get_is_comming == "Esta semana" %}
+              <strong class="timeuntil red-text"> En {{ event.start|timeuntil }}</strong>
+              {% elif event.get_is_comming == "Cancelado"%}
+              <strong class="red-text">Cancelado</strong>
+              {% elif event.get_is_comming == "Completado" %}
+              <strong class="blue-text">Completado</strong>
+              {% endif %}
             {% if event.is_public %}
             Evento Publico &#8226;
             {% endif %}
@@ -34,32 +34,10 @@
             {{ event.invited_count }} Invitados
         </div>
         <!-- Activador-Nombre del Evento -->
-        <span class="card-title activator grey-text text-darken-4">
-            <a href="">{{ event.name }}</a>
+        <span class="card-title activator text-darken-4 cyan-text">
+            <b> {{ event.name }} </b>
             <i class="material-icons right">more_vert</i>
         </span>
-        <!-- Fecha del evento -->
-        <div class="col s12 row card grey lighten-2">
-            <div class="col s6">
-                <i class="material-icons medium">today</i>
-                <p class="">{{ event.start }}</p>
-                {% if event.link %}
-                <p><h2> {{ event.link }}</h2></p>
-                {% endif %}
-            </div>
-            <div class="col s6">
-                {% if event.locality %}
-                <i class="material-icons medium">location_on</i>
-                <p>En:
-                {% include "includes/locality_chip.html" with locality=event.locality %}
-                </p>
-                <p><a class="" href="#1">Ver en mapa</a>
-                </p>
-                {% endif %}
-            </div>
-            <div class="col s6"></div>
-        </div>
-        <!-- Event Place -->
         
     </div>
 
@@ -77,7 +55,10 @@
         <!-- Date -->
         <div class="row">
             <div class="col s12"><i class="material-icons cyan-text ">today</i><b>{{ event.start }}</b> </div>
-              
+            {% if event.locality %}
+                <div class="col s12"> <i class="material-icons cyan-text">location_on</i>
+                {% include "includes/locality_chip.html" with locality=event.locality %}</div>
+            {% endif %}
             {% if event.is_free %}
             <div class="col s3 right "><i class="material-icons cyan-text ">spa</i></div>
             <h5 class="col s9 right-align">Gratuito</h5> 
@@ -115,7 +96,7 @@
 {% if event.is_public %}
 {% include "showcase/components/sponsors.html" with sponsors=sponsors commercial_organizer=event.owner.commercial.locality %}
 {% endif %}
-        <ul class="col s12 collapsible" data-collapsible="accordion">
+       <!--  <ul class="col s12 collapsible" data-collapsible="accordion">
             <li>
                 <div class="collapsible-header"><i class="material-icons">perm_data_setting</i>Más opciones</div>
                 <div class="collapsible-body row no-margin">
@@ -123,15 +104,16 @@
                     <a href="#Denunciar-modal" class="btn col s6 amber-text text-darken-4 red darken-2 waves-light"> <i class="material-icons right">not_interested</i>Denunciar</a>
                 </div>
             </li>
-        </ul>
+        </ul> -->
     </div>
 
     <!-- Card Actions -->      
     <div class="card-action row">
-        <a href="" class="btn cyan waves-light col s4 "> <i class="material-icons right">thumb_up</i></a>
-        <a href="" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">done</i> </a>
-        <a href="#Invitar" class="disabled btn cyan waves-light col s4"> <i class="material-icons right">supervisor_account</i></a>
-    </div>   
+        
+        <a href="/event/{{ event.id }}/attend/" class="btn cyan waves-light col s6"> <i class="material-icons">public</i>Ver mapa </a>
+        <a href="/event/{{ event.id }}/like/" class="btn cyan waves-light col s6 "> <i class="material-icons right">visibility</i> Ver más </a>
+    </div>  
+    {% include "showcase/components/event_guests_modal.html" %} 
 </div>
 {% endif %}
 

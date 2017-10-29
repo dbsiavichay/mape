@@ -15,6 +15,7 @@ urlpatterns = [
 
     
     url(r'^event/(?P<pk>\d+)/attend/$', login_required(event_attend), name='event_attend'),
+    url(r'^event/(?P<pk>\d+)/like/$', login_required(event_like), name='event_like'),
     url(r'^event/(?P<pk>\d+)/maybe_attend/$', login_required(event_maybe_attend), name='event_maybe_attend'),
     url(r'^event/(?P<pk>\d+)/not_attend/$', login_required(event_not_attend), name='event_not_attend'),
 

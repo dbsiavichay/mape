@@ -39,14 +39,14 @@
     <!-- Informacion básica de perfil-->
     <ul class="collapsible col s12 l6 offset-l3" data-collapsible="accordion">
       <li>
-        <div class="collapsible-header active"> Información básica </div>
-        <div class="collapsible-body"> {% if profile.is_complete %} <p>Nombre completo: {{ profile.get_full_name }}</p>  <p> Teléfono: {{ profile.cellphone }} </p>{% endif %}</div>
+        <div class="collapsible-header active"><h5> Información básica </h5></div>
+        <div class="collapsible-body"> {% if profile.is_complete %} <p><b>Nombre completo:</b> {{ profile.get_full_name }}</p>  <p> <b>Teléfono:</b>  {{ profile.cellphone }} </p>{% endif %}</div>
       </li>
       <!-- Informacion de cuenta comercial-->
-      {% if not profile.is_commertial %}
+      {% if profile.is_commertial %}
       <li>
-        <div class="collapsible-header">Actividad Comercial</div>
-        <div class="collapsible-body">Administrador de: {% include "includes/locality_chip.html" with locality= %}</div>
+        <div class="collapsible-header"> <h5> Actividad Comercial </h5></div>
+        <div class="collapsible-body">Administrador de: {% include "includes/locality_chip.html" with locality=profile.user.commercial.locality %}</div>
       </li> 
       {% endif %}
     </ul>

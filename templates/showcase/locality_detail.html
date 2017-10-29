@@ -65,7 +65,11 @@
                     {% load subscribers %}
                     {% subscription object %}
                     <div class="right ">
+                        {% if object.is_commertial %}
                         <p>Administrador: </p>
+                        {% else %}
+                        <p> Subido por: </p>
+                        {% endif %}
                         {% include 'includes/profile_chip.html' with profile=object.owner %}
                     </div>
                 </div>                    
@@ -96,7 +100,7 @@
         </div>
 
         <!-- Tabs de la tarjeta -->
-        <div class="card-tabs">
+        <div class="card-tabs z-depth-3">
             <ul class="tabs tabs-fixed-width">
               <li class="tab"><a class="active" href="#description">Descripción</a></li>
               <li class="tab {% if not object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
@@ -123,7 +127,7 @@
           <!-- Eventos de la Localidad -->
 
           
-            <div id="events" class="row">            
+            <div id="events" class="row cyan accent-1 ">            
                 <div class="section col s12 m12 l6 offset-l3">
                 <!-- Tarjeta de evento -->
                 {% for event in object.event_set.all %}                    
