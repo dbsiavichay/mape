@@ -7,7 +7,7 @@ and open the template in the editor.
     Created on : 11/08/2015, 22:46:10
     Author     : Juan
 */
-@import url(http://fonts.googleapis.com/css?family=Comfortaa:400,700,300);
+@import url(//fonts.googleapis.com/css?family=Comfortaa:400,700,300);
 
 html {
   font-family: Comfortaa, sans-serif;
