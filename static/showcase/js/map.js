@@ -1,19 +1,19 @@
 $(function () {
 	//Funcionalidad para API Geolocation
-	navigator.geolocation.getCurrentPosition(success, error);
+	//navigator.geolocation.getCurrentPosition(success, error);
 
 	function success(position) {
-		var point = position.coords;
+	//	var point = position.coords;
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';
 
-		$('#btn-event-register-float').attr('lat', point.latitude);
-	  	$('#btn-event-register-float').attr('lng', point.longitude);
+		// $('#btn-event-register-float').attr('lat', point.latitude);
+	 //  	$('#btn-event-register-float').attr('lng', point.longitude);
 
-	  	$('#btn-locality-register-float').attr('lat', point.latitude);
-	  	$('#btn-locality-register-float').attr('lng', point.longitude);
+	 //  	$('#btn-locality-register-float').attr('lat', point.latitude);
+	 //  	$('#btn-locality-register-float').attr('lng', point.longitude);
 
 		L.mapbox.accessToken = token;
-		var map = L.mapbox.map('map', 'mapbox.light').setView([point.latitude,point.longitude], 15);		
+		var map = L.mapbox.map('map', 'mapbox.light').setView([40, -74.50], 15);		
 		 
 		 $.get('/localities/', function(data) {	
 
