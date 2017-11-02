@@ -2,7 +2,8 @@ $(function () {
 	//Funcionalidad para API Geolocation
 	//navigator.geolocation.getCurrentPosition(success, error);
 
-		//var point = position.coords;
+	//function success() {
+	//	var point = position.coords;
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';
 
 		// $('#btn-event-register-float').attr('lat', point.latitude);
@@ -12,7 +13,7 @@ $(function () {
 	 //  	$('#btn-locality-register-float').attr('lng', point.longitude);
 
 		L.mapbox.accessToken = token;
-		var map = L.mapbox.map('map', 'mapbox.light').setView([-2.2986156360633974, -78.12206268310548], 15);		
+		var map = L.mapbox.map('map', 'mapbox.light').setView([-2.2986156360633974, -78.12206268310548], 15);				
 		 
 		 $.get('/localities/', function(data) {	
 
@@ -68,7 +69,8 @@ $(function () {
 		  	$('#btn-locality-register').attr('lng', e.latlng.lng);
 
 		  	$('#event-modal').modal('open');
-		});	 
+		});	  
+	//};
 
 	function error(error) {
 	  console.warn('ERROR(' + error.code + '): ' + error.message);
