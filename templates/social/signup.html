@@ -57,7 +57,7 @@
        
         <!-- Formulario de registro inicial -->
          <div class="col l6 s12 center-align row no-margin">
-            <p class="white-text">Estoy regristrado, <a class="btn white cyan-text" href="/">iniciar sesi&oacute;n</a>. | Registrate gratis o ingresa como <a href="/map/">invitado</a>. </p>
+            <p class="white-text">Estoy regristrado, <a class="btn white cyan-text" href="/">iniciar sesi&oacute;n</a> | Registrate gratis ó ingresa como <a href="/map/">invitado</a>. </p>
             <div class="col s12 m8 l8 offset-m2 offset-l2 white low-border z-depth-2">
                 {% load widget_tweaks %}        
                 <form action="" method="POST" class="center-align" novalidate>
@@ -83,17 +83,18 @@
                         <label class="black-text darken-3" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
                     </div>
                        
-                    <div class="col s12">
+                    <div class="col s12 center">
                         <button type="submit" class="waves-effect waves-light amber darken-1 btn">
                             Registrarse
                         </button>     
-                        <a href="{% url 'social:begin' 'facebook' %}" class="col s10 offset-s1 m4 offset-m4 btn capitalize l10 offset-l1" style="background-color: #4267b2; ">  Continuar con facebook </a>             
+                        <p class="cyan-text no-margin center-align"><br> ó <br></p>
+                        <a href="{% url 'social:begin' 'facebook' %}" class="col s12 m4 offset-m4 btn capitalize l10 offset-l1" style="background-color: #4267b2; ">  Continuar con facebook </a>             
                     </div>
                 </form>
             </div> 
             <!-- Formulario de registro inicial -->
          <div class="col l8 s12 offset-l2 center-align row no-margin">
-            <p class="white-text tiny-text"> Al dar click en 'resgistrase', acepta las <a href="/conditions/">Condiciones de uso</a> que implican el uso de nuestro servicio y confirma que ha le&iacute;do nuestras <a href="/politics/">Políticas de datos.</a>.   </p>
+            <p class="white-text tiny-text"> Al dar click en 'resgistrase', acepta las <a href="/conditions/">Condiciones de uso</a> y confirma que ha le&iacute;do nuestras <a href="/politics/">Políticas de datos.</a> que se aplican al servicio de Mape.</p>
          </div>
         </div>
     </div>

@@ -6,7 +6,7 @@ from .views import *
 from django.views.generic import TemplateView
 
 urlpatterns = [
-	url(r'^map/$', TemplateView.as_view(template_name='showcase/map.html'), name='map'),
+	url(r'^$', TemplateView.as_view(template_name='showcase/map.html'), name='map'),
     url(r'^events/$', EventListView.as_view(), name='event_list'),
     url(r'^event/add/$', login_required(EventCreateView.as_view()), name='event_create'),
     url(r'^event/(?P<pk>\d+)/update/$', login_required(EventUpdateView.as_view()), name='event_update'),

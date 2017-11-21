@@ -94,7 +94,7 @@ class EventCreateView(CreateView):
 
 		localities = Locality.objects.filter(owner=self.request.user.profile)
 		reference = Point(float(lng), float(lat))
-		close = Locality.objects.filter(point__distance_lte=(reference, D(m=1000)))
+		close = Locality.objects.filter(point__distance_lte=(reference, D(m=150)))
 
 		context.update({
 			'localities': localities,

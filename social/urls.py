@@ -6,7 +6,7 @@ from .views import *
 from django.views.generic import TemplateView
 
 urlpatterns = [	
-    url(r'^$', LoginView.as_view(), name='login'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^signup/$', UserCreateView.as_view(), name='signup'),
     url(r'^logout/$', login_required(logout), name='logout'),
     url(r'^profiles/(?P<username>[\w.@+-]+)/$', login_required(ProfileUpdateView.as_view()), name='profile_update'),

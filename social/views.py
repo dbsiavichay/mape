@@ -46,7 +46,7 @@ class ActivateAccountView(DetailView):
 class LoginView(FormView):
 	template_name= 'social/login.html'
 	form_class = AuthenticationForm
-	success_url = '/map/'
+	success_url = '/'
 
 	def get_context_data(self, **kwargs):
 		context = super(LoginView, self).get_context_data(**kwargs)

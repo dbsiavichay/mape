@@ -22,6 +22,8 @@ class Profile(models.Model):
 	avatar = models.ImageField(upload_to='social/avatares/', blank=True, null=True,)	
 	is_complete = models.BooleanField(default=False)
 	active_by_email = models.BooleanField(default=False)
+	flag3 = models.BooleanField(default=False)
+	flag4 = models.BooleanField(default=False)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)	
 	objects = ShowerManager()
 

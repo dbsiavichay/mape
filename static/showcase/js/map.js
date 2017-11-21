@@ -51,7 +51,8 @@ $(function () {
 
 			var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
 				'<p>' + data[index].description +					
-				'</p> <p> <a href="' + data[index].event_image_url +'																																																" target="_blank" > <img class="mape-large z-depth-3" src=" ' + data[index].event_image_url + '" > </a></p>' + 
+				'</p> <p>  <a href="'  + data[index].event_image_url +
+				'" target="_blank" > <img class="mape-large z-depth-3" src=" ' + data[index].event_image_url + '" > </a></p>' + 
 				'<p> De: <a class="collection-item" href="/p/'+ data[index].event_owner + '">'+ data[index].event_owner +
 				' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 				'<strong> Ver </strong></a>';
@@ -89,5 +90,7 @@ $(function () {
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/locality/add/?lat='+lat+'&lng='+lng);
 	});	
+
+	Materialize.toast('Presiona click derecho sobre el mapa', 4000); 
 });
 

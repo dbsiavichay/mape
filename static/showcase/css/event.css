@@ -56,3 +56,6 @@
 	cursor:pointer; 
 }
 
+.collection .collection-item.active{
+	background-color: white !important;
+}
