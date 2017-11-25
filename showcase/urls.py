@@ -3,10 +3,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from .views import *
 
-from django.views.generic import TemplateView
-
 urlpatterns = [
-	url(r'^$', TemplateView.as_view(template_name='showcase/map.html'), name='map'),
+	url(r'^$', MapView.as_view(), name='map'),
     url(r'^events/$', EventListView.as_view(), name='event_list'),
     url(r'^event/add/$', login_required(EventCreateView.as_view()), name='event_create'),
     url(r'^event/(?P<pk>\d+)/update/$', login_required(EventUpdateView.as_view()), name='event_update'),
@@ -23,6 +21,7 @@ urlpatterns = [
     url(r'^locality/add/$', login_required(LocalityCreateView.as_view()), name='locality_create'),
     url(r'^locality/(?P<pk>\d+)/update/$', login_required(LocalityUpdateView.as_view()), name='locality_update'),
     url(r'^locality/(?P<pk>\d+)/$', LocalityDetailView.as_view(), name='locality_detail'),    
+    url(r'^locality/(?P<pk>\d+)/map/$', LocalityMapView.as_view(), name='locality_map'),    
     
 
     url(r'^commercial/$', login_required(CommercialUpdateView.as_view()), name='commercial_update'),    

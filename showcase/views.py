@@ -11,11 +11,14 @@ from django.contrib.gis.measure import D
 
 
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
 from .models import *
 from .forms import *
 
 from social.models import Profile
+
+class MapView(TemplateView):
+	template_name='showcase/map.html'	
 
 class EventListView(ListView):
 	model = Event	
@@ -304,9 +307,23 @@ class LocalityUpdateView(UpdateView):
 
 		return super(LocalityUpdateView, self).get(request, *args, **kwargs)
 	
-
 class LocalityDetailView(DetailView):
 	model = Locality
+
+class LocalityMapView(DetailView):
+	model = Locality
+	template_name = 'showcase/map.html'	
+
+	def get_context_data(self, **kwargs):
+	    context = super(LocalityMapView, self).get_context_data(**kwargs)	    
+
+	    context.update({
+	    	'lat': self.object.latitude,
+	    	'lng': self.object.longitude
+	    })
+
+	    return context
+
 
 class CommercialUpdateView(UpdateView):
 	model = Commercial

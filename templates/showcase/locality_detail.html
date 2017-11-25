@@ -40,7 +40,7 @@
 <!-- boton de editar -->
 
 <div class="right">
-<a href="" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
+<a href="{% url 'locality_map' object.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
 {% if object.owner == user.profile %}
 <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
 {%endif%}

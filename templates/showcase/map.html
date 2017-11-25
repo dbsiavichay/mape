@@ -18,10 +18,10 @@
   border-radius:3px;
   }
 </style>
-
-<div id="map">
+{% load l10n %}
+<div id="map" lat="{{ lat|unlocalize }}" lng="{{ lng|unlocalize }}">
     <!-- Botones Float -->
-      <div class="fixed-action-btn hide-on-large-only">
+      <div class="fixed-action-btn">
         <a class="btn-floating btn-large cyan">
           <i class="material-icons medium">add</i>
         </a>
@@ -58,6 +58,6 @@
 
 {% block js %}
 	{% load staticfiles %}
-	<script src="https://api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
+	<script src="//api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
 	<script src="{% static 'showcase/js/map.js' %}"></script>
 {% endblock %}
