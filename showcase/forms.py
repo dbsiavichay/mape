@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-
+from django.db.models import Q
 from django.contrib.gis.geos import Point
 
 from .models import *
@@ -68,7 +68,10 @@ class CommercialAccountForm(forms.ModelForm):
 		super(CommercialAccountForm, self).__init__(*args, **kwargs)
 
 		self.fields['locality'] = forms.ModelChoiceField(
-			queryset = Locality.objects.filter(owner=self.profile)
+			queryset = Locality.objects.filter(is_commercial=False).
+				filter(
+					Q(owner=self.profile) | Q(is_public=True)
+				)
 		)
 
 	def save(self, commit=True):

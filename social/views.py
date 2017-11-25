@@ -218,6 +218,8 @@ class CommercialAccountView(UpdateView):
 		if commercial_form.is_valid():			
 			self.object = form.save()
 			commercial = commercial_form.save()
+			commercial.locality.owner = self.request.user.profile
+			commercial.locality.save()
 			
 			return redirect('commercial_update')			
 			
@@ -245,6 +247,7 @@ class CommercialAccountView(UpdateView):
 		return form
 
 	def get(self, request, *args, **kwargs):
+		print request.user.profile.commercial()
 		if request.user.profile.commercial() is not None:
 			return redirect('map')
 
