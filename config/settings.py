@@ -183,4 +183,4 @@ MEDIA_URL = '/media/'
 
 # Login config
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/map/'
+LOGIN_REDIRECT_URL = '/'
