@@ -16,10 +16,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% block css %}{% endblock %}    
 </head>
-<body>{% block content %}{% endblock %}
-   
-    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    -->
+<body>{% block content %}{% endblock %}    
+    <script src="{% static 'plugins/jquery/jquery-3.2.1.min.js' %}"></script>    
     <script src="{% static 'showcase/js/materialize.js' %}"></script>    
     <script src="{% static 'showcase/js/materialize.min.js' %}"></script>    
 
