@@ -14,16 +14,14 @@
     {% include "includes/success_message.html" %}
 
     <div class="card row ">
-        <img src="{% static 'showcase/img/recepcionista.png' %}" height="400">
+        <img src="{% static 'showcase/img/recepcionista.png' %}" class="responsive-img">
 
         <div class="card-content ">
-            <p class="flow-text " ALIGN="justify"> Por favor asegúrese de haber ingresado su localidad antes. Su cuenta se activará una vez comprobado el <a href="#pay-modal" class="modal-trigger "> pago </a> respectivo por el servicio de <a href="/locality/1" class="modal-trigger "> Cuenta Comercial Mape </a>.  <br> 
+            <p class="flow-text " ALIGN="justify"> Por favor asegúrese de haber ingresado su localidad con anterioridad.  
             </p>
             <p><strong class="amber-text text-darken-3 "> Procure ingresar correctamente la información otorgada en este formulario. </strong></p>
         </div>
-        <div class="card-action">
-          <a href="#pay-modal" class="modal-trigger ">Realizar pago</a>
-        </div>
+        
     </div>
 
     <div class="modal" id="pay-modal">

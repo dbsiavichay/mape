@@ -12,6 +12,7 @@
 {% include 'includes/nav.html' %}
 <div class="center">
     <div class="col s12">
+    <h3>Resultados de búsqueda</h3>
         <ul class="tabs">
             <li class="tab col s2">
                 <a target="_self" class="{% if model == 'all' %}active{% endif %}" href="{% url 'shower' 'all' %}?keyword={{ keyword }}">Todo</a>

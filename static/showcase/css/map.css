@@ -20,6 +20,19 @@ html {
   z-index: 0; 
   float: top;
 }
+.my-icon {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  color: white;
+}
+
+.icon-dc {
+  background: #3bb2d0;
+}
+
 .marginado{
   margin-top: 2em;
   margin-bottom: 2em;

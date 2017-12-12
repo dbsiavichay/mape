@@ -4,9 +4,15 @@
         <!-- Espacio izquierdo -->
         <ul id="nav-left" class="col l4 m5 s2 " >
             <li>
-                <a class="no-padding navigator" href="{% url 'map' %}">
+            {% if request.path == "/" %}
+            <a class="no-padding navigator" href="{% url 'map' %}">
                 <img class="hide-on-small-only navigator" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
                 <img class="hide-on-med-and-up" height="57" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
+            {% else %}
+            <a class="no-padding " href="{% url 'map' %}">
+                <i class="material-icons medium" > arrow_back </i>
+            {% endif %}
+                
             </li>
         {% if user.is_anonymous %}
             <li>
@@ -15,9 +21,9 @@
         {% endif %}
         </ul>
         <!-- Espacio central -->
-        <ul class="col l4 m4 s5 center no-margin no-padding navigator">
+        <ul class="col l4 m4 s5 center no-margin no-padding ">
             <li><!-- Boton de Busqueda -->
-            <div class="input-field navigator">
+            <div class="input-field ">
                 <i class="material-icons prefix">search</i>
                 <input id="search2" type="text" value="{{ keyword }}"" class="validate no-padding">
                 <label class="white-text" for="search2" data-error="error"> buscar<label>
@@ -27,11 +33,11 @@
         </ul>
         <!-- Espacio derecho -->
         {% if user.is_anonymous %}
-        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3 navigator">
+        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l3 ">
             <div class="row fullscreen">
                 <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
             {%else%}
-        <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1 navigator">
+        <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1 ">
                 {%if user.profile.avatar %} 
                 <li><a id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
                 {%else%}
@@ -74,7 +80,7 @@
                 <li><span class="subheader">Configuraciones</span></li>
                 <li><a href="/profiles/{{ user.username }}/"> <i class="material-icons">mode_edit</i> Cuenta de usuario</a></li>
                 <li><a class="right" href="/logout"> <i class="material-icons">power_settings_new</i>Salir</a></li>
-                <li class="footer"><div ><a href=""><i class="material-icons">store</i> ASDFSDFG </a> </div></li>
+                
                 
             </ul>
             {% endif %}

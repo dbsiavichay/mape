@@ -2,28 +2,67 @@ $(function () {
 	var render_map = function (latlng) {		
 		var latlng = latlng || L.latLng(-2.2986156360633974,-78.12206268310548);
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
-
 		L.mapbox.accessToken = token;		
 		map = L.mapbox.map('map', 'mapbox.light').setView(latlng, 15);
 		return map;
 	};
 
 	var map = render_map();
+	var privLayer = L.mapbox.featureLayer().addTo(map);
 
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
 		var lng = $('#map').attr('lng');			
 
 		if (lat && lng) {
-			latlng = L.latLng(parseFloat(lat), parseFloat(lng))						
+			latlng = L.latLng(parseFloat(lat), parseFloat(lng))	
 			map.flyTo(latlng);
 			return;
 		}
 
 		navigator.geolocation.getCurrentPosition(function (position) {		
 			var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
-			console.log(latlng)
+			
+			var geojson = [
+			  {
+			    type: 'Feature',
+			    geometry: {
+			      type: 'Point',
+			      coordinates: [lat, lng]
+			    },
+			    properties: {
+			      icon: {
+			        className: 'my-icon icon-dc', // class name to style
+			        html: '&#9733;', // add content inside the marker, in this case a star
+			        iconSize: null // size of icon, use null to set the size in CSS
+			      },
+			      title: 'Estas aquí'
+			    }
+			  },
+			  {
+			    type: 'Feature',
+			    geometry: {
+			      type: 'Point',
+			      coordinates: [-122.413682, 37.775408]
+			    },
+			    properties: {
+			      icon: {
+			        className: 'my-icon icon-sf', // class name to style
+			        html: '&#9733;', // add content inside the marker, in this case a star
+			        iconSize: null // size of icon, use null to set the size in CSS
+			      }
+			    }
+			  }
+			];
+			privLayer.on('layeradd', function(e) {
+			  var marker = e.layer,
+			    feature = marker.feature;
+			  	marker.setIcon(L.divIcon(feature.properties.icon));
+			});
+			privLayer.setGeoJSON(geojson);
+			
 			map.flyTo(latlng);
+
 		}, function (error) {
 			console.warn('ERROR(' + error.code + '): ' + error.message);			
 		});		
