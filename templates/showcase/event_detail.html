@@ -47,7 +47,9 @@
       {% if is_sponsor_request %}
       <a href="{% url 'sponsor_accept' event.id %}" class="modal-trigger waves-effect waves-light btn amber lighten-1"><i class="material-icons tiny">person_add </i>Auspiciar</a>
       {% endif %}
-      <a href="{% url 'locality_update' object.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
+      {% if event.get_is_comming != 'Completado' %}
+      <a href="{% url 'locality_map' event.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
+      {% endif %}
     {% if is_owner %}
       <a href="{% url 'event_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
     {%endif%}
