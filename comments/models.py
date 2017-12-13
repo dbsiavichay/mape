@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, division
+
 from django.db import models
 from PIL import Image
 
@@ -21,21 +22,11 @@ class Comment(models.Model):
 def process_image(image_field, size):
 	image = Image.open(image_field)
 	width, height = image.size
-	box = (0,0,width, height)
+	if width > size:
+		percentage = (size / width)
+		width = int(width * percentage)
+		height = int(height * percentage)
+		image = image.resize((width, height), Image.ANTIALIAS)
 
-	if width > height:
-		value = (width - height) / 2
-		box = (value, 0, width - value, height)
-	else:
-		value = (height - width) / 2
-		box = (0, value, width, height - value)
-
-	cut_image = image.crop(box)
-
-	new_size = cut_image.width
-
-	if new_size > size:
-		cut_image = cut_image.resize((size, size), Image.ANTIALIAS)
-
-	cut_image.save(image_field.path)
+	image.save(image_field.path)
 

@@ -47,8 +47,8 @@
       {% if is_sponsor_request %}
       <a href="{% url 'sponsor_accept' event.id %}" class="modal-trigger waves-effect waves-light btn amber lighten-1"><i class="material-icons tiny">person_add </i>Auspiciar</a>
       {% endif %}
-      {% if event.get_is_comming != 'Completado' %}
-      <a href="{% url 'locality_map' event.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
+      {% if event.get_is_comming != 'Completado' and event.locality %}
+      <a href="{% url 'locality_map' event.locality.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
       {% endif %}
     {% if is_owner %}
       <a href="{% url 'event_update' object.id %}" class="waves-effect waves-cyan btn-flat">Editar</a>
@@ -104,14 +104,14 @@
     </div>  
     
     <!-- Botonera -->
-    <div class="col s12">
+    <div class="col s12 center">
       {% if is_owner %}
-        <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
+        <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>&nbsp; Invitar</a>
         {% if object.is_public and is_owner %}
-        <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>Pedir auspicio</a>
+        <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>&nbsp; Pedir auspicio</a>
         {% endif %}
         {% if not object.get_is_comming == "Cancelado" and is_owner %}
-        <a href="#event_cancel" class="modal-trigger waves-effect waves-light btn red"><i class="material-icons tiny">close </i>Cancelar evento</a>
+        <a href="#event_cancel" class="modal-trigger waves-effect waves-light btn red"><i class="material-icons tiny">close </i>&nbsp; Cancelar evento</a>
         <div class="modal" id="event_cancel">
           <div class="modal-content">
             <h4>Advertencia:</h4>
@@ -133,10 +133,10 @@
         <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>Invitar</a>
           {% endif %}
 
-      <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>Me gusta</a>
-      <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>Asistiré</a>
-      <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>Talvez asista</a>
-      <a href="/event/{{ event.id }}/not_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>No asistiré</a>
+      <a href="/event/{{ event.id }}/like/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">thumb_up</i>  Me gusta</a>
+      <a href="/event/{{ event.id }}/attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">check_circle</i>  Asistiré</a>
+      <a href="/event/{{ event.id }}/maybe_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">help</i>  Talvez asista</a>
+      <a href="/event/{{ event.id }}/not_attend/" class="cyan waves-effect waves-light btn"><i class="material-icons tiny">cancel</i>  No asistiré</a>
         {% endif %}
       {% endif %}
     </div>

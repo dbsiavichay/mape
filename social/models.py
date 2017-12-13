@@ -108,7 +108,7 @@ class Profile(models.Model):
 		super(Profile, self).save(*args, **kwargs)
 
 		if self.avatar:
-			process_image(self.avatar, 500)
+			process_image(self.avatar, 750)
 
 class Friendship(NotificationMixin, models.Model):
 	FRIENDSHIP_REQUEST = 1
