@@ -1,6 +1,9 @@
 $(function () {
+
+	var center = [-2.2986156360633974,-78.12206268310548];
+
 	var render_map = function (latlng) {		
-		var latlng = latlng || L.latLng(-2.2986156360633974,-78.12206268310548);
+		var latlng = latlng || L.latLng(center);
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
 		L.mapbox.accessToken = token;		
 		map = L.mapbox.map('map', 'mapbox.light').setView(latlng, 15);
@@ -22,7 +25,10 @@ $(function () {
 
 		navigator.geolocation.getCurrentPosition(function (position) {		
 			var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
-			
+			console.log(center);
+			center[0] = latlng.lat;
+			center[1] = latlng.lng;
+			console.log(center);
 			var geojson = [
 			  {
 			    type: 'Feature',
@@ -60,8 +66,11 @@ $(function () {
 			  	marker.setIcon(L.divIcon(feature.properties.icon));
 			});
 			privLayer.setGeoJSON(geojson);
-			
-			map.flyTo(latlng);
+			map.setView(latlng)
+			// map.flyTo(latlng, 17);
+
+			set_location_floats();
+
 
 		}, function (error) {
 			console.warn('ERROR(' + error.code + '): ' + error.message);			
@@ -70,11 +79,12 @@ $(function () {
 	
 
 	var set_location_floats = function () {		
-		$('#btn-event-register-float').attr('lat', map._lastCenter.lat);
-	  	$('#btn-event-register-float').attr('lng', map._lastCenter.lng);
+		$('#btn-event-register-float').attr('lat', map.getCenter().lat);
+	  	$('#btn-event-register-float').attr('lng', map.getCenter().lng);
 
-	  	$('#btn-locality-register-float').attr('lat', map._lastCenter.lat);
-	  	$('#btn-locality-register-float').attr('lng', map._lastCenter.lng);
+	  	$('#btn-locality-register-float').attr('lat', map.getCenter().lat);
+	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
+
 	}
 
 	var render_localities = function () {
@@ -91,7 +101,7 @@ $(function () {
 
 				var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
 					'<p>' + data[index].description +
-					'</p> <p> <img class="mape-large circle z-depth-3" src=" ' + data[index].locality_image_url + 
+					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
 					'" > </p> <p> De: <a class="collection-item" href="/p/'+ data[index].owner_name + '">'+ 
 					data[index].owner_name + 
 					'</a>  </p> <a href="/locality/'+data[index].id+
@@ -116,7 +126,7 @@ $(function () {
 				var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
-					'" target="_blank" > <img class="mape-large z-depth-3" src=" ' + data[index].event_image_url + '" > </a></p>' + 
+					'" target="_blank" > <img class="mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
 					'<p> De: <a class="collection-item" href="/p/'+ data[index].event_owner + '">'+ data[index].event_owner +
 					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
@@ -139,8 +149,9 @@ $(function () {
 	}
 	
 	var init = function () {
-		reload_map();		
+			
 		set_location_floats();
+		reload_map();	
 		render_localities();
 		render_events();
 		add_context_menu();

@@ -191,6 +191,10 @@ input.valid:not([type]), input.valid:focus:not([type]), input.valid[type="text"]
     border-bottom: 1px solid #84ffff !important;
     box-shadow: 0 1px 0 0 #84ffff !important;
 }
+/* Img without url for smartphones */
+img.responsive-img[src="#"]{
+  visibility: hidden !important;
+}
  /* Font filled */
  .slides .shadow {
 color: white !important;
