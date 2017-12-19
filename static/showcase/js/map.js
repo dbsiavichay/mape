@@ -13,6 +13,14 @@ $(function () {
 	var map = render_map();
 	var privLayer = L.mapbox.featureLayer().addTo(map);
 
+	var ubication_button = function (latlng){
+		$('a[id*=ubicate]').on('click', function(e) {
+			latlng = latlng || L.latlng(center);
+			map.flyTo(latlng, 17);
+		});
+
+	};
+
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
 		var lng = $('#map').attr('lng');			
@@ -25,52 +33,14 @@ $(function () {
 
 		navigator.geolocation.getCurrentPosition(function (position) {		
 			var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
-			console.log(center);
 			center[0] = latlng.lat;
 			center[1] = latlng.lng;
-			console.log(center);
-			var geojson = [
-			  {
-			    type: 'Feature',
-			    geometry: {
-			      type: 'Point',
-			      coordinates: [lat, lng]
-			    },
-			    properties: {
-			      icon: {
-			        className: 'my-icon icon-dc', // class name to style
-			        html: '&#9733;', // add content inside the marker, in this case a star
-			        iconSize: null // size of icon, use null to set the size in CSS
-			      },
-			      title: 'Estas aquí'
-			    }
-			  },
-			  {
-			    type: 'Feature',
-			    geometry: {
-			      type: 'Point',
-			      coordinates: [-122.413682, 37.775408]
-			    },
-			    properties: {
-			      icon: {
-			        className: 'my-icon icon-sf', // class name to style
-			        html: '&#9733;', // add content inside the marker, in this case a star
-			        iconSize: null // size of icon, use null to set the size in CSS
-			      }
-			    }
-			  }
-			];
-			privLayer.on('layeradd', function(e) {
-			  var marker = e.layer,
-			    feature = marker.feature;
-			  	marker.setIcon(L.divIcon(feature.properties.icon));
-			});
-			privLayer.setGeoJSON(geojson);
+			
 			map.setView(latlng)
 			// map.flyTo(latlng, 17);
 
 			set_location_floats();
-
+			ubication_button(latlng);
 
 		}, function (error) {
 			console.warn('ERROR(' + error.code + '): ' + error.message);			
@@ -84,6 +54,7 @@ $(function () {
 
 	  	$('#btn-locality-register-float').attr('lat', map.getCenter().lat);
 	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
+
 
 	}
 
@@ -126,7 +97,7 @@ $(function () {
 				var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
-					'" target="_blank" > <img class="mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
+					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
 					'<p> De: <a class="collection-item" href="/p/'+ data[index].event_owner + '">'+ data[index].event_owner +
 					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
@@ -148,17 +119,16 @@ $(function () {
 		});	  
 	}
 	
+
 	var init = function () {
-			
-		set_location_floats();
 		reload_map();	
+		set_location_floats();
 		render_localities();
 		render_events();
 		add_context_menu();
 	}
 
 	init();
-
 
 	$('a[id*=btn-event-register]').on('click', function(e) {
 		e.preventDefault();
@@ -173,7 +143,9 @@ $(function () {
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/locality/add/?lat='+lat+'&lng='+lng);
 	});	
+	
 
 	Materialize.toast('Presiona click derecho sobre el mapa', 4000); 
 });
+
 

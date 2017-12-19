@@ -17,7 +17,7 @@
     <div class="col s12 ">
         <h4 class="center">Información del evento</h4>
 
-        <div class="col s12 card hoverable">
+        <div class="col s12 hoverable">
             <h5>Ubicación</h5>
             <div class="col s12">
                 <ul class="tabs ">
@@ -70,7 +70,7 @@
                             Pública
                         </label>
                     </div>
-                    {% if not user.profile.commercial %} <p class="amber tiny-text col s9 m5 l5 low-border">Activa tu cuenta comercial para habilitar esta opción </p> {% endif %}
+                    {% if not user.profile.commercial %} <p class="tiny-text amber-text col s9 m5 l5 low-border">Activa tu cuenta comercial para habilitar esta opción </p> {% endif %}
                 </div>
             </div>
 
@@ -93,7 +93,7 @@
             </div>
 
 
-            <div class="file-field input-field col s12">
+            <div class="file-field input-field col s12 m6 l6">
                 <div class="btn cyan">
                     <span>Imagen</span>
                     {{ form.front_image }}
@@ -115,7 +115,7 @@
             </div> 
             -->            
             
-            <div class="input-field col s6 m4 l4">        
+            <div class="input-field col s12 m4 l4">        
                 {{ form.cover|add_class:"validate" }}
                 <label for="{{ form.cover.id_for_label }}">{{ form.cover.label }}</label>
             </div>

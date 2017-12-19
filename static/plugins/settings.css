@@ -158,3 +158,6 @@ footer{
    i.medium {
     font-size: 4rem !important;
 }
+.collapsible-body{
+  border-bottom: none;
+}

@@ -21,6 +21,10 @@
 {% load l10n %}
 <div id="map" lat="{{ lat|unlocalize }}" lng="{{ lng|unlocalize }}">
     <!-- Botones Float -->
+    <div class="right marginado">
+      <a class="btn-floating btn-large transparent" id="ubicate"><i class="material-icons cyan-text medium" >gps_fixed</i>
+      </a>
+    </div>
       <div class="fixed-action-btn">
         <a class="btn-floating btn-large cyan">
           <i class="material-icons medium">add</i>
