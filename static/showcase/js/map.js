@@ -70,12 +70,10 @@ $(function () {
 				})		
 				.addTo(map);
 
-				var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
+				var content = '<a class="" href="/locality/' + data[index].name+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
 					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
-					'" > </p> <p> De: <a class="collection-item" href="/p/'+ data[index].owner_name + '">'+ 
-					data[index].owner_name + 
-					'</a>  </p> <a href="/locality/'+data[index].id+
+					'" > </p> <a href="/locality/'+data[index].id+
 					'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>  ';
 				marker.bindPopup(content);
