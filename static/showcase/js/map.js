@@ -70,7 +70,7 @@ $(function () {
 				})		
 				.addTo(map);
 
-				var content = '<a class="" href="/locality/' + data[index].name+ '">' + data[index].name+ '</a>' +
+				var content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
 					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
 					'" > </p> <a href="/locality/'+data[index].id+
