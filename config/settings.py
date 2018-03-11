@@ -25,7 +25,7 @@ SECRET_KEY = '1mit$vy19e^py33^t2n-k9%7d_gn-7nccl^_*d8#*$nbasgpm+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '192.81.214.32', 'mape.live']
 
 
 # Application definition
