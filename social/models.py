@@ -28,7 +28,7 @@ class Profile(models.Model):
 	objects = ShowerManager()
 
 	def __unicode__(self):
-		return self.user
+		return unicode(self.user)
 
 	def get_full_name(self):
 		return self.user.get_full_name()

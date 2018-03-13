@@ -71,10 +71,10 @@
                 
                 <li><a href="/profiles/{{ user.username }}/friends"> <i class="material-icons">contacts</i> Amigos </a></li>
                 
-                {% if user.profile.commercial %}
-                <li><a href="{% url 'commercial_update' %}"><i class="material-icons">store</i> Mi comercial</a></li> 
-                {% else %}
-                <li><a href="{% url 'commercial_account' user.username %}" class="amber"><i class="material-icons">store</i> Activar comercial </a></li> 
+                {% if user.profile.commercial and user.is_staff %}
+                <li><a href="{% url 'commercial_update' %}"><i class="material-icons">store</i> Localidad </a></li> 
+                {% elif user.profile.is_complete and user.is_staff %}
+                <li><a href="{% url 'commercial_account' user.username %}" class="amber"><i class="material-icons">store</i> Activar servidor </a></li> 
                 {% endif %}
                 <li><div class="divider"></div></li>
                 <li><span class="subheader">Configuraciones</span></li>

@@ -24,7 +24,7 @@
                 <div class="switch">
                     <label>
                         Privada
-                        {% if user.profile.is_complete %}
+                        {% if user.profile.is_commertial %}
                         {{ form.is_public }}
                         {% else %}
                         {{ form.is_public|attr:"disabled" }}
@@ -33,7 +33,6 @@
                         Pública
                     </label>
                 </div>
-                {% if not user.profile.is_complete %} <p class="amber tiny-text col s9 m5 l5 low-border">Completa tu perfil para habilitar esta opción </p> {% endif %}
             </div>
 
             <div class="input-field col s12">

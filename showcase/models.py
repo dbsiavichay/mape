@@ -11,7 +11,7 @@ class Category(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 
 	def __unicode__(self):
-		return self.name
+		return unicode(self.name)
 
 class Locality(models.Model):
 	class Meta:
@@ -36,7 +36,7 @@ class Locality(models.Model):
 	objects = ShowerManager()
 
 	def __unicode__(self):
-		return self.name
+		return unicode(self.name)
 
 	def get_hash_name(self):
 		return self.name.replace(" ", "_")
@@ -121,7 +121,7 @@ class Event(models.Model):
 
 
 	def __unicode__(self):
-		return self.name
+		return unicode(self.name)
 
 	def invited_count(self):
 		return self.guests.all().count() - 1
