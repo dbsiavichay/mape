@@ -67,38 +67,12 @@ class ProfileForm(forms.ModelForm):
 
         charter = self.data.get('charter')
 
-        if not charter:
-            return charter
+        valid, message = validate_charter(charter)
 
-        if not charter.isnumeric:
-            raise forms.ValidationError('Ingrese una cédula válida.')
+        if not valid:
+            raise forms.ValidationError(message)
 
-        if len(charter) != 10:
-            raise forms.ValidationError('Ingrese una cédula válida.')
-
-        total = 0
-        digit = (int(charter[9])*1)
-
-        for i in range(len(charter) - 2):
-            mult = 0;
-            if ( i%2 ) != 0:
-                total = total + ( int(charter[i]) * 1 )
-            else:
-                mult = int(charter[i]) * 2
-                if mult > 9:
-                    total = total + ( mult - 9 )
-                else: 
-                    total = total + mult;
-
-        decena = total / 10
-        decena = math.floor( decena )
-        decena = ( decena + 1 ) * 10
-        final = decena - total
-
-        if ( final == 10 and digit == 0 ) or ( final or digit ):
-            return charter
-        
-        raise forms.ValidationError('Ingrese una cédula válida.')
+        return charter
 
     def save(self, username=None, email=None, commit=True):
         obj = super(ProfileForm, self).save(commit=False)
@@ -114,3 +88,28 @@ class ProfileForm(forms.ModelForm):
         if commit:
             obj.save()
         return obj
+
+
+def validate_charter(charter):
+    if charter is None:
+        return (False, 'Este campo es requerido.')        
+    if not charter.isdigit:
+        return (False, 'Ingrese una cédula válida.')        
+    if len(charter) != 10:
+        return (False, 'La cédula debe contener 10 dígitos numéricos.')        
+
+    total = 0
+    coeficientes = (2,1,2,1,2,1,2,1,2,)
+    
+    verificador_recibido = int(charter[9])
+    for i, cf in enumerate(coeficientes):        
+        mult = int(charter[i]) * cf
+        total = total + mult if mult <= 9 else total + ( mult - 9 )
+
+    band = total%10    
+    verificador_obtenido = total if total < 10 else 10 - band if band != 0  else band
+
+    if verificador_recibido == verificador_obtenido:
+        return (True, None)
+    
+    return (False, 'Ingrese una cédula válida.')
