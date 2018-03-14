@@ -64,6 +64,9 @@ class NotificationMixin(object):
         from .models import Notification
 
         contenttype = ContentType.objects.get_for_model(self)
-        notification = Notification.objects.get(object_id=self.id, contenttype=contenttype)
-        notification.delete()
+        try:
+            notification = Notification.objects.get(object_id=self.id, contenttype=contenttype)
+            notification.delete()
+        except Notification.DoesNotExist:
+            return None
         return notification
