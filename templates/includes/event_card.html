@@ -28,7 +28,7 @@
             {% endif %}
             <!-- Gratuito -->
             {% if event.is_free %}
-            Gratuito &#8226;
+            <strong>Gratuito</strong> &#8226;
             {% endif %}
             <!-- Numero total de invitados. (nos reservamos los contadores de [Asistentes, Me gusta]) -->
             {{ event.invited_count }} Invitados
@@ -63,7 +63,7 @@
             <div class="col s3 right "><i class="material-icons cyan-text ">spa</i></div>
             <h5 class="col s9 right-align">Gratuito</h5> 
             {% else %}
-            <div class="col s12 "><i class="material-icons cyan-text">attach_money</i> <b>Precio de entrada: {{ event.cover }} </b></div>
+            <div class="col s12 "><i class="material-icons cyan-text">attach_money</i> <b>{{ event.cover }} </b></div>
              
             {% endif %}
 
@@ -111,7 +111,7 @@
     <div class="card-action row">
         
         <a href="/event/{{ event.id }}/attend/" class="btn cyan waves-light col s6"> <i class="material-icons">public</i>Ver mapa </a>
-        <a href="/event/{{ event.id }}/like/" class="btn cyan waves-light col s6 "> <i class="material-icons right">visibility</i> Ver más </a>
+        <a href="/event/{{ event.id }}/" class="btn cyan waves-light col s6 "> <i class="material-icons right">visibility</i> Ver más </a>
     </div>  
     {% include "showcase/components/event_guests_modal.html" %} 
 </div>

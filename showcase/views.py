@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from datetime import datetime, timedelta, date
+import calendar
 
 from django.http import JsonResponse
 
@@ -51,19 +52,19 @@ class EventListView(ListView):
 
 			for event in self.object_list:
 				event_day = ""
-				if event.start.day == datetime.now().day:
+				if datetime.weekday(event.start) == datetime.weekday(date.today())+1:
 					event_day = "Hoy" 
-				elif datetime.weekday(event.start) == 0:
-					event_day = "Lunes"
 				elif datetime.weekday(event.start) == 1:
-					event_day = "Martes"
+					event_day = "Lunes"
 				elif datetime.weekday(event.start) == 2:
-					event_day = "Miercoles"
+					event_day = "Martes"
 				elif datetime.weekday(event.start) == 3:
-					event_day = "Jueves"
+					event_day = "Miercoles"
 				elif datetime.weekday(event.start) == 4:
-					event_day = "Viernes"
+					event_day = "Jueves"
 				elif datetime.weekday(event.start) == 5:
+					event_day = "Viernes"
+				elif datetime.weekday(event.start) == 6:
 					event_day = "Sábado"
 				else:
 					event_day = "Domingo"

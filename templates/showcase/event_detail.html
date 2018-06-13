@@ -107,18 +107,18 @@
     <div class="col s12 center">
       {% if is_owner %}
         <a href="#guests_modal" class="modal-trigger waves-effect waves-light btn cyan"><i class="material-icons tiny">person_add </i>&nbsp; Invitar</a>
-        {% if object.is_public and is_owner %}
+        <!-- {% if object.is_public and is_owner %}
         <a href="#sponsors_modal" class="modal-trigger waves-effect waves-light btn amber"><i class="material-icons tiny">person_add </i>&nbsp; Pedir auspicio</a>
-        {% endif %}
+        {% endif %} -->
         {% if not object.get_is_comming == "Cancelado" and is_owner %}
         <a href="#event_cancel" class="modal-trigger waves-effect waves-light btn red"><i class="material-icons tiny">close </i>&nbsp; Cancelar evento</a>
         <div class="modal" id="event_cancel">
           <div class="modal-content">
             <h4>Advertencia:</h4>
-            <p>Si realiza esta accion no podra volver a activar el evento. <br> ¿Desea cancelar el evento?</p>
+            <p>Si realiza esta acción no podra volver a activar el evento. <br> </p>
           </div>
           <div class="modal-footer">
-            <a href="{% url 'event_cancel' object.id %}" class="btn modal-action red waves-effect waves-light">Cancelar</a>
+            <a href="{% url 'event_cancel' object.id %}" class="btn modal-action red waves-effect waves-light">Cancelar evento</a>
             <a href="#!" class=" modal-close waves-effect waves-cyan btn-flat">Salir</a>
             
           </div>
@@ -146,7 +146,7 @@
     {% comment_form object %}
     </div>
     
-  </div>
+    </div>
   </div>
 </div>
 {% if object.is_public %}

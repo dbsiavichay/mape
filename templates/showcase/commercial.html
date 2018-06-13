@@ -14,170 +14,167 @@
 <div class="container">        
     {% include 'includes/errors.html' with form=locality_form %}
     {% include 'includes/errors.html' with form=form %}
+</div>
 
-    <div class="row">
-        <div class="col s12">
-            <ul class="tabs">
-                <li class="tab col s4"><a class="active" href="#commercial">Comercial</a></li>
-                <li class="tab col s4"><a href="#products">Productos</a></li>
-                <li class="tab col s4"><a href="#services">Servicios</a></li>                
-            </ul>
-        </div>
-        <div id="commercial" class="col s12">
-        
-            <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
-                {% csrf_token %}
+<div class="row">
+    <ul class="tabs grey darken-3">
+        <li class="tab col s4"><a class="active" href="#commercial">Comercial</a></li>
+        <li class="tab col s4"><a href="#products">Productos</a></li>
+        <li class="tab col s4"><a href="#services">Servicios</a></li>                
+    </ul>
+    <div id="commercial" class=" container row active">
+    
+        <form action="" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
 
-                <div class="input-field col s12">
-                    {{ locality_form.name|add_class:"validate" }}
-                    <label for="{{ locality_form.name.id_for_label }}">{{ locality_form.name.label }}</label>
+            <div class="input-field col s12">
+                {{ locality_form.name|add_class:"validate" }}
+                <label for="{{ locality_form.name.id_for_label }}">{{ locality_form.name.label }}</label>
+            </div>
+            <div class="input-field col s12">        
+                {{ locality_form.description|add_class:"materialize-textarea validate" }}
+                <label for="{{ locality_form.description.id_for_label }}">{{ locality_form.description.label }}</label>
+            </div>
+
+            <div class="file-field input-field col s12 l6 row">
+                {% if locality.front_image %}
+                <div class="card col s12 l4 m5">
+                    <img src="{{ locality.front_image.url }} " class="responsive-img" >    
                 </div>
-                <div class="input-field col s12">        
-                    {{ locality_form.description|add_class:"materialize-textarea validate" }}
-                    <label for="{{ locality_form.description.id_for_label }}">{{ locality_form.description.label }}</label>
+                
+                {% endif %}
+                <div class="btn col s6 cyan waves-effect waves-light">
+                    <span>Portada</span>
+                    {{ locality_form.front_image }}
                 </div>
-
-                <div class="file-field input-field col s12 row">
-                    {% if locality.front_image %}
-                    <div class="card col s12 l4 m5">
-                        <img src="{{ locality.front_image.url }} " class="responsive-img" >    
-                    </div>
-                    
-                    {% endif %}
-                    <div class="btn col s6 cyan waves-effect waves-light">
-                        <span>Portada</span>
-                        {{ locality_form.front_image }}
-                    </div>
-                    <div class="file-path-wrapper col s6">
-                        <input class="file-path validate" type="text">
-                    </div>
+                <div class="file-path-wrapper col s6">
+                    <input class="file-path validate" type="text">
                 </div>
+            </div>
 
-                <div class="file-field input-field col s12 row">
-                    {% if locality.profile_image %}
-                    <div class="col s12 m5 l4 center-align ">
-                        <img src="{{ locality.profile_image.url }} " class="circle responsive-img" >
-                    </div>
-                    {% endif %}
-                    <div class="btn col s6 cyan waves-effect waves-light">
-                        <span>Perfil</span>
-                        {{ locality_form.profile_image }}
-                    </div>
-                    <div class="file-path-wrapper col s6 ">
-                        <input class="file-path validate" type="text" >
-                    </div>
+            <div class="file-field input-field col s12 l6 row">
+                {% if locality.profile_image %}
+                <div class="col s12 m5 l4 center-align ">
+                    <img src="{{ locality.profile_image.url }} " class="circle responsive-img" >
                 </div>
-
-                <div class="input-field col s12 center-align">
-                    <p class="grey-text text-ligten-1"> Categorias: </p>
-                    {{ locality_form.categories|add_class:"select2" }}
-                </div>   
-
-                {{ locality_form.latitude }}
-                {{ locality_form.longitude }}
-                {{ locality_form.owner }}
-
-
-                {% for field in form %}
-                <div class="input-field col s12 m6">
-                    {{ field|add_class:"validate" }}
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% endif %}
+                <div class="btn col s6 cyan waves-effect waves-light">
+                    <span>Perfil</span>
+                    {{ locality_form.profile_image }}
                 </div>
-                {% endfor %}
-
-                <div class="col s12 center-align">
-                    <button class="btn waves-effect waves-light amber darken-2" type="submit">
-                        Guardar <i class="material-icons right">save</i>
-                    </button>
+                <div class="file-path-wrapper col s6 ">
+                    <input class="file-path validate" type="text" >
                 </div>
-            </form>            
-        </div>
-        <div id="products" class="col s12">
-            <a class="btn waves-effect waves-light amber" href="{% url 'offer_create' %}?kind=1">
-                Agregar <i class="material-icons right">add</i>
-            </a> 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Imagen</th>
-                        <th>Acciones</th>
+            </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for offer in products %}
-                    <tr>
-                        <td>{{ offer.name }}</td>
-                        <td>{{ offer.description }}</td>            
-                        <td>{{ offer.price }}</td>            
-                        <td>
-                        {% if offer.image %}
-                        <img src="{{ offer.image.url }}" class="responsive-img"></td>            
-                        {% endif %}
-                        <td>
-                            <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr colspan="2">
-                        <td>"Sin registros."</td>                
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div id="services" class="col s12">
-            <a class="btn waves-effect waves-light amber" href="{% url 'offer_create' %}?kind=2">
-                Agregar <i class="material-icons right">add</i>
-            </a> 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Imagen</th>
-                        <th>Acciones</th>
+            <div class="input-field col s12 center-align">
+                <p class="grey-text text-ligten-1"> Categorias: </p>
+                {{ locality_form.categories|add_class:"select2" }}
+            </div>   
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for offer in services %}
-                    <tr>
-                        <td>{{ offer.name }}</td>
-                        <td>{{ offer.description }}</td>            
-                        <td>{{ offer.price }}</td>            
-                        <td>
-                        {% if offer.image %}
-                        <img src="{{ offer.image.url }}" class="responsive-img"></td>            
-                        {% endif %}
-                        <!-- Opciones -->
-                        <td>
-                            <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </td>            
-                        <td>
-                            <a class="btn red waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
-                                <i class="material-icons">delete</i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr colspan="2">
-                        <td>"Sin registros."</td>                
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>        
+            {{ locality_form.latitude }}
+            {{ locality_form.longitude }}
+            {{ locality_form.owner }}
+
+
+            {% for field in form %}
+            <div class="input-field col s12 m6">
+                {{ field|add_class:"validate" }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+            {% endfor %}
+
+            <div class="col s12 center-align">
+                <button class="btn waves-effect waves-light amber darken-2" type="submit">
+                    Siguiente <i class="material-icons right">save</i>
+                </button>
+            </div>
+        </form>            
     </div>
+    <div id="products" class="container">
+        <a class="btn waves-effect waves-light amber marginado" href="{% url 'offer_create' %}?kind=1">
+            Agregar <i class="material-icons right">add</i>
+        </a> 
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
 
+                </tr>
+            </thead>
+            <tbody>
+                {% for offer in products %}
+                <tr>
+                    <td>{{ offer.name }}</td>
+                    <td>{{ offer.description }}</td>            
+                    <td>{{ offer.price }}</td>            
+                    <td>
+                    {% if offer.image %}
+                    <img src="{{ offer.image.url }}" height="90px"></td>            
+                    {% endif %}
+                    <td>
+                        <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr colspan="2">
+                    <td>"Sin registros."</td>                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="services" class="container">
+        <a class="btn waves-effect waves-light amber marginado" href="{% url 'offer_create' %}?kind=2">
+            Agregar <i class="material-icons right">add</i>
+        </a> 
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for offer in services %}
+                <tr>
+                    <td>{{ offer.name }}</td>
+                    <td>{{ offer.description }}</td>            
+                    <td>{{ offer.price }}</td>            
+                    <td>
+                    {% if offer.image %}
+                    <img src="{{ offer.image.url }}" height="90px"></td>            
+                    {% endif %}
+                    <!-- Opciones -->
+                    <td>
+                        <a class="btn cyan waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>            
+                    <td>
+                        <a class="btn red waves-effect waves-light" href="{% url 'offer_update' offer.id %}">
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr colspan="2">
+                    <td>"Sin registros."</td>                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>        
 </div>
 
 

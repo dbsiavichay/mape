@@ -6,11 +6,11 @@
             <li>
             {% if request.path == "/" %}
             <a class="no-padding navigator" href="{% url 'map' %}">
-                <img class="hide-on-small-only navigator" src="{% static 'showcase/img/Proy_Mape-02-01.png' %}">
+                <img class="hide-on-small-only navigator" src="{% static 'showcase/img/mape_logo.png' %}">
                 <img class="hide-on-med-and-up" height="57" src="{% static 'showcase/img/Proy_Mape-01-01.png' %}"></a>
             {% else %}
             <a class="no-padding " href="{% url 'map' %}">
-                <i class="material-icons medium" > arrow_back </i>
+                <i class="material-icons medium" > chevron_left </i>
             {% endif %}
                 
             </li>

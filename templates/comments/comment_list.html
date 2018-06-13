@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 <ul class="grey lighten-3 center-align ">
-    <b>Tarjetas Postales </b>
+    <b>Comentarios </b>
     {% for comment in comments %}
     <li class=" left-align">
         
@@ -30,7 +30,7 @@
     </li>
     {% empty %}
     <li class="">
-        Aún no han hecho una postal.
+        Sé la primera persona en comentar o subir una imagen.
     </li>   
     {% endfor %}
 </ul>

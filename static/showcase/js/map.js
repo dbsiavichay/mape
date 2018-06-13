@@ -6,7 +6,7 @@ $(function () {
 		var latlng = latlng || L.latLng(center);
 		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
 		L.mapbox.accessToken = token;		
-		map = L.mapbox.map('map', 'mapbox.light').setView(latlng, 15);
+		map = L.mapbox.map('map', 'mapbox.streets').setView(latlng, 15);
 		return map;
 	};
 
@@ -17,6 +17,24 @@ $(function () {
 		$('a[id*=ubicate]').on('click', function(e) {
 			latlng = latlng || L.latlng(center);
 			map.flyTo(latlng, 17);
+
+			var point = L.icon({
+				iconUrl: 'static/showcase/img/circle.png',
+				//iconRetinaUrl: 'my-icon@2x.png',
+				iconSize: [38, 38],
+				iconAnchor: [22, 22],
+				//popupAnchor: [-3, -76],
+				//shadowUrl: 'my-icon-shadow.png',
+				//shadowRetinaUrl: 'my-icon-shadow@2x.png',
+				//shadowSize: [68, 95],
+				//shadowAnchor: [22, 94]
+			});
+
+			var self_marker = L.marker(latlng, {icon: point})		
+			.addTo(map);
+
+			var content = 'Tú';
+			self_marker.bindPopup(content);
 		});
 
 	};
@@ -35,9 +53,7 @@ $(function () {
 			var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
 			center[0] = latlng.lat;
 			center[1] = latlng.lng;
-			
-			map.setView(latlng)
-			// map.flyTo(latlng, 17);
+			map.setView(latlng);
 
 			set_location_floats();
 			ubication_button(latlng);
@@ -54,8 +70,6 @@ $(function () {
 
 	  	$('#btn-locality-register-float').attr('lat', map.getCenter().lat);
 	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
-
-
 	}
 
 	var render_localities = function () {

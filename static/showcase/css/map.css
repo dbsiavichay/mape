@@ -12,7 +12,9 @@ and open the template in the editor.
 html {
   font-family: Comfortaa, sans-serif;
 }
-
+#ubicate{
+  margin-right: 20px;
+}
 #map { 
   position:fixed; 
   width:100%; 

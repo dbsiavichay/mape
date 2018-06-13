@@ -98,58 +98,46 @@
                 {% endfor %}
             </div>
         </div>
-
-        <!-- Tabs de la tarjeta -->
-        <div class="card-tabs z-depth-3">
-            <ul class="tabs tabs-fixed-width">
-              <li class="tab"><a class="active" href="#description">Descripción</a></li>
-              <li class="tab {% if not object.event_set %} disabled {%endif%}"><a href="#events">Eventos</a></li>
-            </ul>
-        </div>
-        <!-- Contenido de los tabs -->
-        <div class="card-content row">
-          <div id="description">
-            <!-- Descripcion -->
-            <div class="card col s12">
-              <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
-              <p align="justify"><span>{{ object.description }}</span></p>
+         <!-- Eventos de la Localidad -->
+        <div id="events" class="row cyan accent-1 ">            
+            <div class="section col s12 m12 l6 offset-l3">
+            <!-- Tarjeta de evento -->
+            {% for event in object.event_set.all %}                    
+                {% include 'includes/event_card.html' with event=event %}
+            {% empty %}   
+            <a href="#" class="btn cyan white-text"><i class="material-icons"> add</i>  Crear un evento </a>                 
+            <p>Aun no hay eventos.</p>
+            {% endfor %}
             </div>
-            <!-- Productos / Servicios-->            
-            {% if object.is_commercial and object.commercial.offer_set %}
-            <p class="grey-text"> Ofrece:</p>
-              {% for offer in  object.commercial.offer_set.all %}
-                {% include 'showcase/components/offer_template.html' with offer=offer %}
-              {% endfor %}
-            {% endif %}
-            <!-- Informacion Comercial -->              
-            {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
-          </div>
-          <!-- Eventos de la Localidad -->
-
-          
-            <div id="events" class="row cyan accent-1 ">            
-                <div class="section col s12 m12 l6 offset-l3">
-                <!-- Tarjeta de evento -->
-                {% for event in object.event_set.all %}                    
-                    {% include 'includes/event_card.html' with event=event %}
-                {% empty %}                    
-                <p>Aun no hay eventos.</p>
-                {% endfor %}
-                </div>
-            </div> 
-        </div><!-- Fin tarjeta evento -->
-    </div>
-{% if not user.is_anonymous and object.is_public %}
+        </div> 
+        <div class="card col s12">
+          <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
+          <p align="justify"><span>{{ object.description }}</span></p>
+        </div>
+        <!-- Productos / Servicios-->            
+        {% if object.is_commercial and object.commercial.offer_set %}
+        <p class="col grey-text"> Ofrece:</p>
+          {% for offer in  object.commercial.offer_set.all %}
+            {% include 'showcase/components/offer_template.html' with offer=offer %}
+          {% endfor %}
+        {% endif %}
+        <!-- Informacion Comercial -->              
+        {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}
+    </div><!-- Fin tarjeta evento -->
+</div>
+{% if object.is_public %}
     <!-- Postales -->
     <div class="no-padding container">
         {% load comments %}
         {% comment_list object %}
-        {% comment_form object %}        
+        {% if not user.is_anonymous %}
+            {% comment_form object %}   
+        {% endif%}     
     </div>
 {% endif %}
 </div>
 
-        {% include 'includes/footer.html' %}
+{% include 'includes/footer.html' %}
 {% endblock %}
 
 {% block js %}

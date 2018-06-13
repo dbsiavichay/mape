@@ -17,43 +17,7 @@
     <div class="col s12 ">
         <h4 class="center">Información del evento</h4>
 
-        <div class="col s12 hoverable">
-            <h5>Ubicación</h5>
-            <div class="col s12">
-                <ul class="tabs ">
-                    <li class="tab col s3"><a class="active" href="#selected">Seleccionado</a></li>
-                    <li class="tab col s3 {% if not localities %} disabled {% endif %} "><a href="#privates">Mis lugares</a></li>
-                    <li class="tab col s3 {% if not close %} disabled {% endif %}"><a href="#closer">Cercanos</a></li>
-                </ul>
-            </div>
-            <div id="selected">
-                {% if object.locality %}
-                {% include "includes/locality_chip.html" with localities=object.locality %}
-                {% else %}
-                <p>Latitud: {{ form.latitude.value }}</p>
-                <p>Longitud: {{ form.longitude.value }}</p>
-                {% endif %}
-            </div>
-            {% if localities %}
-            <div id="privates" class="col s12">
-                <div id="localities" class="container no-margin">
-                
-                {% for locality in localities %}
-                    {% include "includes/locality_chip.html" with locality=locality %}
-                {% endfor %}            
-                </div>
-            {% endif %}                  
-            </div>
-            {% if close %}
-            <div id="closer" class="col s12">
-                <div id="close" class="container no-margin">
-                {% for locality in close %}
-                    {% include "includes/locality_chip.html" with locality=locality %}
-                {% endfor %}            
-                </div>
-            {% endif %}              
-            </div>
-        </div>
+        
         <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             <div class=" col s12">
@@ -74,11 +38,11 @@
                 </div>
             </div>
 
-            <div class="input-field col s12">
+            <div class="input-field col l6 offset-l3">
                 {{ form.name|add_class:"validate" }}
                 <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
             </div>
-            <div class="input-field col s12">        
+            <div class="input-field col l6 offset-l3">        
                 {{ form.description|add_class:"materialize-textarea validate" }}
                 <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             </div>
@@ -102,18 +66,7 @@
                     <input class="file-path validate" type="text">
                 </div>
             </div>
-
-            <!-- 
-            <div class="input-field col s6">
-                {{ form.ends_0|add_class:"datepicker" }}
-                <label for="{{ form.ends_0.id_for_label }}">{{ form.ends_0.label }}</label>
-            </div>
-
-            <div class="input-field col s6">
-                {{ form.ends_1|add_class:"timepicker" }}
-                <label for="{{ form.ends_1.id_for_label }}">{{ form.ends_1.label }}</label>
-            </div> 
-            -->            
+       
             
             <div class="input-field col s12 m4 l4">        
                 {{ form.cover|add_class:"validate" }}
@@ -122,7 +75,43 @@
             {{ form.latitude }}
             {{ form.longitude }}
             {{ form.locality }}
-                        
+            <div class="col s12 no-margin grey lighten-2">
+                <h5>Ubicación</h5>
+                <div class="col s12">
+                    <ul class="tabs ">
+                        <li class="tab col s3"><a class="active" href="#selected">Seleccionado</a></li>
+                        <li class="tab col s3 {% if not localities %} disabled {% endif %} "><a href="#privates">Mis lugares</a></li>
+                        <li class="tab col s3 {% if not close %} disabled {% endif %}"><a href="#closer">Cercanos</a></li>
+                    </ul>
+                </div>
+                <div id="selected">
+                    {% if object.locality %}
+                    {% include "includes/locality_chip.html" with localities=object.locality %}
+                    {% else %}
+                    <p>Latitud: {{ form.latitude.value }}</p>
+                    <p>Longitud: {{ form.longitude.value }}</p>
+                    {% endif %}
+                </div>
+                {% if localities %}
+                <div id="privates" class="col s12">
+                    <div id="localities" class="container no-margin">
+                    
+                    {% for locality in localities %}
+                        {% include "includes/locality_chip.html" with locality=locality %}
+                    {% endfor %}            
+                    </div>
+                {% endif %}                  
+                </div>
+                {% if close %}
+                <div id="closer" class="col s12">
+                    <div id="close" class="container no-margin">
+                    {% for locality in close %}
+                        {% include "includes/locality_chip.html" with locality=locality %}
+                    {% endfor %}            
+                    </div>
+                {% endif %}              
+                </div>
+            </div>
             <div class="col s12 center">
                 <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Guardar
                     <i class="material-icons right">send</i>
