@@ -1,4 +1,22 @@
 $(function () {
+// Facebook init
+	window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1032163666847445',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v3.0'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/es_LA/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
 	//Initialize modals
 	$('.modal').modal();
 	$('.parallax').parallax();

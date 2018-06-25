@@ -36,7 +36,9 @@
         <ul id="nav-right" class="right no-margin no-padding col s5 m3 l4 ">
             <div class="row fullscreen">
                 <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
-                <li><a href="{% url 'social:begin' 'facebook' %}" class="btn capitalize" style="background-color: #4267b2;">Inicia con facebook</a></li>
+                <!-- <li><a href="{% url 'social:begin' 'facebook' %}" class="btn capitalize" style="background-color: #4267b2;">Inicia con facebook</a></li> -->
+                <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" ></div>
+
             {%else%}
         <ul id="nav-right" class="right no-margin no-padding col s3 m2 l1 ">
                 {%if user.profile.avatar %} 

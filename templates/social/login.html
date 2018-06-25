@@ -81,7 +81,9 @@
         <div class="center offset-l4 offset-m2 col l4 m8 s12 row">
 
             <a href="{% url 'signup' %}" class="col s12 m8 l6 amber darken-1 btn capitalize offset-m2 offset-l3"> Registrarse </a> 
-            <a href="{% url 'social:begin' 'facebook' %}" class="col l10 m8 s12 offset-m2 btn capitalize offset-l1" style="background-color: #4267b2; ">  Continuar con facebook </a>
+            <!-- Continue with F button-->
+            <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" ></div>
+
             <p class="white-text col"> Si aún no tienes una cuenta puedes llenar el formulario dando click en "Registrar" o puedes acceder con una cuenta de Facebook.</p>
             <a href="{% url 'map' %}" class="col s12 modal-trigger cyan-text text-darken-4"> Ingresar como invitado </a>
             <a href="#modal-forgotpass" class="col s12 modal-trigger cyan-text text-darken-4"> Recuperar contraseña</a>
@@ -107,6 +109,7 @@
     
     <!-- Jquery -->
 	<script type="text/javascript" src="{% static 'showcase/js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/init.js' %}"></script>
     <!-- Materialize jss -->
     <script type="text/javascript" src="{% static 'showcase/js/materialize.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'showcase/js/materialize.js' %}"></script>
