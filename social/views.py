@@ -7,6 +7,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+#------------------------------------------------------------------------
+# from django.http import JsonResponse
+#------------------------------------------------------------------------
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
 from .models import *
 from .forms import *
@@ -19,7 +22,15 @@ class UserCreateView(CreateView):
 	form_class = UserCreationForm
 	success_url = '/'
 	template_name= 'social/signup.html'
-
+#------------------------------------------------------------------------
+	def FB_login(request):
+	    response = self.request.GET.get('response') or self.kwargs.get('response') or None
+	    if response:
+	    	data = { 'Ok': True
+	        #'Ok': User.objects.filter(username__iexact=response.name).exists()
+	        }
+	    return JsonResponse(data)
+#------------------------------------------------------------------------
 	def form_valid(self, form):
 		from .mails import send_activate_account
 		self.object = form.save()

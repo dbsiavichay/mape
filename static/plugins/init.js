@@ -1,4 +1,5 @@
 $(function () {
+// ----------------------------------------------------------------------------
 // Facebook init
 	window.fbAsyncInit = function() {
     FB.init({
@@ -16,6 +17,34 @@ $(function () {
      js.src = "https://connect.facebook.net/es_LA/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
+	
+FB.Login(function(response){
+	if (response.authResponse){
+
+	    FB.api('/me', function(response) {
+	    	console.log(response);
+	    	$.ajax({
+	    		type: 'POST',
+			    url: '/signup/',
+			    data: {
+			      'response': response.name
+			    },
+			    success: function (data) {
+			      if (data.Ok) {
+			        alert("Nombre de usuario ocupado ");
+			      }
+			    }
+			});
+	    });
+		
+	}
+	else {
+     console.log('User cancelled login or did not fully authorize.');
+    }
+	console.log(response.status);
+}, {scope: 'email, public_profile, read_stream,publish_stream,publish_actions,read_friendlists'});    
+
+// ----------------------------------------------------------------------------
 
 	//Initialize modals
 	$('.modal').modal();
