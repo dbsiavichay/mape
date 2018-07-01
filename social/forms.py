@@ -49,7 +49,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         exclude = ['is_commercial', 'is_complete']
 
-    first_name = forms.CharField(max_length=30, label='Nombre') 
+    first_name = forms.CharField(max_length=30, label='Nombres') 
     last_name = forms.CharField(max_length=30, label='Apellidos')
 
     def __init__(self, *args, **kwargs):

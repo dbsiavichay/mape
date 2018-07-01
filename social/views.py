@@ -22,15 +22,7 @@ class UserCreateView(CreateView):
 	form_class = UserCreationForm
 	success_url = '/'
 	template_name= 'social/signup.html'
-#------------------------------------------------------------------------
-	def FB_login(request):
-	    response = self.request.GET.get('response') or self.kwargs.get('response') or None
-	    if response:
-	    	data = { 'Ok': True
-	        #'Ok': User.objects.filter(username__iexact=response.name).exists()
-	        }
-	    return JsonResponse(data)
-#------------------------------------------------------------------------
+
 	def form_valid(self, form):
 		from .mails import send_activate_account
 		self.object = form.save()
@@ -42,6 +34,33 @@ class UserCreateView(CreateView):
 		#send_activate_account(self.object)
 		return redirect(self.success_url+'?action=emailsend')
 
+#------------------------------------------------------------------------
+class FConnectionView(CreateView):
+	model = User
+	form_class = UserCreationForm
+	success_url = '/'
+	def get(self, request, *args, **kwargs):
+		if request.is_ajax():
+			profile = self.request.GET.get('profile') or self.kwargs.get('profile') or None
+			print profile
+		if profile:
+			data = { 'Ok': True,
+			#'Ok': User.objects.filter(username__iexact=response.name).exists()
+			} 
+			self.object.username = profile.name
+			self.object.email = profile.email
+			self.object.password = profile.name + "123"
+			self.object = form.save()
+			user = authenticate( 
+				username=self.object.username, 
+				password=self.object.password)
+			auth_login(self.request, user)
+			return redirect(self.success_url)
+		else:
+			pass
+			return super(UserCreateView, self).get(request, *args, **kwargs)
+
+#------------------------------------------------------------------------
 class ActivateAccountView(DetailView):
 	model = Profile
 	slug_field = 'user__username'
