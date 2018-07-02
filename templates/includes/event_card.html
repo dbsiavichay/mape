@@ -3,7 +3,7 @@
 {% if event %}
 <div class="card">
     <!-- Imagen de la tarjeta -->
-    <div class="card-image z-depth-3 waves-effect waves-block waves-light ">
+    <div class="card-image z-depth-3 waves-block waves-light ">
         {% if event.front_image %}
         <img class="activator" src="{{ event.front_image.url }}">
         {% else %}
@@ -50,7 +50,7 @@
         <div class="card-panel gray lighten-3">
             <p align="justify" class="grey-text text-darken-3 lighten-3">{{ event.description }}</p>
             <!-- Boton hacia la pagina detalle del evento -->
-            <a href="{% url 'event_detail' event.id %}" class="btn cyan waves-light right"> <i class="material-icons right">visibility</i>Ver más</a>
+            <a href="{% url 'event_detail' event.id %}" class="btn cyan right"> <i class="material-icons right">visibility</i>Ver más</a>
         </div>
         <!-- Date -->
         <div class="row">
@@ -109,8 +109,9 @@
 
     <!-- Card Actions -->      
     <div class="card-action row">
-        
-        <a href="/event/{{ event.id }}/attend/" class="btn cyan waves-light col s6"> <i class="material-icons">public</i>Ver mapa </a>
+        {% if not event.get_is_comming == "Completado" %}
+        <a href="/event/{{ event.id }}/map/" class="btn cyan waves-light col s6"> <i class="material-icons">public</i>Ver mapa </a>
+        {% endif %}
         <a href="/event/{{ event.id }}/" class="btn cyan waves-light col s6 "> <i class="material-icons right">visibility</i> Ver más </a>
     </div>  
     {% include "showcase/components/event_guests_modal.html" %} 

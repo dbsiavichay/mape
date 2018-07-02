@@ -76,7 +76,7 @@ class EventListView(ListView):
 					'latitude': event.latitude,
 					'longitude': event.longitude,
 					'event_image_url': event.front_image.url if event.front_image else '#',
-					'event_owner': event.owner().user.username,
+					'event_owner': event.owner().user.username if not event.is_public else event.owner().commercial().locality.name,
 					'day': event_day, #obtener el dia // if not event.is_public else event.owner().user.commercial().locality.name
 					'month': event.start.month
 				})
@@ -165,7 +165,7 @@ class EventUpdateView(UpdateView):
 		return context
 
 	def form_valid(self, form):
-		start = datetime.datetime.combine(
+		start = datetime.combine(
 			form.cleaned_data['start_0'],
 			form.cleaned_data['start_1']
 		)
@@ -229,6 +229,20 @@ def cancel_event(request, pk):
 	event.status = 3
 	event.save()
 	return redirect(event.get_absolute_url())
+
+class EventMapView(DetailView):
+	model = Event
+	template_name = 'showcase/map.html'	
+
+	def get_context_data(self, **kwargs):
+	    context = super(EventMapView, self).get_context_data(**kwargs)	    
+
+	    context.update({
+	    	'lat': self.object.latitude,
+	    	'lng': self.object.longitude
+	    })
+
+	    return context
 
 class LocalityListView(ListView):
 	model = Locality

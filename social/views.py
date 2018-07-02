@@ -168,7 +168,7 @@ class ProfileDetailView(DetailView):
 			})	
 		else:
 			context.update({
-				'status': 'fried'
+				'status': 'friend'
 			})
 
 		return context

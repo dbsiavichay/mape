@@ -24,7 +24,7 @@
                 <div class="switch">
                     <label>
                         Privada
-                        {% if user.profile.is_commertial %}
+                        {% if user.profile.is_commertial or user.profile.is_complete %}
                         {{ form.is_public }}
                         {% else %}
                         {{ form.is_public|attr:"disabled" }}
@@ -52,7 +52,7 @@
                         <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
                         </div>
                         <div class="file-field input-field col s12">
-                            <div class="btn cyan waves-effect waves-light">
+                            <div class="btn cyan waves-effect ">
                                 <span>Portada</span>
                                 {{ form.front_image }}
                             </div>
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="file-field input-field col s12">
-                            <div class="btn cyan waves-effect waves-light">
+                            <div class="btn cyan waves-effect">
                                 <span>Perfil</span>
                                 {{ form.profile_image }}
                             </div>

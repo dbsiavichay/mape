@@ -34,15 +34,15 @@ class Profile(models.Model):
 		return self.user.get_full_name()
 
 	def get_status_with_profile(self, profile):
-		try:
-			friendship = Friendship.objects.get(
-				models.Q(from_profile=self) | models.Q(to_profile=self),
-				models.Q(from_profile=profile) | models.Q(to_profile=profile)
-			)
-		except Friendship.DoesNotExist:
-			return None
-
-		return friendship
+		if not (self.id == profile.id):
+			try:
+				friendship = Friendship.objects.get(
+					models.Q(from_profile=self) | models.Q(to_profile=self),
+					models.Q(from_profile=profile) | models.Q(to_profile=profile)
+				)
+			except Friendship.DoesNotExist:
+				return None
+			return friendship
 		
 	def get_profiles(self, status):
 		profiles = []

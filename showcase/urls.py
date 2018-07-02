@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^event/(?P<pk>\d+)/like/$', login_required(event_like), name='event_like'),
     url(r'^event/(?P<pk>\d+)/maybe_attend/$', login_required(event_maybe_attend), name='event_maybe_attend'),
     url(r'^event/(?P<pk>\d+)/not_attend/$', login_required(event_not_attend), name='event_not_attend'),
+    url(r'^event/(?P<pk>\d+)/map/$', login_required(EventMapView.as_view()), name='event_map'),
 
     url(r'^localities/$', LocalityListView.as_view(), name='locality_list'),
     url(r'^locality/add/$', login_required(LocalityCreateView.as_view()), name='locality_create'),

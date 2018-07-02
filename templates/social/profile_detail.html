@@ -19,13 +19,13 @@
     {% endif %}
     <div class="col s12 center-align"> <h3> {{ profile.user }} </h3> </div>
     <div class="col s12 l6 offset-l3">
-      {% if not status %}
+      {% if not status and user != profile.user %}
       <a href="{% url 'profile_send_request' profile.id %}" class="btn cyan wave-effects light-effect">Enviar solicitud</a>
       {% elif status == 'send' %}
       <a href="{% url 'profile_delete_request' profile.id %}" class="btn cyan wave-effects light-effect">Cancelar solicitud</a>
       {% elif status == 'received' %}
       <a href="{% url 'profile_accept_request' profile.id %}" class="btn cyan wave-effects light-effect">Aceptar solicitud </a>
-      {% else %}
+      {% elif status == 'friend' %}
       <a href="#" class="dropdown-button right" data-activates="profile-options" ><i class="material-icons">more_vert</i></a>
       <ul id="profile-options" class="dropdown-content">
         <li>                
