@@ -78,7 +78,7 @@ class EventListView(ListView):
 					'event_image_url': event.front_image.url if event.front_image else '#',
 					'event_owner': event.owner().user.username if not event.is_public else event.owner().commercial().locality.name,
 					'day': event_day, #obtener el dia // if not event.is_public else event.owner().user.commercial().locality.name
-					'month': event.start.month
+					'status': event.status
 				})
 
 			return JsonResponse(events, safe=False)

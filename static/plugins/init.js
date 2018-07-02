@@ -54,8 +54,12 @@ function FB_conection() {
         	data : {'profile':response},
         	url : '/login/',
         	type : 'get',
-        })
-        $.post('/login/', {'profile':response,});
+        	success: function(user){
+        		console.log(user)
+        	}
+        });
+
+
     });
 }
 
@@ -95,10 +99,7 @@ function FB_conection() {
 	//Material datetimepicker
 	datepickers = $('.datepicker');
 	maxDate = new Date();
-	console.log(maxDate);
 	maxDate.setYear(2017 - 12);
-
-	console.log(maxDate);
 
 	if (datepickers.length) {
 		datepickers.pickadate({

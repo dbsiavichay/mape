@@ -8,7 +8,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout, auth
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 #------------------------------------------------------------------------
-# from django.http import JsonResponse
+from django.http import JsonResponse
 #------------------------------------------------------------------------
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
 from .models import *
@@ -55,7 +55,8 @@ class FConnectionView(CreateView):
 				username=self.object.username, 
 				password=self.object.password)
 			auth_login(self.request, user)
-			return redirect(self.success_url)
+			return JsonResponse(user, safe=False)
+			#return redirect(self.success_url)
 		else:
 			pass
 			return super(UserCreateView, self).get(request, *args, **kwargs)
