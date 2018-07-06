@@ -17,6 +17,8 @@ from .forms import *
 from showcase.forms import CommercialAccountForm
 from showcase.models import Locality
 
+
+
 class UserCreateView(CreateView):
 	model = User
 	form_class = UserCreationForm
@@ -35,31 +37,31 @@ class UserCreateView(CreateView):
 		return redirect(self.success_url+'?action=emailsend')
 
 #------------------------------------------------------------------------
-class FConnectionView(CreateView):
-	model = User
-	form_class = UserCreationForm
-	success_url = '/'
-	def get(self, request, *args, **kwargs):
-		if request.is_ajax():
-			profile = self.request.GET.get('profile') or self.kwargs.get('profile') or None
-			print profile
-		if profile:
-			data = { 'Ok': True,
-			#'Ok': User.objects.filter(username__iexact=response.name).exists()
-			} 
-			self.object.username = profile.name
-			self.object.email = profile.email
-			self.object.password = profile.name + "123"
-			self.object = form.save()
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def FConnectionView(request):
+	profile = None
+	if request.is_ajax() and request.method == 'POST' and not request.user.is_authenticated():
+		profile = request.POST.get('profile')
+		duplicate = User.objects.filter(username__iexact=profile).exists()
+		print duplicate
+	if profile and duplicate:
+		instance = User.objects.get(username__iexact=profile)
+		#instance = User.objects.get(email__iexact=profile)
+		if instance:
 			user = authenticate( 
-				username=self.object.username, 
-				password=self.object.password)
-			auth_login(self.request, user)
-			return JsonResponse(user, safe=False)
-			#return redirect(self.success_url)
-		else:
-			pass
-			return super(UserCreateView, self).get(request, *args, **kwargs)
+			username='pepe', 
+			password='pepepass')
+			auth_login(request, user)
+			return JsonResponse({'url': '/'}) 
+	elif profile: 
+		instance = User.objects.create_user('pruebadef', 'correo@gmail.com', 'userpass')
+		instance.save() 
+		user = authenticate( 
+		username='pruebadef', 
+		password='userpass')
+		auth_login(request, user)
+		return JsonResponse({'url': '/'})
 
 #------------------------------------------------------------------------
 class ActivateAccountView(DetailView):

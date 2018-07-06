@@ -3,7 +3,6 @@ $(function () {
 // Facebook init
 
 function statusChangeCallback(response) {
-    console.log(response.authResponse);
     console.log(response.status);
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
@@ -12,11 +11,11 @@ function statusChangeCallback(response) {
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       FB_conection()
-    } else {
-      // The person is not logged into your app or we are unable to tell.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
+    } 
+    if (response.status == 'unknow') {
+    	
     }
+    	
 }  
 
 window.fbAsyncInit = function() {
@@ -31,11 +30,6 @@ window.fbAsyncInit = function() {
     });
 };
 
-function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-}
 
 (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -49,20 +43,36 @@ function checkLoginState() {
 function FB_conection() {
     console.log('Estas conectado, buscamos tu información');
     FB.api('/me', function(response) {
-        console.log('Perfil cargado de: ' + response.name);
+        console.log('Perfil cargado de: ' + response);
         $.ajax({
-        	data : {'profile':response},
-        	url : '/login/',
-        	type : 'get',
-        	success: function(user){
-        		console.log(user)
-        	}
-        });
-
-
+			headers: { "X-CSRFToken": getCookie("csrftoken")},
+			data : {'profile':'pepetrac' },
+			url : '/f_connection/',
+			type : 'POST',
+			success: function(response){
+				location.href=response;
+			}
+		});
     });
 }
 
+
+
+function getCookie(c_name)
+{
+    if (document.cookie.length > 0)
+    {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1)
+        {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+ }
 
 // ----------------------------------------------------------------------------
 	//Initialize modals

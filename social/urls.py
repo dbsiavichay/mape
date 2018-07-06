@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 urlpatterns = [	
     url(r'^login/$', LoginView.as_view(), name='login'),
    
-    url(r'^f_connection/$', FConnectionView.as_view(), name='f_connection'),
+    url(r'^f_connection/$', FConnectionView, name='f_connection'),
 
     url(r'^signup/$', UserCreateView.as_view(), name='signup'),
     url(r'^logout/$', login_required(logout), name='logout'),
