@@ -84,20 +84,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# L8fzAsj9EZ*    s@gai3 thiCky capiTa mace
-# LaClave?es123
-# Database 
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'mapedb',
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT'],
+        'USER': 'postgres',
+        'PASSWORD': '081011',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -137,13 +133,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_by_email',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = os.environ['FACEBOOK_API_KEY'] #"1032163666847445"  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['FACEBOOK_API_SECRET'] #"b604d81dc77671f30d7511b9a172ec18"  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = "1032163666847445"  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = "b604d81dc77671f30d7511b9a172ec18"  # App Secret
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id,name,email', 
-}
+#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+#SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#    'fields': 'id,name,email', 
+#}
 
 ##Configuration for mails
 EMAIL_HOST = 'smtp.gmail.com'

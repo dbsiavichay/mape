@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^principles/$', PrinciplesView , name='principles'),
     url(r'^politics/$', PoliticsView , name='politics'),
 
+    url(r'^atractivos/$', TempView , name='temp'),
+
     #url(r'^user/profile/$', login_required(UserProfileView.as_view()), name='user_profile'),
     #url(r'^user/change-avatar/$', change_user_avatar),
 ]

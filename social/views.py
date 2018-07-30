@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.models import User
 #------------------------------------------------------------------------
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 #------------------------------------------------------------------------
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
 from .models import *
@@ -15,7 +15,6 @@ from .forms import *
 
 from showcase.forms import CommercialAccountForm
 from showcase.models import Locality
-
 
 
 class UserCreateView(CreateView):
@@ -37,6 +36,13 @@ class UserCreateView(CreateView):
 
 #------------------------------------------------------------------------
 from django.views.decorators.csrf import csrf_exempt
+
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
+
+def TempView(request):
+	return render(request, 'showcase/components/temp.html')
+
 @csrf_exempt
 def FConnectionView(request):
 	profile = None

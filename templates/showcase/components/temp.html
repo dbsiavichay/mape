@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+{% include 'includes/nav.html' %}
+
+<div class="center-align">
+<iframe class="center" id="pdf" src="{% static 'showcase/temp/REVISTA DIGITAL.swf' %}" height="900" width="1200" ></iframe>
+</div>
+
+{% include 'includes/footer.html' %}
+{% endblock %}
