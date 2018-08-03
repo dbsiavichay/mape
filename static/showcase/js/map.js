@@ -1,4 +1,38 @@
 $(function () {
+	$.get = function(key)   {  
+        key = key.replace(/[\[]/, '\\[');  
+        key = key.replace(/[\]]/, '\\]');  
+        var pattern = "[\\?&]" + key + "=([^&#]*)";  
+        var regex = new RegExp(pattern);  
+        var url = unescape(window.location.href);  
+        var results = regex.exec(url);  
+        if (results === null) {  
+            return null;  
+        } else {  
+            return results[1];  
+        }  
+    }
+
+	var isMobile = {
+	    Android: function() {
+	        return navigator.userAgent.match(/Android/i);
+	    },
+	    BlackBerry: function() {
+	        return navigator.userAgent.match(/BlackBerry/i);
+	    },
+	    iOS: function() {
+	        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+	    },
+	    Opera: function() {
+	        return navigator.userAgent.match(/Opera Mini/i);
+	    },
+	    Windows: function() {
+	        return navigator.userAgent.match(/IEMobile/i);
+	    },
+	    any: function() {
+	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+	    }
+	};
 
 	var center = [-2.2986156360633974,-78.12206268310548];
 
@@ -42,25 +76,36 @@ $(function () {
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
 		var lng = $('#map').attr('lng');			
-
+		var message = $.get("message");
+		
 		if (lat && lng) {
 			latlng = L.latLng(parseFloat(lat), parseFloat(lng))	
 			map.flyTo(latlng);
 			return;
 		}
+		
+		if(isMobile.any()){
+			alert('Mobile')
+			navigator.geolocation.getCurrentPosition(function (position) {		
+				var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
+				center[0] = latlng.lat;
+				center[1] = latlng.lng;
+				map.setView(latlng);
 
-		navigator.geolocation.getCurrentPosition(function (position) {		
-			var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
-			center[0] = latlng.lat;
-			center[1] = latlng.lng;
-			map.setView(latlng);
+				set_location_floats();
+				ubication_button(latlng);
 
-			set_location_floats();
-			ubication_button(latlng);
-
-		}, function (error) {
-			console.warn('ERROR(' + error.code + '): ' + error.message);			
-		});		
+			}, function (error) {
+				console.warn('ERROR(' + error.code + '): ' + error.message);			
+			});
+		} else {
+			$('a[id*=ubicate]').hide();
+			$(".fixed-action-btn").hide()		};	
+		
+		console.log(message);
+		if (message){
+			Materialize.toast(message, 4000);
+		};
 	}
 	
 
@@ -155,9 +200,6 @@ $(function () {
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/locality/add/?lat='+lat+'&lng='+lng);
 	});	
-	
-
-	Materialize.toast('Presiona click derecho sobre el mapa', 4000); 
 });
 
 
