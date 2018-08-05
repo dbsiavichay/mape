@@ -1,19 +1,6 @@
 $(function () {
-	$.get = function(key)   {  
-        key = key.replace(/[\[]/, '\\[');  
-        key = key.replace(/[\]]/, '\\]');  
-        var pattern = "[\\?&]" + key + "=([^&#]*)";  
-        var regex = new RegExp(pattern);  
-        var url = unescape(window.location.href);  
-        var results = regex.exec(url);  
-        if (results === null) {  
-            return null;  
-        } else {  
-            return results[1];  
-        }  
-    }
-
-	var isMobile = {
+	
+	/*var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
 	    },
@@ -32,7 +19,7 @@ $(function () {
 	    any: function() {
 	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 	    }
-	};
+	};*/
 
 	var center = [-2.2986156360633974,-78.12206268310548];
 
@@ -84,8 +71,6 @@ $(function () {
 			return;
 		}
 		
-		if(isMobile.any()){
-			alert('Mobile')
 			navigator.geolocation.getCurrentPosition(function (position) {		
 				var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
 				center[0] = latlng.lat;
@@ -98,12 +83,9 @@ $(function () {
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
 			});
-		} else {
-			$('a[id*=ubicate]').hide();
-			$(".fixed-action-btn").hide()		};	
 		
 		console.log(message);
-		if (message){
+		if (message.lenght > 0){
 			Materialize.toast(message, 4000);
 		};
 	}

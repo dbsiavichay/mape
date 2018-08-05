@@ -39,8 +39,12 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
+#import webbrowser
+
+
 
 def TempView(request):
+	#return redirect(webbrowser.open( static 'showcase/temp/REVISTA DIGITAL.swf'))
 	return render(request, 'showcase/components/temp.html')
 
 @csrf_exempt
