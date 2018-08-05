@@ -1,6 +1,6 @@
 $(function () {
 	
-	/*var isMobile = {
+	var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
 	    },
@@ -19,7 +19,8 @@ $(function () {
 	    any: function() {
 	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 	    }
-	};*/
+	};
+
 
 	var center = [-2.2986156360633974,-78.12206268310548];
 
@@ -63,16 +64,17 @@ $(function () {
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
 		var lng = $('#map').attr('lng');			
-		var message = $.get("message");
+		var msg = $.get("msg");
 		
 		if (lat && lng) {
 			latlng = L.latLng(parseFloat(lat), parseFloat(lng))	
-			map.flyTo(latlng);
+			map.flyTo(latlng, 19);
 			return;
 		}
-		
-			navigator.geolocation.getCurrentPosition(function (position) {		
-				var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
+		var browserType = isMobile.any()?"mobile":"not mobile";
+		if (browserType == "mobile") {
+		 	navigator.geolocation.getCurrentPosition(function (position) {		
+		 		var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
 				center[0] = latlng.lat;
 				center[1] = latlng.lng;
 				map.setView(latlng);
@@ -83,10 +85,16 @@ $(function () {
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
 			});
-		
-		console.log(message);
-		if (message.lenght > 0){
-			Materialize.toast(message, 4000);
+			
+		}else{
+			$('a[id*=ubicate]').hide();
+			$('a[id*=floating-options]').hide();
+			msg = "Click derecho para opciones"
+		}
+
+		console.log(msg);
+		if (msg){
+			Materialize.toast(msg, 4000);
 		};
 	}
 	
