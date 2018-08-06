@@ -39,12 +39,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
-#import webbrowser
-
 
 
 def TempView(request):
-	#return redirect(webbrowser.open( static 'showcase/temp/REVISTA DIGITAL.swf'))
 	return render(request, 'showcase/components/temp.html')
 
 @csrf_exempt
@@ -142,8 +139,6 @@ class ProfileUpdateView(UpdateView):
 			username = form.cleaned_data['username']
 			email = form.cleaned_data['email']
 			profile_form.save(username, email)
-			
-			self.success_url = '/profiles/%s/?success=true' % username
 			return redirect(self.success_url)
 			
 		return self.form_invalid(form)
