@@ -3,16 +3,24 @@
 {% block content %}
 {% include 'includes/nav.html' %}
 
-
-<div id="is_mobile">
-	<div class="center-align">
+<!-- Contenido para mobile -->
+<div id="is_mobile" class="container">
+	<div class="center-align row">
+	
+	<!-- Pdf 
 	<iframe class="center" id="pdf" src="{% static 'showcase/temp/REVISTA DIGITAL.pdf' %}" height="800" width="100%" ></iframe>
-		
-	</div>
-	<a href="{% static 'showcase/temp/REVISTA DIGITAL.swf' %}" class="btn cyan" download="Revista Digital"> Descargar..</a>
+
+	<object width="595" height="842"> <param name="MOVIE" value="{% static 'showcase/temp/REVISTA DIGITAL.pdf' %}"> <embed src="{% static 'showcase/temp/REVISTA DIGITAL.pdf' %}" width="595" height="842" play="true" align="" loop="true" quality="high" TYPE="application/pdf" PLUGINSPAGE="[[[http://www.macromedia.com/go/getflashplay]e]r]"> </embed> </object>
+	</div> -->
+	<!-- Imagen -->
+	<img src="{% static 'showcase/temp/REVISTA DIGITAL.png' %}" class="materialboxed col s8">
+	<!-- Boton para descarga-->
+	<a href="{% static 'showcase/temp/REVISTA DIGITAL.swf' %}" class="btn cyan col s4 valign-wrapper marginado" download="Revista Digital"> Descargar..</a>
+	
 	</div>
 </div>
-<div id="is_pc">
+<!-- Contenido para pc -->
+<div id="is_pc" class=" col s6">
 	<object width="100%" height="800">
 	<param name="movie" value="{% static 'showcase/temp/REVISTA DIGITAL.swf' %}">
 	<embed width="100%" height="800" type="application/x-shockwave-flash" src="{% static 'showcase/temp/REVISTA DIGITAL.swf' %}"></embed>
