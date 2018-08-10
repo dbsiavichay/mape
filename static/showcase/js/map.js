@@ -1,5 +1,17 @@
 $(function () {
-	
+	// Force zIndex of Leaflet
+(function(global){
+  var MarkerMixin = {
+    _updateZIndex: function (offset) {
+      this._icon.style.zIndex = this.options.forceZIndex ? (this.options.forceZIndex + (this.options.zIndexOffset || 0)) : (this._zIndex + offset);
+    },
+    setForceZIndex: function(forceZIndex) {
+      this.options.forceZIndex = forceZIndex ? forceZIndex : null;
+    }
+  };
+  if (global) global.include(MarkerMixin);
+})(L.Marker);
+
 	var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
@@ -33,7 +45,7 @@ $(function () {
 	};
 
 	var map = render_map();
-	var privLayer = L.mapbox.featureLayer().addTo(map);
+	var privLayer = L.mapbox.tileLayer('mapbox.wheatpaste');
 
 	var ubication_button = function (latlng){
 		$('a[id*=ubicate]').on('click', function(e) {
@@ -63,7 +75,8 @@ $(function () {
 
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
-		var lng = $('#map').attr('lng');			
+		var lng = $('#map').attr('lng');	
+
 		var msg = $.get("msg");
 		
 		if (lat && lng) {
@@ -107,18 +120,18 @@ $(function () {
 	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
 	}
 
-	var render_localities = function () {
+	function render_localities () {
 		$.get('/localities/', function(data) {
 			for (index in data)  {				
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
 				    	'marker-symbol': 'circle',
-		                'marker-color': '#fa0'
-				    })
-				})		
-				.addTo(map);
-
+		                'marker-color': '#ffc107',
+				    }),
+		            title: data[index].name
+				});
+				marker.addTo(map);
 				var content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
 					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
@@ -130,17 +143,19 @@ $(function () {
 		});
 	}
 
-	var render_events = function () {
+	function render_events () {
 		$.get('/events/', function(data) {			
 			for (index in data)  {	
+				var priority = data[index].is_public?10001:1;
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 			    	icon: L.mapbox.marker.icon({
-				    	'marker-size': 'medium',
+				    	'marker-size': 'large',
 				    	'marker-symbol': 'star',
 		                'marker-color': '#00bcd4'
-			    	})
+			    	}),
+			    	zIndexOffset : priority,
+			    	title: data[index].name
 				}).addTo(map);
-
 				var content = '<strong class="cyan-text text-darken-3">' + data[index].name+ '</strong>' +
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
@@ -170,8 +185,9 @@ $(function () {
 	var init = function () {
 		reload_map();	
 		set_location_floats();
-		render_localities();
 		render_events();
+		render_localities();
+		
 		add_context_menu();
 	}
 

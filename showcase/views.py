@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from datetime import datetime, timedelta, date
-import calendar
+import datetime
+from datetime import timedelta, date
+import locale
 
 from django.http import JsonResponse
 
@@ -27,8 +28,8 @@ class EventListView(ListView):
 	def get(self, request, *args, **kwargs):
 		if request.is_ajax():
 			profile = request.user.profile if not request.user.is_anonymous() else None
-			today_number = datetime.weekday(datetime.now()) 
-			monday_date = datetime.today() - timedelta(days=today_number) 
+			today_number = datetime.datetime.weekday(datetime.datetime.now()) 
+			monday_date = datetime.datetime.today() - timedelta(days=today_number) 
 			tuesday = monday_date + timedelta(days=1)
 			wednesday = monday_date + timedelta(days=2)
 			thursday = monday_date + timedelta(days=3)
@@ -51,23 +52,10 @@ class EventListView(ListView):
 			events = []
 
 			for event in self.object_list:
-				event_day = ""
-				if datetime.weekday(event.start) == datetime.weekday(date.today())+1:
-					event_day = "Hoy" 
-				elif datetime.weekday(event.start) == 1:
-					event_day = "Lunes"
-				elif datetime.weekday(event.start) == 2:
-					event_day = "Martes"
-				elif datetime.weekday(event.start) == 3:
-					event_day = "Miercoles"
-				elif datetime.weekday(event.start) == 4:
-					event_day = "Jueves"
-				elif datetime.weekday(event.start) == 5:
-					event_day = "Viernes"
-				elif datetime.weekday(event.start) == 6:
-					event_day = "Sábado"
-				else:
-					event_day = "Domingo"
+				dic_days = {'MONDAY':'Lunes','TUESDAY':'Martes','WEDNESDAY':'Miércoles','THURSDAY':'Jueves', \
+				'FRIDAY':'Viernes','SATURDAY':'Sábado','SUNDAY':'Domingo'}
+				
+				day = dic_days[event.start.strftime('%A').upper()]
 
 				events.append({
 					'id': event.id,
@@ -77,8 +65,9 @@ class EventListView(ListView):
 					'longitude': event.longitude,
 					'event_image_url': event.front_image.url if event.front_image else '#',
 					'event_owner': event.owner().user.username if not event.is_public else event.owner().commercial().locality.name,
-					'day': event_day, #obtener el dia // if not event.is_public else event.owner().user.commercial().locality.name
-					'status': event.status
+					'day': day,
+					'status': event.status,
+					'is_public': event.is_public,
 				})
 
 			return JsonResponse(events, safe=False)
