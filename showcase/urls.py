@@ -21,7 +21,10 @@ urlpatterns = [
     url(r'^localities/$', LocalityListView.as_view(), name='locality_list'),
     url(r'^locality/add/$', login_required(LocalityCreateView.as_view()), name='locality_create'),
     url(r'^locality/(?P<pk>\d+)/update/$', login_required(LocalityUpdateView.as_view()), name='locality_update'),
-    url(r'^locality/(?P<pk>\d+)/$', LocalityDetailView.as_view(), name='locality_detail'),    
+    
+    #url(r'^locality/(?P<pk>\d+)/$', LocalityDetailView.as_view(), name='locality_detail'),
+    url(r'^locality/(?P<name>[\w.@+-]+)/$', LocalityDetailView.as_view(), name='locality_detail'),
+
     url(r'^locality/(?P<pk>\d+)/map/$', LocalityMapView.as_view(), name='locality_map'),    
     
 

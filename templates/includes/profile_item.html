@@ -6,8 +6,8 @@
     {% endif %}
     <p>
     {% if object.is_complete %}
-    <a href="/p/{{ object.user.username }}"><h6 class="title">{{ object.get_full_name }}</h6></a>
+    <a href="/user/{{ object.user.username }}"><h6 class="title">{{ object.get_full_name }}</h6></a>
     {{ object.user.username }}
     {% else %}
-    <a href="/p/{{ object.user.username }}"> {{ object.user.username }} </a>
+    <a href="/user/{{ object.user.username }}"> {{ object.user.username }} </a>
     {% endif %} </p>

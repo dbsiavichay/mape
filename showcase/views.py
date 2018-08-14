@@ -97,7 +97,7 @@ class EventCreateView(CreateView):
 		return context
 
 	def form_valid(self, form):
-		start = datetime.combine(
+		start = datetime.datetime.combine(
 			form.cleaned_data['start_0'],
 			form.cleaned_data['start_1']
 		)
@@ -154,7 +154,7 @@ class EventUpdateView(UpdateView):
 		return context
 
 	def form_valid(self, form):
-		start = datetime.combine(
+		start = datetime.datetime.combine(
 			form.cleaned_data['start_0'],
 			form.cleaned_data['start_1']
 		)
@@ -254,6 +254,7 @@ class LocalityListView(ListView):
 					'locality_image_url': locality.profile_image.url if locality.profile_image else '#',
 					'owner_name': locality.owner.user.username,
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
+					'verified': locality.verified,
 				})
 
 			return JsonResponse(localities, safe=False)
@@ -313,6 +314,8 @@ class LocalityUpdateView(UpdateView):
 	
 class LocalityDetailView(DetailView):
 	model = Locality
+	slug_field = 'name'
+	slug_url_kwarg = 'name'
 
 class LocalityMapView(DetailView):
 	model = Locality

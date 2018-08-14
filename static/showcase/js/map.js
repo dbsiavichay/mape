@@ -1,17 +1,23 @@
 $(function () {
-	// Force zIndex of Leaflet
-(function(global){
-  var MarkerMixin = {
-    _updateZIndex: function (offset) {
-      this._icon.style.zIndex = this.options.forceZIndex ? (this.options.forceZIndex + (this.options.zIndexOffset || 0)) : (this._zIndex + offset);
-    },
-    setForceZIndex: function(forceZIndex) {
-      this.options.forceZIndex = forceZIndex ? forceZIndex : null;
-    }
-  };
-  if (global) global.include(MarkerMixin);
-})(L.Marker);
+	// Bigining point to show the map
+	var center = [-2.2986156360633974,-78.12206268310548];
+	// Zoom limit  
+	var min_zoom = 16;
+	var max_zoom = 4;  
+	var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
+	
+	L.mapbox.accessToken = token;
 
+	var layer = L.mapbox.tileLayer('mapbox.streets');
+	
+	var render_map = function (latlng) {
+		map = L.mapbox.map('map');
+		layer.addTo(map);
+		var latlng = latlng || L.latLng(center);
+		map.setView(latlng);
+		
+		return map;
+	};
 	var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
@@ -32,20 +38,22 @@ $(function () {
 	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 	    }
 	};
+	var map = render_map().setView(center, 15);
+	
+	// map.on('zoomend', function(e) {
+	// 	var zoom = map.getZoom();
+	// 	if(zoom > min_zoom){
+	// 		map.remove();
+	// 		render_map();
+	// 		render_localities(zoom);
+	// 		render_events();
+	// 		console.log(zoom);
+	// 	}else{
+	// 		return e;
+	// 	}
+				
+	// });
 
-
-	var center = [-2.2986156360633974,-78.12206268310548];
-
-	var render_map = function (latlng) {		
-		var latlng = latlng || L.latLng(center);
-		var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
-		L.mapbox.accessToken = token;		
-		map = L.mapbox.map('map', 'mapbox.streets').setView(latlng, 15);
-		return map;
-	};
-
-	var map = render_map();
-	var privLayer = L.mapbox.tileLayer('mapbox.wheatpaste');
 
 	var ubication_button = function (latlng){
 		$('a[id*=ubicate]').on('click', function(e) {
@@ -120,18 +128,34 @@ $(function () {
 	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
 	}
 
-	function render_localities () {
+	function render_localities (zLevel) {
+		var public_zone = true;
+		console.log(zLevel);
+		switch (zLevel){
+			case zLevel <= min_zoom: public_zone = true
+			break;
+			case zLevel > min_zoom: public_zone = false 
+			break;
+		};
+		console.log(public_zone);
 		$.get('/localities/', function(data) {
-			for (index in data)  {				
+			var opcty= 1;
+			for (index in data) {
+							
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
 				    	'marker-symbol': 'circle',
 		                'marker-color': '#ffc107',
 				    }),
-		            title: data[index].name
+		            title: data[index].name,
+		            opacity: opcty
 				});
 				marker.addTo(map);
+				if(data[index].verified == false && public_zone){
+					marker.remove();
+				};	
+
 				var content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
 					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
@@ -147,6 +171,7 @@ $(function () {
 		$.get('/events/', function(data) {			
 			for (index in data)  {	
 				var priority = data[index].is_public?10001:1;
+				var url = data[index].is_public?"/locality/":"/user/";	
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 			    	icon: L.mapbox.marker.icon({
 				    	'marker-size': 'large',
@@ -160,7 +185,7 @@ $(function () {
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
 					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
-					'<p> De: <a class="collection-item" href="/p/'+ data[index].event_owner + '">'+ data[index].event_owner +
+					'<p> De: <a class="collection-item" href="' + url + data[index].event_owner + '">'+ data[index].event_owner +
 					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 
