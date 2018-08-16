@@ -105,7 +105,7 @@
             {% for event in object.event_set.all %}                    
                 {% include 'includes/event_card.html' with event=event %}
             {% empty %}   
-            <a href="#" class="btn cyan white-text"><i class="material-icons"> add</i>  Crear un evento </a>                 
+            <a href="/event/add/?lat={{ lat }}&lng={{ lng }}" class="btn cyan white-text"><i class="material-icons"> add</i>  Crear un evento </a>                 
             <p>Aun no hay eventos.</p>
             {% endfor %}
             </div>

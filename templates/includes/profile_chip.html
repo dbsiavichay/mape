@@ -1,6 +1,6 @@
 {% load staticfiles %}
 {% if profile %}
-<a class="" href="/user/{{ profile.user }} ">
+<a class="" href="/p/{{ profile.user }} ">
 <div class="chip truncate z-depth-1 hoverable cyan-text">
   {% if profile.avatar %}
   <img src="{{ profile.avatar.url }} " alt="Contact Person {{profile.get_full_name}} ">

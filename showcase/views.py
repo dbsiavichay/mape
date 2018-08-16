@@ -84,7 +84,8 @@ class EventCreateView(CreateView):
 
 		lng = self.request.GET.get('lng') or self.kwargs.get('lng') or None	
 		lat = self.request.GET.get('lat') or self.kwargs.get('lat') or None
-
+		lat = lat.replace(",", ".")
+		lng = lng.replace(",", ".")
 		localities = Locality.objects.filter(owner=self.request.user.profile)
 		reference = Point(float(lng), float(lat))
 		close = Locality.objects.filter(point__distance_lte=(reference, D(m=150)))
@@ -316,6 +317,16 @@ class LocalityDetailView(DetailView):
 	model = Locality
 	slug_field = 'name'
 	slug_url_kwarg = 'name'
+
+	def get_context_data(self, **kwargs):
+	    context = super(LocalityDetailView, self).get_context_data(**kwargs)	    
+
+	    context.update({
+	    	'lat': self.object.latitude,
+	    	'lng': self.object.longitude
+	    })
+
+	    return context
 
 class LocalityMapView(DetailView):
 	model = Locality

@@ -18,7 +18,7 @@ class Locality(models.Model):
 		verbose_name = 'localidad'
 		verbose_name_plural = 'localidades'
 
-	name = models.CharField(max_length=45, verbose_name='nombre', unique=True)
+	name = models.CharField(max_length=45, verbose_name='nombre')		
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
 	front_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)
 	profile_image = models.ImageField(upload_to='showcase/localities/', blank=True, null=True)	

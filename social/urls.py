@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^profiles/request/reject/(?P<target>\d+)/$', login_required(reject_request), name='profile_reject_request'),
     url(r'^profiles/request/delete/(?P<target>\d+)/$', login_required(delete_request), name='profile_delete_request'),
 
-    url(r'^user/(?P<username>[\w.@+-]+)/$', login_required(ProfileDetailView.as_view()), name='profile_detail'),
+    url(r'^p/(?P<username>[\w.@+-]+)/$', login_required(ProfileDetailView.as_view()), name='profile_detail'),
 
     url(r'^friends/(?P<target>\d+)/delete/$', login_required(delete_friend), name='delete_friend'),
     

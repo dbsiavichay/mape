@@ -54,16 +54,14 @@ $(function () {
 				
 	// });
 
-
-	var ubication_button = function (latlng){
-		$('a[id*=ubicate]').on('click', function(e) {
+	function fly(latlng) {
 			latlng = latlng || L.latlng(center);
 			map.flyTo(latlng, 17);
-
+			console.log(latlng);
 			var point = L.icon({
 				iconUrl: 'static/showcase/img/circle.png',
 				//iconRetinaUrl: 'my-icon@2x.png',
-				iconSize: [38, 38],
+				iconSize: [24, 24],
 				iconAnchor: [22, 22],
 				//popupAnchor: [-3, -76],
 				//shadowUrl: 'my-icon-shadow.png',
@@ -75,11 +73,10 @@ $(function () {
 			var self_marker = L.marker(latlng, {icon: point})		
 			.addTo(map);
 
-			var content = 'Tú';
+			var content = 'Aquí';
 			self_marker.bindPopup(content);
-		});
+		};
 
-	};
 
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
@@ -99,9 +96,11 @@ $(function () {
 				center[0] = latlng.lat;
 				center[1] = latlng.lng;
 				map.setView(latlng);
-
 				set_location_floats();
-				ubication_button(latlng);
+				fly(latlng);
+				$('a[id*=ubicate]').on('click', function(e) {
+					console.log("algo")
+					fly(latlng);});
 
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
@@ -141,7 +140,7 @@ $(function () {
 		$.get('/localities/', function(data) {
 			var opcty= 1;
 			for (index in data) {
-							
+				
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 				    icon: L.mapbox.marker.icon({
 				    	'marker-size': 'medium',
@@ -152,9 +151,6 @@ $(function () {
 		            opacity: opcty
 				});
 				marker.addTo(map);
-				if(data[index].verified == false && public_zone){
-					marker.remove();
-				};	
 
 				var content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
@@ -171,7 +167,7 @@ $(function () {
 		$.get('/events/', function(data) {			
 			for (index in data)  {	
 				var priority = data[index].is_public?10001:1;
-				var url = data[index].is_public?"/locality/":"/user/";	
+				var url = data[index].is_public?"/locality/":"/p/";	
 				var marker = L.marker([data[index].latitude, data[index].longitude], {
 			    	icon: L.mapbox.marker.icon({
 				    	'marker-size': 'large',
@@ -185,7 +181,7 @@ $(function () {
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
 					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
-					'<p> De: <a class="collection-item" href="' + url + data[index].event_owner + '">'+ data[index].event_owner +
+					'<p> De: <a class="collection-item" href="' + url + data[index].id + '">'+ data[index].event_owner +
 					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 
