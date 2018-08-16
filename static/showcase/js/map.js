@@ -10,14 +10,14 @@ $(function () {
 
 	var layer = L.mapbox.tileLayer('mapbox.streets');
 	
-	var render_map = function (latlng) {
+	var render_map = function (latlng, zLevel) {
 		map = L.mapbox.map('map');
 		layer.addTo(map);
 		var latlng = latlng || L.latLng(center);
-		map.setView(latlng);
-		
+		map.setView(latlng, zLevel);		
 		return map;
 	};
+
 	var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
@@ -38,26 +38,25 @@ $(function () {
 	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 	    }
 	};
-	var map = render_map().setView(center, 15);
+	var map = render_map(center, 15);
 	
-	// map.on('zoomend', function(e) {
-	// 	var zoom = map.getZoom();
-	// 	if(zoom > min_zoom){
-	// 		map.remove();
-	// 		render_map();
-	// 		render_localities(zoom);
-	// 		render_events();
-	// 		console.log(zoom);
-	// 	}else{
-	// 		return e;
-	// 	}
+	map.on('zoomend', function(e) {
+		var zoom = map.getZoom();
+		if(zoom > min_zoom){
+			
+			render_localities(zoom);
+			console.log(zoom);
+			render_map();
+			//render_events();
+		}else{
+			return e;
+		}
 				
-	// });
+	});
 
 	function fly(latlng) {
 			latlng = latlng || L.latlng(center);
 			map.flyTo(latlng, 17);
-			console.log(latlng);
 			var point = L.icon({
 				iconUrl: 'static/showcase/img/circle.png',
 				//iconRetinaUrl: 'my-icon@2x.png',
@@ -97,11 +96,15 @@ $(function () {
 				center[1] = latlng.lng;
 				map.setView(latlng);
 				set_location_floats();
-				fly(latlng);
 				$('a[id*=ubicate]').on('click', function(e) {
-					console.log("algo")
-					fly(latlng);});
-
+					console.log("press")
+					map.locate({
+						center: [51.505, -0.09],
+						zoom: 13
+					});
+					//fly(latlng);
+				});
+				//fly(latlng);
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
 			});
@@ -111,8 +114,6 @@ $(function () {
 			$('a[id*=floating-options]').hide();
 			msg = "Click derecho para opciones"
 		}
-
-		console.log(msg);
 		if (msg){
 			Materialize.toast(msg, 4000);
 		};
@@ -129,14 +130,12 @@ $(function () {
 
 	function render_localities (zLevel) {
 		var public_zone = true;
-		console.log(zLevel);
 		switch (zLevel){
 			case zLevel <= min_zoom: public_zone = true
 			break;
 			case zLevel > min_zoom: public_zone = false 
 			break;
 		};
-		console.log(public_zone);
 		$.get('/localities/', function(data) {
 			var opcty= 1;
 			for (index in data) {
@@ -151,7 +150,9 @@ $(function () {
 		            opacity: opcty
 				});
 				marker.addTo(map);
-
+				if (public_zone == false && data[intex].verified == false){
+					marker.remove();
+				};
 				var content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 					'<p>' + data[index].description +
 					'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
@@ -213,6 +214,7 @@ $(function () {
 	}
 
 	init();
+	
 
 	$('a[id*=btn-event-register]').on('click', function(e) {
 		e.preventDefault();

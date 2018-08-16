@@ -57,8 +57,10 @@ class EventListView(ListView):
 				
 				day = dic_days[event.start.strftime('%A').upper()]
 
+				print(event.locality)
+
 				events.append({
-					'id': event.id,
+					'id': event.id if not event.is_public else event.owner().commercial().locality.id,
 					'name': event.name,
 					'description': event.description,
 					'latitude': event.latitude,
@@ -315,8 +317,8 @@ class LocalityUpdateView(UpdateView):
 	
 class LocalityDetailView(DetailView):
 	model = Locality
-	slug_field = 'name'
-	slug_url_kwarg = 'name'
+	slug_field = 'id'
+	slug_url_kwarg = 'id'
 
 	def get_context_data(self, **kwargs):
 	    context = super(LocalityDetailView, self).get_context_data(**kwargs)	    
