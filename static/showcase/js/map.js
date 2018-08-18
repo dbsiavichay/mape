@@ -97,12 +97,8 @@ $(function () {
 				map.setView(latlng);
 				set_location_floats();
 				$('a[id*=ubicate]').on('click', function(e) {
-					console.log("press")
-					map.locate({
-						center: [51.505, -0.09],
-						zoom: 13
-					});
-					//fly(latlng);
+					console.log("press");
+					fly(latlng);
 				});
 				//fly(latlng);
 			}, function (error) {

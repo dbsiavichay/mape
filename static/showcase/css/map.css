@@ -21,6 +21,7 @@ html {
   height: 100%; 
   z-index: 0; 
   float: top;
+  padding-top: 64px;
 }
 .my-icon {
   border-radius: 100%;
@@ -255,4 +256,7 @@ strong {
 }
 .transparent {
   background: transparent;
+}
+#navigator {
+  z-index: 999999;
 }

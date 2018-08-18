@@ -1,6 +1,6 @@
 {% load staticfiles %}
-<nav class="no-margin no-padding taget">
-    <div class="nav-wrapper row cyan navigator">
+<nav class="no-margin no-padding taget pushpin" id="navigator">
+    <div class="nav-wrapper row cyan navigator ">
         <!-- Espacio izquierdo -->
         <ul id="nav-left" class="col l4 m5 s2 " >
             <li>
@@ -42,7 +42,7 @@
                 {%if user.profile.avatar %} 
                 <li><a id="boton" data-activates="slide-out" ><img class="circle" src="{{ user.profile.avatar.url }}" width="56"></a>  </li>
                 {%else%}
-                <li><a data-activates="slide-out" id="boton"> <i class="material-icons medium">person_pin</i></a></li>
+                <li><a id="boton" data-activates="slide-out"> <i class="material-icons medium">person_pin</i></a></li>
                 {%endif%}
             <!-- Right Nav side-nav-->
             <ul id="slide-out" class="side-nav">

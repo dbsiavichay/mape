@@ -90,7 +90,7 @@ a.modal-action {
 
 /* Parallax height */
 .parallax-container {
-  height: 200px !important;
+  height: 350px !important;
 }
 /* Header para eventos */
 .header {
@@ -160,4 +160,15 @@ footer{
 }
 .collapsible-body{
   border-bottom: none;
+}
+nav ul li {
+  position: absolute;
+}  
+
+nav ul.side-nav > li {
+  position: initial;
+}
+
+#navigator {
+  z-index: 999999;
 }

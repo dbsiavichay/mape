@@ -1,36 +1,44 @@
 {% load staticfiles %}
 
-<ul class="grey lighten-3 center-align ">
-    <b>Comentarios </b>
+<div class="col s12" style="overflow-y: scroll;">
+
+
+
+
+<!-- Comments collection -->
+<b>Comentarios </b>
     {% for comment in comments %}
-    <li class=" left-align">
-        
-        <div class="card-panel no-margin">
-        <!-- Comprobar si el usuario es dueño del comentario o el administrador del objeto (evento o localidad) -->
-        {% if comment.profile.user == user  %}
-        <a href="#1" class="dropdown-button right" data-activates="comment-options" ><i class="material-icons">more_vert</i></a>
-        <ul id="comment-options" class="dropdown-content">
-            <li>                
-                <form action="{% url 'delete_comment' comment.id %}" method="post">
-                    {% csrf_token %}                    
-                    <button type="submit" class="btn red white-text"><i class="material-icons">delete</i> Eliminar</button>                   
-                </form>
-            </li>
-        </ul>
-        {% endif %}
-        <!-- Perfil del usuario -->
-            {% include 'includes/profile_chip.html' with profile=comment.profile %}
-            : {{ comment.content }}
-            <!-- Imagen del comentario -->
-            {% if comment.image %}
-            <img class="materialboxed mape-large" data-caption="{% if comment.profile.is_complete %}{{ comment.profile.get_full_name }}{% else %}{{ comment.profile.user.username }}{% endif %}: {{ comment.content }}" src="{{ comment.image.url }}" width="100%">
+    <ul class="collection">
+        <li class="collection-item avatar">
+            <!-- Individual post -->
+            {% if comment.profile.avatar %}
+            <img src="{{ comment.profile.avatar.url }}" alt="{{ comment.profile__user.username }}" class="circle">
             {% endif %}
-        </div>                
-        <p class="no-margin tiny-text">Hace <strong>{{ comment.date|timesince }}</strong></p>
-    </li>
+            <span class="title">Title</span>
+            <p>{{ comment.content }}
+            {% if comment.image %}
+            <img class="materialboxed mape-large " data-caption="{% if comment.profile.is_complete %}{{ comment.profile.get_full_name }}{% else %}{{ comment.profile.user.username }}{% endif %}: {{ comment.content }}" src="{{ comment.image.url }}" width="100%">
+            {% endif %}
+            </p>
+            <a href="#1" class="dropdown-button secondary-content" data-activates="comment-options{{ comment.id }}" ><i class="material-icons cyan-text">more_vert</i></a>
+            <ul id="comment-options{{ comment.id }}" class="dropdown-content">
+                <li>                
+                    <form action="{% url 'delete_comment' comment.id %}" method="post">
+                        {% csrf_token %}                    
+                        <button type="submit" class="btn red white-text"><i class="material-icons">delete</i> Eliminar</button>                   
+                    </form>
+                </li>
+            </ul>
+            <p class="no-margin tiny-text">Hace <strong>{{ comment.date|timesince }}</strong></p>
+        </li>
+        
+    </ul>
+   
     {% empty %}
     <li class="">
         Sé la primera persona en comentar o subir una imagen.
     </li>   
     {% endfor %}
 </ul>
+</div>
+

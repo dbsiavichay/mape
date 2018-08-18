@@ -1,21 +1,21 @@
 {% if commercial %}
 <div class="col row l12">
-    <div class="col s12 m4 l4">
+    <div class="col s12 m4 l3">
         <h5>Dirección:</h5>                  
         <p class="truncate">{{ commercial.address }}</p>
     </div>
     {% if commercial.webpage %}
-    <div class="col s12 m4 l4">
+    <div class="col s12 m4 l3">
         <h5>Pagina web:</h5>
         <a target="_blank" href="{{ commercial.webpage }}" class="truncate"><i class="material-icons">link</i>{{ commercial.webpage }}</a>
     </div>
     {% endif %}
-    <div class="col s12 m4 l4">
+    <div class="col s12 m4 l3">
         <h5>Telefonos:</h5>
         <p class="truncate">{{ commercial.telephone }}</p>
         <p class="truncate">{{ commercial.owner.cellphone }}</p>
     </div> 
-    <div class="col s12 m4 l4">
+    <div class="col s12 m4 l3">
         <h5>Ruc:</h5>
         <p class="truncate">{{ commercial.ruc }}</p>
     </div>    

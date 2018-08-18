@@ -87,5 +87,8 @@ $(function () {
 		$(location).attr('href', '/shower/all/?keyword='+ keyword)
 	});
 
+	$(document).ready(function(){
+		$('.pushpin').pushpin();
+	});
 
 });
