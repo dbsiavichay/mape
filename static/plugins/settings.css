@@ -161,9 +161,10 @@ footer{
 .collapsible-body{
   border-bottom: none;
 }
-nav ul li {
-  position: absolute;
-}  
+
+.top-margin{ 
+  margin-top: 64px; 
+}
 
 nav ul.side-nav > li {
   position: initial;

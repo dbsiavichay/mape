@@ -40,6 +40,10 @@ html {
   margin-top: 2em;
   margin-bottom: 2em;
 }
+
+.top-margin{ 
+  margin-top: 64px; 
+}
 .no-margin {
   margin: 0;
 }

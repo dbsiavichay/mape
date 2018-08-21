@@ -17,7 +17,7 @@ $(function () {
 		map.setView(latlng, zLevel);		
 		return map;
 	};
-
+	console.log("variables" , center);
 	var isMobile = {
 	    Android: function() {
 	        return navigator.userAgent.match(/Android/i);
@@ -45,8 +45,8 @@ $(function () {
 		if(zoom > min_zoom){
 			
 			render_localities(zoom);
-			console.log(zoom);
-			render_map();
+			console.log("zoom" , zoom);
+			//render_map();
 			//render_events();
 		}else{
 			return e;
@@ -71,8 +71,8 @@ $(function () {
 
 			var self_marker = L.marker(latlng, {icon: point})		
 			.addTo(map);
-
 			var content = 'Aquí';
+			Materialize.toast(content, 4000);
 			self_marker.bindPopup(content);
 		};
 
@@ -84,18 +84,24 @@ $(function () {
 		var msg = $.get("msg");
 		
 		if (lat && lng) {
-			latlng = L.latLng(parseFloat(lat), parseFloat(lng))	
+			latlng = L.latLng(parseFloat(lat), parseFloat(lng));
+			map.setView(latlng);
 			map.flyTo(latlng, 19);
+			console.log("reload", map.getCenter());
+			$('a[id*=ubicate]').hide();
+			$('a[id*=floating-options]').hide();
 			return;
 		}
 		var browserType = isMobile.any()?"mobile":"not mobile";
 		if (browserType == "mobile") {
+			msg = "Manten presionado sobre el mapa"
 		 	navigator.geolocation.getCurrentPosition(function (position) {		
 		 		var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
 				center[0] = latlng.lat;
 				center[1] = latlng.lng;
 				map.setView(latlng);
 				set_location_floats();
+				console.log("hay mobil", map.getCenter());
 				$('a[id*=ubicate]').on('click', function(e) {
 					console.log("press");
 					fly(latlng);
@@ -119,7 +125,7 @@ $(function () {
 	var set_location_floats = function () {		
 		$('#btn-event-register-float').attr('lat', map.getCenter().lat);
 	  	$('#btn-event-register-float').attr('lng', map.getCenter().lng);
-
+	  	console.log("set_location_floats", map.getCenter());
 	  	$('#btn-locality-register-float').attr('lat', map.getCenter().lat);
 	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
 	}
@@ -201,12 +207,13 @@ $(function () {
 	
 
 	var init = function () {
+		console.log("init");
 		reload_map();	
 		set_location_floats();
 		render_events();
 		render_localities();
-		
 		add_context_menu();
+		console.log("fin init", map.getCenter());
 	}
 
 	init();

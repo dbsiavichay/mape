@@ -19,9 +19,9 @@
   }
 </style>
 {% load l10n %}
-<div id="map" lat="{{ lat|unlocalize }}" lng="{{ lng|unlocalize }}">
+<div id="map" class="top-margin" lat="{{ lat|unlocalize }}" lng="{{ lng|unlocalize }}">
     <!-- Botones Float -->
-    <div class="right marginado">
+    <div class="right">
       <a class="btn-floating btn-large transparent" id="ubicate"><i class="material-icons cyan-text medium" >gps_fixed</i>
       </a>
     </div>
@@ -38,17 +38,17 @@
 
 <div id="event-modal" class="modal">
     <div class="modal-content center">
-        <h4> Opciones de mapa </h4>
-        <p>Asegúrese de que ha seleccionado la ubicación exácta si desea registrar:</p>
+        <h4> Opciones de ubicación </h4>
+        <p class="tiny-text">Asegúrese de que ha seleccionado la ubicación exácta si desea registrar:</p>
         
         <a href="#" id="btn-event-register" class="btn cyan">
         	<i class="material-icons left">stars</i>
-        	Registrar un Evento
+        	Nuevo Evento
         </a>
 
         <a href="#" id="btn-locality-register" class="btn cyan">
             <i class="material-icons left">room</i>
-            Registrar una localidad
+            Nueva localidad
         </a>
         
         <div class="modal-footer">
