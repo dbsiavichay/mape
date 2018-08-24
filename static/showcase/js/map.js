@@ -106,7 +106,6 @@ $(function () {
 					console.log("press");
 					fly(latlng);
 				});
-				//fly(latlng);
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
 			});
@@ -184,8 +183,8 @@ $(function () {
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
 					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
-					'<p> De: <a class="collection-item" href="' + url + data[index].id + '">'+ data[index].event_owner +
-					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
+					'<p> De: <a class="collection-item" href="' + url + data[index].owner_id + '">'+ data[index].event_owner +
+					' </a> <br> ' + data[index].day + ' </p> <a href="/event/'+data[index].event_id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 
 				marker.bindPopup(content);				

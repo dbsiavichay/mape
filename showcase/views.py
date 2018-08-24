@@ -57,10 +57,9 @@ class EventListView(ListView):
 				
 				day = dic_days[event.start.strftime('%A').upper()]
 
-				print(event.locality)
-
 				events.append({
-					'id': event.id if not event.is_public else event.owner().commercial().locality.id,
+					'event_id': event.id,
+					'owner_id': event.owner().id if not event.is_public else event.owner().commercial().locality.id,
 					'name': event.name,
 					'description': event.description,
 					'latitude': event.latitude,
