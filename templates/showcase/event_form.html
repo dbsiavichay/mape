@@ -13,9 +13,9 @@
 
 {% include "includes/errors.html" with form=form %}
 
-<div class="row container">
+<div class="row container top-margin">
     <div class="col s12 ">
-        <h4 class="center">Información del evento</h4>
+        <h4 class="center">Nuevo evento</h4>
 
         
         <form class="row" action="" method="POST" enctype="multipart/form-data" novalidate>
@@ -38,20 +38,20 @@
                 </div>
             </div>
 
-            <div class="input-field col l6 offset-l3">
+            <div class="input-field col m8 offset-m2 l6 offset-l3 ">
                 {{ form.name|add_class:"validate" }}
                 <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
             </div>
-            <div class="input-field col l6 offset-l3">        
+            <div class="input-field col m8 offset-m2 l6 offset-l3">        
                 {{ form.description|add_class:"materialize-textarea validate" }}
                 <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col m8 offset-m2 s6">
                 {{ form.start_0|add_class:"datepicker-event" }}
                 <label for="{{ form.start_0.id_for_label }}">{{ form.start_0.label }}</label>
             </div>
 
-            <div class="input-field col s6">
+            <div class="input-field col m8 offset-m2 s6">
                 {{ form.start_1|add_class:"timepicker" }}
                 <label for="{{ form.start_1.id_for_label }}">{{ form.start_1.label }}</label>
             </div>

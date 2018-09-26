@@ -59,6 +59,7 @@
     
     <div class="center row">
     <!-- Status del evento  -->
+      {{ object.get_is_comming  }}
       {% if object.get_is_comming == "Esta semana" %}
       <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
       <h4 class="timeuntil"> En {{ event.start|timeuntil }}</h4>
@@ -66,7 +67,7 @@
       {% elif object.get_is_comming == "Cancelado"%}
       <div class="col l4 m4 s10 offset-s3 offset-l2 offset-m2 valign-wrapper highter">
       <h4 class="red-text">Cancelado</h4>
-      {% elif object.get_is_comming == "Completado" %}
+      {% elif object.get_is_comming == 'Completado' %}
       <div class="col l4 m4 s10 offset-s2 offset-l2 offset-m2 valign-wrapper highter">
       <h4 class="blue-text">Completado</h4>
       {% endif %}

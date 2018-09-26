@@ -9,11 +9,11 @@ class ShowerManager(models.Manager):
 				Q(user__first_name__icontains=keyword) | 
 				Q(user__last_name__icontains=keyword)
 			)
-		if self.model.__name__ == 'Locality':
-			return self.filter(
-				Q(categories__name__icontains=keyword) | 
-				Q(name__icontains=keyword) | 
-				Q(description__icontains=keyword)
-			)
+		# if self.model.__name__ == 'Locality':
+		# 	return self.filter(
+		# 		Q(categories__name__icontains=keyword) | 
+		# 		Q(name__icontains=keyword) | 
+		# 		Q(description__icontains=keyword)
+		# 	)
 
 		return self.filter(Q(name__icontains=keyword) | Q(description__icontains=keyword))

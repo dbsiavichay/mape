@@ -14,77 +14,68 @@
 {% include "includes/errors.html" with form=form %}
 {% include "includes/errors.html" with form=commercial_form %}
 
-<div class="row container">
-    <div class="col s12 l8 offset-l2">
-        <h4 class="center">Información de localidad</h4>
-        <form class="container row" action="" method="POST" enctype="multipart/form-data" novalidate>
-            {% csrf_token %}
+<div class="row s12 l8 offset-l2 container top-margin">
+    <h4 class="center col s12">Nueva localidad</h4>
+    <form class="col s12 center" action="" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
 
-            <div class="col s12">
-                <div class="switch">
-                    <label>
-                        Privada
-                        {% if user.profile.is_commertial or user.profile.is_complete %}
-                        {{ form.is_public }}
-                        {% else %}
-                        {{ form.is_public|attr:"disabled" }}
-                        {% endif %}
-                        <span class="lever"></span>                        
-                        Pública
-                    </label>
-                </div>
+        <div class="col s12 left-align">
+            <div class="switch ">
+                <label>
+                    Privada
+                    {% if user.profile.is_commertial or user.profile.is_complete %}
+                    {{ form.is_public }}
+                    {% else %}
+                    {{ form.is_public|attr:"disabled" }}
+                    {% endif %}
+                    <span class="lever"></span>                        
+                    Pública
+                </label>
             </div>
+            {% if not user.profile.is_complete %} <p class="tiny-text amber-text col s9 m5 l5 low-border">Requiere completar tu información de usuario </p> {% endif %}
+        </div>
 
-            <div class="input-field col s12">
-                {{ form.name|add_class:"validate" }}
-                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        <div class="input-field col s12 m8 l6 offset-l3 offset-m2">
+            {{ form.name|add_class:"validate" }}
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        </div>
+        <div class="input-field col s12 m8 l6 offset-l3 offset-m2">        
+            {{ form.description|add_class:"materialize-textarea validate" }}
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             </div>
-            <div class="input-field col s12">    
-                <p>Categorias: </p>        
-                {{ form.categories|add_class:"select2" }}
+        <div class="input-field col s12 m8 l6 offset-l3 offset-m2">    
+            <p>Hashtags <span class="tiny-text">(categorias)</span>: </p>        
+            {{ form.categories|add_class:"select2" }}
+        </div>
+        <div class="file-field input-field col s12 m8 l6 offset-m2">
+            <div class="btn cyan waves-effect ">
+                <span>Portada</span>
+                {{ form.front_image }}
             </div>
-            <ul class="collapsible col s12 ">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons">control_point</i> Más información</div>
-                    <div class="collapsible-body">
-                        <div class="input-field col s12">        
-                        {{ form.description|add_class:"materialize-textarea validate" }}
-                        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-                        </div>
-                        <div class="file-field input-field col s12">
-                            <div class="btn cyan waves-effect ">
-                                <span>Portada</span>
-                                {{ form.front_image }}
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
-                            </div>
-                        </div>
-
-                        <div class="file-field input-field col s12">
-                            <div class="btn cyan waves-effect">
-                                <span>Perfil</span>
-                                {{ form.profile_image }}
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" >
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
-            {{ form.latitude }}
-            {{ form.longitude }}
-            {{ form.owner }}            
-
-            <div class="col s12 center">
-                <button class="btn amber waves-effect waves-light" type="submit" name="action">Guardar
-                    <i class="material-icons right">send</i>
-                </button>        
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="file-field input-field col s12 m8 l6 offset-m2">
+            <div class="btn cyan waves-effect">
+                <span>Perfil</span>
+                {{ form.profile_image }}
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" >
+            </div>
+        </div>
+
+        {{ form.latitude }}
+        {{ form.longitude }}
+        {{ form.owner }}            
+
+        <div class="col s12 center">
+            <button class="btn amber waves-effect waves-light" type="submit" name="action">Guardar
+                <i class="material-icons right">send</i>
+            </button>        
+        </div>
+    </form>
 </div>
 
 {% endblock %}

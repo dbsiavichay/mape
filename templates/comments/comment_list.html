@@ -1,6 +1,6 @@
 {% load staticfiles %}
 
-<div class="col s12" style="overflow-y: scroll;">
+<div class="col s12">
 
 
 
@@ -20,7 +20,9 @@
             <img class="materialboxed mape-large " data-caption="{% if comment.profile.is_complete %}{{ comment.profile.get_full_name }}{% else %}{{ comment.profile.user.username }}{% endif %}: {{ comment.content }}" src="{{ comment.image.url }}" width="100%">
             {% endif %}
             </p>
+            {% if comment.profile == user.profile %}
             <a href="#1" class="dropdown-button secondary-content" data-activates="comment-options{{ comment.id }}" ><i class="material-icons cyan-text">more_vert</i></a>
+            <!-- Comment options dropdown -->
             <ul id="comment-options{{ comment.id }}" class="dropdown-content">
                 <li>                
                     <form action="{% url 'delete_comment' comment.id %}" method="post">
@@ -29,6 +31,7 @@
                     </form>
                 </li>
             </ul>
+            {% endif %}
             <p class="no-margin tiny-text">Hace <strong>{{ comment.date|timesince }}</strong></p>
         </li>
         

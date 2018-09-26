@@ -7,6 +7,9 @@ from django.contrib.gis.geos import Point
 
 from shower.managers import ShowerManager
 
+import datetime
+from datetime import timedelta
+
 class Category(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 
@@ -147,20 +150,24 @@ class Event(models.Model):
 			len(invited) - 1, len(attend), likers)
 
 	def get_is_comming(self):
-		from datetime import datetime
+
 		if self.status == 3: return 'Cancelado'
-		now = datetime.now().date()
+		now = datetime.datetime.now().date()
 		delta = self.start.date() - now
 		days = delta.days
-		if days < 0 and self.status == 1:			
+		days_ago = now - datetime.timedelta(days=7)
+
+		if str(self.start) < str(now) and self.status == 1:			
 			self.status = 2
 			self.save()
+		if self.status == 2 and str(self.start) > str(days_ago) and str(self.start) < str(now):
+			return 'Completado'
 		if days >= 0 and days < 7:
 			return 'Esta semana'
 		elif days > 7:
 			return 'Por venir'
 		else:
-			return 'Completado'
+			return 'Pasado'
 
 	def get_absolute_url(self):
 		from django.urls import reverse

@@ -19,43 +19,64 @@ from .forms import *
 
 from social.models import Profile
 
+
 class MapView(TemplateView):
 	template_name='showcase/map.html'	
+
+def last_day_of_month(any_day):
+    next_month = any_day.replace(day=28) + datetime.timedelta(days=4) 
+    return next_month - timedelta(days=next_month.day)
+
+def first_day_of_month(any_day):
+	delta1 = any_day.day - 1 
+	return any_day - timedelta(days=delta1)
+
+today = datetime.datetime.now()
+on_d = first_day_of_month(today)
+off_d = last_day_of_month(today)
 
 class EventListView(ListView):
 	model = Event	
 
 	def get(self, request, *args, **kwargs):
+		
+
 		if request.is_ajax():
 			profile = request.user.profile if not request.user.is_anonymous() else None
-			today_number = datetime.datetime.weekday(datetime.datetime.now()) 
-			monday_date = datetime.datetime.today() - timedelta(days=today_number) 
-			tuesday = monday_date + timedelta(days=1)
-			wednesday = monday_date + timedelta(days=2)
-			thursday = monday_date + timedelta(days=3)
-			friday = monday_date + timedelta(days=4)
-			saturday = monday_date + timedelta(days=5)
-			sunday = monday_date + timedelta(days=6)
+			
 
 			self.object_list = self.model.objects.filter(
-				Q(start__day=monday_date.day) |
-				Q(start__day=tuesday.day) |
-				Q(start__day=wednesday.day) |
-				Q(start__day=thursday.day) |
-				Q(start__day=friday.day) |
-				Q(start__day=saturday.day) |
-				Q(start__day=sunday.day),
 				Q(guest__profile=profile) | 
 				Q(is_public=True)
-			).exclude(status=2).exclude(status=3)			
+			).filter(start__range=(on_d, off_d))	
+
 			
 			events = []
+			hide = False
 
 			for event in self.object_list:
+				
 				dic_days = {'MONDAY':'Lunes','TUESDAY':'Martes','WEDNESDAY':'Miércoles','THURSDAY':'Jueves', \
 				'FRIDAY':'Viernes','SATURDAY':'Sábado','SUNDAY':'Domingo'}
-				
-				day = dic_days[event.start.strftime('%A').upper()]
+				footer = dic_days[event.start.strftime('%A').upper()] + event.start.strftime(" %d, %H:%M")
+				print(event.start)
+				delta = event.start.date() - today.date()
+				delta = delta.days
+
+				if event.get_is_comming() == 'Completado':
+					footer = '<span class="blue-text"> Completado <span>'
+					if delta > 7 or delta < -7:
+						hide = True
+					else:
+						hide = False
+				elif event.get_is_comming() == 'Cancelado':
+					footer = '<span class="red-text"> Cancelado <span>'
+					if delta > 7 or delta < -7:
+						hide = True
+					else:
+						hide = False
+				elif event.get_is_comming() == 'Por venir' and delta > 7:
+					hide = True
 
 				events.append({
 					'event_id': event.id,
@@ -66,9 +87,10 @@ class EventListView(ListView):
 					'longitude': event.longitude,
 					'event_image_url': event.front_image.url if event.front_image else '#',
 					'event_owner': event.owner().user.username if not event.is_public else event.owner().commercial().locality.name,
-					'day': day,
-					'status': event.status,
+					'day': footer,
+					'status': event.get_is_comming(),
 					'is_public': event.is_public,
+					'hide': hide,
 				})
 
 			return JsonResponse(events, safe=False)
@@ -188,7 +210,7 @@ class EventDetailView(DetailView):
 		sponsors = self.object.guests.filter(guest__is_sponsor=True)
 		sponsors_request = self.object.guests.filter(guest__profile=self.request.user.profile, guest__status=Guest.SPONSOR_REQUEST)
 		commercials = Commercial.objects.exclude(locality__owner=self.request.user.profile)		
-
+		print(context['event'].start)
 		context.update({
 			'guests': context['event'].guests.filter(guest__is_owner=False),
 			'is_owner': True if len(owners) > 0 else False,
@@ -257,6 +279,7 @@ class LocalityListView(ListView):
 					'owner_name': locality.owner.user.username,
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
 					'verified': locality.verified,
+					'hide': False if locality.is_commercial else True
 				})
 
 			return JsonResponse(localities, safe=False)

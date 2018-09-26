@@ -10,10 +10,10 @@
 
 {% block content %}
 {% include 'includes/nav.html' %}
-<div class="center">
+<div class="container center top-margin">
     <div class="col s12">
-    <h3>Resultados de búsqueda</h3>
-    <ul class="tabs grey darken-3">
+    <h4 class="left">Hemos encontrado esto para ti:</h4>
+    <ul class="tabs grey darken-3 fullscreen">
         <li class="tab col s2">
             <a target="_self" class="{% if model == 'all' %}active{% endif %}" href="{% url 'shower' 'all' %}?keyword={{ keyword }}">Todo</a>
         </li>
