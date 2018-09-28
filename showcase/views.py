@@ -32,19 +32,19 @@ def first_day_of_month(any_day):
 	return any_day - timedelta(days=delta1)
 
 today = datetime.datetime.now()
-on_d = first_day_of_month(today)
-off_d = last_day_of_month(today)
+on_d = first_day_of_month(today.date())
+off_d = last_day_of_month(today.date())
 
 class EventListView(ListView):
 	model = Event	
 
 	def get(self, request, *args, **kwargs):
 		
-
 		if request.is_ajax():
+			print("Fecha de inicio: ", on_d,  ", fin:", off_d)
+
 			profile = request.user.profile if not request.user.is_anonymous() else None
 			
-
 			self.object_list = self.model.objects.filter(
 				Q(guest__profile=profile) | 
 				Q(is_public=True)
@@ -59,12 +59,18 @@ class EventListView(ListView):
 				dic_days = {'MONDAY':'Lunes','TUESDAY':'Martes','WEDNESDAY':'Miércoles','THURSDAY':'Jueves', \
 				'FRIDAY':'Viernes','SATURDAY':'Sábado','SUNDAY':'Domingo'}
 				footer = dic_days[event.start.strftime('%A').upper()] + event.start.strftime(" %d, %H:%M")
-				print(event.start)
+				print(event.get_is_comming())
 				delta = event.start.date() - today.date()
 				delta = delta.days
 
 				if event.get_is_comming() == 'Completado':
 					footer = '<span class="blue-text"> Completado <span>'
+					if delta > 7 or delta < -7:
+						hide = True
+					else:
+						hide = False
+				elif event.get_is_comming() == 'Esta semana':
+					footer = '<span class="blue-text"> '+ footer + ' <span>'
 					if delta > 7 or delta < -7:
 						hide = True
 					else:

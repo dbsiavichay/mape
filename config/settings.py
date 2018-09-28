@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +25,7 @@ SECRET_KEY = '1mit$vy19e^py33^t2n-k9%7d_gn-7nccl^_*d8#*$nbasgpm+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.81.214.32', 'mape.live', '127.0.0.1']
+ALLOWED_HOSTS = ['mape.live','206.189.233.192', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -84,6 +84,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# Database 
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -91,8 +93,8 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'mapedb',
         'USER': 'postgres',
-        'PASSWORD': '081011',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'LaClave?es123',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -117,34 +119,37 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
+
+
+SOCIAL_AUTH_FACEBOOK_KEY =  '1652709501521409'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '077a5f79cabf5ec5f42f3557d5a3aba8' # App Secret
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email', 
+}
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
-    'social.user.create_user',
+    'social.user.create_user', ##Personalizacion
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     'social_core.pipeline.social_auth.associate_by_email',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = "1032163666847445"  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = "b604d81dc77671f30d7511b9a172ec18"  # App Secret
-
-#SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-#SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-#    'fields': 'id,name,email', 
-#}
 
 ##Configuration for mails
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "contactomapeoficial@gmail.com"
-EMAIL_HOST_PASSWORD = "LaClave?es123"
+EMAIL_HOST_USER = os.path.dirname('GOOGLE_EMAIL')
+EMAIL_HOST_PASSWORD = os.path.dirname('GOOGLE_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -172,11 +177,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # Media files (Uploaded by users)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# Login config
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

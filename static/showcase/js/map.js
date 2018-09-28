@@ -11,17 +11,8 @@ $(function () {
 	var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
 	
 	L.mapbox.accessToken = token;
-
-	// Sets the map on the place that gets the geocoder
-	var geocoder = L.mapbox.geocoder('mapbox.places');
-	var options = {
-	  enableHighAccuracy: true,
-	  timeout: 5000,
-	  maximumAge: 0
-	};
 	
-	// Set a location on Morona by geocoder
-	geocoder.query('Morona, Ecuador', showMap);
+	
 	// The geocoder can return an area, like a city, or a
     // point, like an address. Here we handle both cases,
     // by fitting the map bounds to an area or zooming to a point.
@@ -169,8 +160,8 @@ $(function () {
 	});
 
 	// Fly on map to location at latlng
-	function fly(latlng) {
-			latlng = latlng || L.latlng(center);
+	function fly_back(latlng) {
+		if (latlng){
 			map.flyTo(latlng, 17);
 			var mark = L.icon({
 				iconUrl: 'static/showcase/img/circle.png',
@@ -183,65 +174,69 @@ $(function () {
 				//shadowSize: [68, 95],
 				//shadowAnchor: [22, 94]
 			});
-
+			set_location_floats(latlng);
 			var self_marker = L.marker(latlng, {icon: mark})		
 			.addTo(map);
-			var content = 'Aquí';
-			Materialize.toast(content, 4000);
-			self_marker.bindPopup(content);
-		};
+			Materialize.toast('Aquí', 4000);
+			self_marker.bindPopup('Aquí');
+		}
+	};
 
 	// Reload map with a message and a new ubication if is required
 	var reload_map = function (latlng) {
 		var lat = $('#map').attr('lat');
 		var lng = $('#map').attr('lng');	
+		var var_latlng;
 
 		var msg = $.get("msg");
 		
 		if (lat && lng) {
 			latlng = L.latLng(parseFloat(lat), parseFloat(lng));
 			map.setView(latlng);
-			map.flyTo(latlng, 19);
-			$('a[id*=ubicate]').hide();
-			$('a[id*=floating-options]').hide();
+			map.flyTo(var_latlng, 19);
 			return;
 		}
 		var browserType = isMobile.any()?"mobile":"not mobile";
-		if (browserType == "mobile") {
-			msg = "Manten presionado sobre el mapa"
-		 	navigator.geolocation.getCurrentPosition(function (position) {		
-		 		var latlng = L.latLng(position.coords.latitude,position.coords.longitude);
-				center[0] = latlng.lat;
-				center[1] = latlng.lng;
-				map.setView(latlng);
-				//set_location_floats();
-				console.log("Dispositivo móvil", map.getCenter());
-				$('a[id*=ubicate]').on('click', function(e) {
-					console.log("press");
-					fly(latlng);
-				});
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function (position) {		
+		 		var_latlng = L.latLng(position.coords.latitude,position.coords.longitude);
+		 		msg = msg + "<p>Tu navegador nos indica que tu ubicación es: " + var_latlng.lat + ", " + var_latlng.lng + "</p>";
+		 		console.log(var_latlng);
+		 		if (browserType == "mobile"){
+		 			map.setView(var_latlng);
+		 			//geocoder.query('Morona, Ecuador', showMap);	
+		 		}
+		 		//$("#modal-title").after(msg);
 			}, function (error) {
 				console.warn('ERROR(' + error.code + '): ' + error.message);			
 			});
-			
-		}else{
-			$('a[id*=ubicate]').hide();
-			$('a[id*=floating-options]').hide();
-			msg = "Click derecho para opciones"
-		}
+
+			if (browserType == "mobile") {
+				msg = "Manten presionado sobre el mapa";
+				
+				$('a[id*=ubicate]').on('click', function(e) {
+					fly_back(var_latlng);
+				});
+			}else{
+				//$('#ubication-modal').modal('open');
+				$('a[id*=ubicate]').hide();
+				$('a[id*=floating-options]').hide();
+				msg = "Click derecho para opciones"
+			}
+			console.log(msg);
+		};
 		if (msg){
 			Materialize.toast(msg, 4000);
 		};
 	}
 	
 	// Sets the atributes latlng of floats add buttoms 
-	/*var set_location_floats = function () {		
-		$('#btn-event-register-float').attr('lat', map.getCenter().lat);
-	  	$('#btn-event-register-float').attr('lng', map.getCenter().lng);
-	  	console.log("set_location_floats", map.getCenter());
-	  	$('#btn-locality-register-float').attr('lat', map.getCenter().lat);
-	  	$('#btn-locality-register-float').attr('lng', map.getCenter().lng);
-	}*/
+	var set_location_floats = function (latlng) {		
+		$('#btn-event-register-float').attr('lat', latlng.lat);
+	  	$('#btn-event-register-float').attr('lng', latlng.lng);
+	  	$('#btn-locality-register-float').attr('lat', latlng.lat);
+	  	$('#btn-locality-register-float').attr('lng', latlng.lng);
+	}
 
 	// Render the localities on map like a mark 
 	function render_localities () {
@@ -307,22 +302,30 @@ $(function () {
 		});
 	}
 
+	function put_latlng_on_buttoms(latlng) {
+		$('#btn-event-register').attr('lat', latlng.lat);
+	  	$('#btn-event-register').attr('lng', latlng.lng);
+
+	  	$('#btn-locality-register').attr('lat', latlng.lat);
+	  	$('#btn-locality-register').attr('lng', latlng.lng);
+	}
 	// Takes latlng at point on right-click in the map
 	var add_context_menu = function () {
 		map.on('contextmenu', function(e) {		  	
-		  	$('#btn-event-register').attr('lat', e.latlng.lat);
-		  	$('#btn-event-register').attr('lng', e.latlng.lng);
-
-		  	$('#btn-locality-register').attr('lat', e.latlng.lat);
-		  	$('#btn-locality-register').attr('lng', e.latlng.lng);
-
+		  	put_latlng_on_buttoms(e.latlng)
 		  	$('#event-modal').modal('open');
 		  	Materialize.toast("Has seleccionado una ibicación: " + e.latlng.lat.toFixed(4) +" | " + e.latlng.lng.toFixed(4) , 4000);
 		});	  
 	}
-	
+
 	// Inits all the functions in order 
 	var init = function () {
+		// Fix the top-margin 
+		document.body.style.margin="0px 0px";
+		// Sets the map on the place that gets the geocoder
+		var geocoder = L.mapbox.geocoder('mapbox.places');
+		// Set a location on Morona by geocoder
+			// geocoder.query('Morona, Ecuador', showMap);
 		reload_map();	
 		//set_location_floats();
 		render_events();
