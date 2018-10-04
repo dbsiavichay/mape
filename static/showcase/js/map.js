@@ -1,6 +1,25 @@
 $(function () {
-	
-
+	// Returns true or false on many cases 
+	var isMobile = {
+	    Android: function() {
+	        return navigator.userAgent.match(/Android/i);
+	    },
+	    BlackBerry: function() {
+	        return navigator.userAgent.match(/BlackBerry/i);
+	    },
+	    iOS: function() {
+	        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+	    },
+	    Opera: function() {
+	        return navigator.userAgent.match(/Opera Mini/i);
+	    },
+	    Windows: function() {
+	        return navigator.userAgent.match(/IEMobile/i);
+	    },
+	    any: function() {
+	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+	    }
+	};
 
 	// Bigining point to show the map
 	var center = [-2.2986156360633974,-78.12206268310548];
@@ -31,8 +50,9 @@ $(function () {
 
 	// render a tileLayer on map at center 
 	var render_map = function (latlng, zLevel) {
+		var keepOpen = isMobile.any()?false:true;
 		map = L.mapbox.map('map').addControl(L.mapbox.geocoderControl('mapbox.places', {
-			keepOpen: true,
+			keepOpen: keepOpen,
 			autocomplete: true
 		}));
 		L.mapbox.tileLayer('mapbox.streets').addTo(map);
@@ -118,29 +138,7 @@ $(function () {
 	mape_layer.setFilter(function(f) { return f.properties['marker-symbol'] === 'fast-food'; 
 	}).addTo(map);
 
-    
-
-    // Returns true or false on many cases 
-	var isMobile = {
-	    Android: function() {
-	        return navigator.userAgent.match(/Android/i);
-	    },
-	    BlackBerry: function() {
-	        return navigator.userAgent.match(/BlackBerry/i);
-	    },
-	    iOS: function() {
-	        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-	    },
-	    Opera: function() {
-	        return navigator.userAgent.match(/Opera Mini/i);
-	    },
-	    Windows: function() {
-	        return navigator.userAgent.match(/IEMobile/i);
-	    },
-	    any: function() {
-	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-	    }
-	};
+   
 
 	// Fuction at ended event of zoom on map
 	map.on('zoomend', function(e) {
@@ -193,7 +191,9 @@ $(function () {
 		if (lat && lng) {
 			latlng = L.latLng(parseFloat(lat), parseFloat(lng));
 			map.setView(latlng);
-			map.flyTo(var_latlng, 19);
+			map.flyTo(latlng, 19);
+			$('a[id*=ubicate]').hide();
+			$('a[id*=floating-options]').hide();
 			return;
 		}
 		var browserType = isMobile.any()?"mobile":"not mobile";

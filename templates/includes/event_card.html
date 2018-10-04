@@ -6,10 +6,8 @@
     <div class="card-image z-depth-3 waves-block waves-light ">
         {% if event.front_image %}
         <img class="activator" src="{{ event.front_image.url }}">
-        {% else %}
-        <i class="activator material-icons large">perm_media</i>
-        {% endif %}
         <span class="card-title">{{ event.name }}</span>
+        {% endif %}
     </div>
 
     <!-- Cabecera de la tarjeta -->
@@ -42,7 +40,7 @@
     </div>
 
     <!-- Card content -->
-    <div class="card-reveal">
+    <div class="card-reveal no-padding">
         <!-- Info -->
         <span class="card-title grey-text text-darken-4">
             Información:<i class="material-icons right">close</i>
@@ -50,30 +48,30 @@
         <div class="card-panel gray lighten-3">
             <p align="justify" class="grey-text text-darken-3 lighten-3">{{ event.description }}</p>
             <!-- Boton hacia la pagina detalle del evento -->
-            <a href="{% url 'event_detail' event.id %}" class="btn cyan right"> <i class="material-icons right">visibility</i>Ver más</a>
+            <a href="{% url 'event_detail' event.id %}" class="btn cyan right"> <i class="material-icons">pageview</i> Info</a>
         </div>
         <!-- Date -->
         <div class="row">
-            <div class="col s12"><i class="material-icons cyan-text ">today</i><b>{{ event.start }}</b> </div>
+            <div class="col s12"><i class="material-icons cyan-text ">today</i>
+            <b>{{ event.start }}</b> </div>
             {% if event.locality %}
                 <div class="col s12"> <i class="material-icons cyan-text">location_on</i>
                 {% include "includes/locality_chip.html" with locality=event.locality %}</div>
             {% endif %}
             {% if event.is_free %}
-            <div class="col s3 right "><i class="material-icons cyan-text ">spa</i></div>
-            <h5 class="col s9 right-align">Gratuito</h5> 
+            <div class="col s3"><i class="material-icons cyan-text ">insert_emoticon</i></div>
+            <h5 class="col s9">Gratis</h5> 
             {% else %}
             <div class="col s12 "><i class="material-icons cyan-text">attach_money</i> <b>{{ event.cover }} </b></div>
              
             {% endif %}
 
             {% if event.is_public %}
-            <div class="col s3 "><i class="material-icons cyan-text medium ">assignment_ind</i></div>
-            Organizado por: <br>
+            <span class="col">Gracias a:</span> <br>
+            <div class="col s3 "><i class="material-icons cyan-text ">assignment_ind</i></div>
                 {% include "includes/locality_chip.html" with locality=event.owner.commercial.locality %}
             {%else%}
-            Organizado por: <br>
-            <div class="col s3 "><i class="material-icons cyan-text medium ">assignment_ind</i></div>
+            <div class="col s3 "><i class="material-icons cyan-text ">assignment_ind</i></div>
             {% include "includes/profile_chip.html" with profile=event.owner %}
             {%endif%} 
         </div>
@@ -108,11 +106,11 @@
     </div>
 
     <!-- Card Actions -->      
-    <div class="card-action row">
+    <div class="card-action">
         {% if not event.get_is_comming == "Completado" %}
-        <a href="/event/{{ event.id }}/map/" class="btn cyan waves-light col s6"> <i class="material-icons">public</i>Ver mapa </a>
+        <a href="/event/{{ event.id }}/map/" class="cyan-text waves-light"> <i class="material-icons">location_on</i>Ver  </a>
         {% endif %}
-        <a href="/event/{{ event.id }}/" class="btn cyan waves-light col s6 "> <i class="material-icons right">visibility</i> Ver más </a>
+        <a href="/event/{{ event.id }}/" class="cyan-text waves-light" > <i class="material-icons">pageview</i> Info </a>
     </div>  
     {% include "showcase/components/event_guests_modal.html" %} 
 </div>

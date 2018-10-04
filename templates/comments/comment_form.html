@@ -8,12 +8,12 @@
 
             <div class="input-field">        
                 {{ form.content }}
-                <label for="comment">Comentar: </label>
+                <label for="comment">Comentario: </label>
             </div>
 
             <div class="file-field input-field">
                 <div class="btn cyan">
-                    <span>Imagen</span>
+                    <i class="material-icons">add_a_photo</i>
                     {{ form.image }}
                 </div>
                 <div class="file-path-wrapper">
@@ -21,9 +21,8 @@
                 </div>
             </div>
             
-            <button type="submit" class="waves-effect cyan darken-2 btn right marginado">
-                <i class="material-icons right">send</i>
-                Publicar
+            <button type="submit" class="waves-effect cyan btn right marginado">
+                Subir
             </button>
         </form>    
     </li>

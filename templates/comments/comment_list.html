@@ -9,7 +9,7 @@
 <b>Comentarios </b>
     {% for comment in comments %}
     <ul class="collection">
-        <li class="collection-item avatar">
+        <li class="collection-item avatar no-padding">
             <!-- Individual post -->
             {% if comment.profile.avatar %}
             <img src="{{ comment.profile.avatar.url }}" alt="{{ comment.profile__user.username }}" class="circle">

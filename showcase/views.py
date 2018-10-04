@@ -2,6 +2,9 @@
 from __future__ import unicode_literals
 
 import datetime
+from django.utils import timezone
+import pytz
+
 from datetime import timedelta, date
 import locale
 
@@ -19,6 +22,8 @@ from .forms import *
 
 from social.models import Profile
 
+from django.contrib.contenttypes.models import ContentType
+from comments.models import Comment
 
 class MapView(TemplateView):
 	template_name='showcase/map.html'	
@@ -31,9 +36,9 @@ def first_day_of_month(any_day):
 	delta1 = any_day.day - 1 
 	return any_day - timedelta(days=delta1)
 
-today = datetime.datetime.now()
-on_d = first_day_of_month(today.date())
-off_d = last_day_of_month(today.date())
+today = datetime.datetime.now().date()
+on_d = first_day_of_month(today)
+off_d = last_day_of_month(today)
 
 class EventListView(ListView):
 	model = Event	
@@ -41,14 +46,24 @@ class EventListView(ListView):
 	def get(self, request, *args, **kwargs):
 		
 		if request.is_ajax():
-			print("Fecha de inicio: ", on_d,  ", fin:", off_d)
+			print(today)
+			today_number = datetime.datetime.weekday(today) 
+			monday_date = datetime.datetime.today() - timedelta(days=today_number) 
+			tuesday = monday_date + timedelta(days=1)
+			wednesday = monday_date + timedelta(days=2)
+			thursday = monday_date + timedelta(days=3)
+			friday = monday_date + timedelta(days=4)
+			saturday = monday_date + timedelta(days=5)
+			sunday = monday_date + timedelta(days=6)
 
+			print("Fecha de inicio: ", today,  ", fin:", off_d, today_number)
 			profile = request.user.profile if not request.user.is_anonymous() else None
 			
 			self.object_list = self.model.objects.filter(
 				Q(guest__profile=profile) | 
-				Q(is_public=True)
-			).filter(start__range=(on_d, off_d))	
+				Q(is_public=True), 
+				Q(start__range=(on_d, off_d))
+			)
 
 			
 			events = []
@@ -59,8 +74,8 @@ class EventListView(ListView):
 				dic_days = {'MONDAY':'Lunes','TUESDAY':'Martes','WEDNESDAY':'Miércoles','THURSDAY':'Jueves', \
 				'FRIDAY':'Viernes','SATURDAY':'Sábado','SUNDAY':'Domingo'}
 				footer = dic_days[event.start.strftime('%A').upper()] + event.start.strftime(" %d, %H:%M")
-				print(event.get_is_comming())
-				delta = event.start.date() - today.date()
+				print(event.get_is_comming(), event.start)
+				delta = event.start.date() - today
 				delta = delta.days
 
 				if event.get_is_comming() == 'Completado':
@@ -274,7 +289,16 @@ class LocalityListView(ListView):
 						
 			localities = []
 
-			for locality in object_list:				
+			# comments = []
+			# ctype = ContentType.objects.get_for_model(object_list[0])
+        	
+			for locality in object_list:
+				
+				# comments_list = Comment.objects.filter(contenttype = ctype, object_id=locality.id)	
+				# if(comments_list):
+				# 	for comment in comments_list:
+				# 		comments.append({'comment': comment})
+				# print(comments)		
 				localities.append({
 					'id': locality.id,
 					'name': locality.name,
@@ -286,6 +310,7 @@ class LocalityListView(ListView):
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
 					'verified': locality.verified,
 					'hide': False if locality.is_commercial else True
+					#'comments': comments
 				})
 
 			return JsonResponse(localities, safe=False)

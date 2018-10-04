@@ -173,3 +173,13 @@ nav ul.side-nav > li {
 #navigator {
   z-index: 999999;
 }
+
+.crystall{
+  opacity: 0.55;
+}
+
+.heavy{
+  position:absolute;
+    bottom:5px;
+    right:10px;
+}
