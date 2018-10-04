@@ -29,14 +29,15 @@ class MapView(TemplateView):
 	template_name='showcase/map.html'	
 
 def last_day_of_month(any_day):
-    next_month = any_day.replace(day=28) + datetime.timedelta(days=4) 
+    next_month = any_day.replace(day=28) + timedelta(days=4) 
     return next_month - timedelta(days=next_month.day)
 
 def first_day_of_month(any_day):
 	delta1 = any_day.day - 1 
 	return any_day - timedelta(days=delta1)
 
-today = datetime.datetime.now().date()
+today = datetime.datetime.now()
+today = timezone.make_aware(today, timezone.get_default_timezone())
 on_d = first_day_of_month(today)
 off_d = last_day_of_month(today)
 
@@ -46,9 +47,8 @@ class EventListView(ListView):
 	def get(self, request, *args, **kwargs):
 		
 		if request.is_ajax():
-			print(today)
 			today_number = datetime.datetime.weekday(today) 
-			monday_date = datetime.datetime.today() - timedelta(days=today_number) 
+			monday_date = today - timedelta(days=today_number) 
 			tuesday = monday_date + timedelta(days=1)
 			wednesday = monday_date + timedelta(days=2)
 			thursday = monday_date + timedelta(days=3)
@@ -56,7 +56,7 @@ class EventListView(ListView):
 			saturday = monday_date + timedelta(days=5)
 			sunday = monday_date + timedelta(days=6)
 
-			print("Fecha de inicio: ", today,  ", fin:", off_d, today_number)
+			#print("Fecha de inicio: ", today,  ", fin:", off_d.is_naive(), today_number)
 			profile = request.user.profile if not request.user.is_anonymous() else None
 			
 			self.object_list = self.model.objects.filter(
@@ -74,10 +74,10 @@ class EventListView(ListView):
 				dic_days = {'MONDAY':'Lunes','TUESDAY':'Martes','WEDNESDAY':'Miércoles','THURSDAY':'Jueves', \
 				'FRIDAY':'Viernes','SATURDAY':'Sábado','SUNDAY':'Domingo'}
 				footer = dic_days[event.start.strftime('%A').upper()] + event.start.strftime(" %d, %H:%M")
-				print(event.get_is_comming(), event.start)
-				delta = event.start.date() - today
+				delta = event.start.date() - today.date()
 				delta = delta.days
 
+				print(event.get_is_comming(), event.start, delta)
 				if event.get_is_comming() == 'Completado':
 					footer = '<span class="blue-text"> Completado <span>'
 					if delta > 7 or delta < -7:
@@ -97,7 +97,8 @@ class EventListView(ListView):
 					else:
 						hide = False
 				elif event.get_is_comming() == 'Por venir' and delta > 7:
-					hide = True
+					hide = False
+					print(hide)
 
 				events.append({
 					'event_id': event.id,
@@ -231,6 +232,7 @@ class EventDetailView(DetailView):
 		sponsors = self.object.guests.filter(guest__is_sponsor=True)
 		sponsors_request = self.object.guests.filter(guest__profile=self.request.user.profile, guest__status=Guest.SPONSOR_REQUEST)
 		commercials = Commercial.objects.exclude(locality__owner=self.request.user.profile)		
+		context['event'].start = context['event'].start + timedelta(hours=5)
 		print(context['event'].start)
 		context.update({
 			'guests': context['event'].guests.filter(guest__is_owner=False),

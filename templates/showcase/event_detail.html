@@ -87,12 +87,8 @@
         <p>Lugar: </p>
           {% include "includes/locality_chip.html" with locality=object.locality %}
         {% endif %}
-        <p>Organizado por</p>          
-        {% if object.is_public %}
-          {% include "includes/locality_chip.html" with locality=object.owner.commercial.locality %}
-        {% else %}
+        <p>Subido por</p>  
           {% include "includes/profile_chip.html" with profile=object.owner %}
-        {% endif %}
       </div>
       <!-- estados del evento -->
       <div class="col s12">

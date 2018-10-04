@@ -291,7 +291,7 @@ $(function () {
 					'<p>' + data[index].description +					
 					'</p> <p>  <a href="'  + data[index].event_image_url +
 					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
-					'<p> De: <a class="collection-item" href="' + url + data[index].owner_id + '">'+ data[index].event_owner +
+					'<p> Subido por: <a class="collection-item" href="' + url + data[index].owner_id + '">'+ data[index].event_owner +
 					' </a> <br> <strong>' + status + '</strong> </p> <a href="/event/'+data[index].event_id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 				if (data[index].hide) {

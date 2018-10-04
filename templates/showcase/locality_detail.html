@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% load comments %}
 
 {% block css %}
     <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">    
@@ -12,16 +11,16 @@
 {% block content %}
 {% include 'includes/nav.html' %}
 <!-- Parallax -->
-<div class="row parallax-container fullscreen">
-    {% if  object.front_image %}    
-      <div class="parallax "><img class="opacado" src="{{ object.front_image.url }}" width="100%"></div>
-    {% else %}
-      <div class="parallax "><img src="{% static '/showcase/img/Fondo-colores.jpg' %}" width="100%"></div>
-    {% endif %}
-    <div class="card crystall low-border white heavy col s10 offset-s1 no-margin "> <h1 class="header no-padding truncate sombra black-text text-lighten-3 center-align">{{ object.name }}</h1></div>
+<div class="parallax-container no-padding fullscreen top-margin">
+<h1 class="header sombra grey-text text-lighten-3 center-align">{{ object.name }}</h1>
+{% if  object.front_image %}    
+  <div class="parallax "><img class="opacado" src="{{ object.front_image.url }}" width="100%"></div>
+{% else %}
+  <div class="parallax "><img src="{% static '/showcase/img/Fondo-colores.jpg' %}" width="100%"></div>
+{% endif %}
 </div>
 
-<!-- Extra Info -->
+<!-- Informacion extra -->
 <div class="right-align fringe tiny-text low-border capitalize">
     {% for category in object.categories.all %}
     {{ category.name }} &#8226;
@@ -38,8 +37,8 @@
     {% endif %}
     ingresado: {{ object.date_joined|date }}
 </div>
+<!-- boton de editar -->
 
-<!-- Options -->
 <div class="right">
 <a href="{% url 'locality_map' object.id %}" class="waves-effect waves-light cyan btn">Ver <i class="material-icons tiny">location_on</i></a>
 {% if object.owner == user.profile %}
@@ -47,86 +46,91 @@
 {%endif%}
 </div>
 
-<!-- Container -->
-<div class="container row">
-<!-- Info section -->
-    <div class="col s4">
-        <h3 class="grey-text">Info</h3>
-        <!-- Comercial info -->              
-        {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}  
-        <div class="card col s12 ">
-        <!-- Cabecera de la localidad -->
-            <div class="card-content no-padding row fullscreen">
-                <div class="col s12 m12 l6 row ">
-                    <!-- Imagen de perfil -->
-                    {% if  object.profile_image %}                    
-                    <div class="col center-align col s12 l6 m3 offset-l3 marginado">
-                        <img class="event circle z-depth-3" src="{{ object.profile_image.url }}" >
-                    </div>
-                    {% endif %}
-                    <h4 class="grey-text col"> {{ object.get_hash_name }} </h4>
-                    
-                    <div class="left-align col">
-                        {% load subscribers %}
-                        {% subscription object %}
-                        <div class="right ">
-                            {% if object.is_commertial %}
-                            <p>Administrador: </p>
-                            {% else %}
-                            <p> Subido por: </p>
-                            {% endif %}
-                            {% include 'includes/profile_chip.html' with profile=object.owner %}
-                        </div>
-                    </div>            
+<!-- Imagenes -->
+{%if object.profile_image or front_image %}
+<div class="black carousel col s12 m12 l6">
+  {%if object.profile_image %}
+    <a target="_blank" class="carousel-item" href="{{ object.profile_image.url }}">
+        <img src="{{ object.profile_image.url }}">
+    </a>
+  {%endif%}
+  {% if object.front_image %}
+    <a target="_blank" class="carousel-item" href="{{ object.front_image.url }}">
+        <img src="{{ object.front_image.url }}">
+    </a>
+  {% endif %}
+{%endif%}
+{% for comment in object.comments %}
+    {% if comment.image %}
+    <a target="_blank" class="carousel-item" href="{{ comment.image.url }}">
+        <img src="{{ comment.image.url }}">
+    </a>
+    {% endif %}
+    {% endfor %}
+</div>
+<!-- Central Section -->
+<div class="section white no-padding row">
+    {% if object.description %}
+    <!-- Name and description -->
+    <div class="card col s12">
+      <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
+      <p align="justify"><span>{{ object.description }}</span></p>
+    </div>
+    {% endif %}
+    <!-- Comercial info -->              
+    {% include 'showcase/components/commercial_info.html' with commercial=object.commercial %}  
+    <div class="card col s12">
+    <!-- Cabecera de la localidad -->
+        <div class="card-content row fullscreen">
+            <!-- Postales -->
+            {% if object.is_public %}
+            <div class="no-padding col s12 l6 right">
+                {% load comments %}
+                {% if not user.is_anonymous %}
+                    {% comment_form object %}   
+                {% endif%}
+                {% comment_list object %}
+            </div>
+            {% endif %}   
+            <div class="col s12 m12 l6 row ">
+                <!-- Imagen de perfil -->
+                {% if  object.profile_image %}                    
+                <div class="col center-align col s12 l6 m3 offset-l3 marginado">
+                    <img class="event circle z-depth-3" src="{{ object.profile_image.url }}" >
                 </div>
+                {% endif %}
+                <h4 class="grey-text col"> {{ object.get_hash_name }} </h4>
+                
+                <div class="left-align col">
+                    {% load subscribers %}
+                    {% subscription object %}
+                    <div class="right ">
+                        {% if object.is_commertial %}
+                        <p>Administrador: </p>
+                        {% else %}
+                        <p> Subido por: </p>
+                        {% endif %}
+                        {% include 'includes/profile_chip.html' with profile=object.owner %}
+                    </div>
+                </div>  
+                               
             </div>
-            {% if object.description %}
-            <div class="card col s12">
-              <span class="card-title center-align cyan-text text-darken-2">{{ object.name }}</span>
-              <p align="justify"><span>{{ object.description }}</span></p>
-            </div>
-            {% endif %}
+            <div class="divider col"></div>
+            
         </div>
          <!-- Eventos de la Localidad -->
-            <div id="events" class="row cyan accent-1 ">            
-                <div class="section col s12 m12 l6 offset-l3">
-                <!-- Tarjeta de evento -->
-                {% for event in object.event_set.all %}                    
-                    {% include 'includes/event_card.html' with event=event %}
-                {% empty %}   
-                <a href="/event/add/?lat={{ lat }}&lng={{ lng }}" class="btn cyan white-text"><i class="material-icons"> add</i>  Crear un evento </a>                 
-                <p>Aun no hay eventos.</p>
-                {% endfor %}
-                </div>
-            </div> 
-
-    </div>
-    <div class="col s4 row">
-        <!-- Imagenes -->
-        <h3 class="grey-text">Fotos</h3>
-        {%if object.profile_image %}
-            <img class="materialboxed responsive-img"  src="{{ object.profile_image.url }}">
-        {%endif%}
-        {% if object.front_image %}
-            <img class="materialboxed responsive-img"  src="{{ object.front_image.url }}">
-        {% endif %}
-        {% if comments %}
-            Oasdasodn
-        {% endif %}
-        {% for comment in comments %}
-            {% if comment.image %}
-                <img class="materialboxed responsive-img" src="{{ comment.image.url }}">
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div class="col s4">
-        <!-- Comments -->
-        <div class="no-padding col s12 l6 right">
-            {% if not user.is_anonymous %}
-                {% comment_form object %}   
-            {% endif%}
-            {% comment_list object %}
-        </div>
+        <div id="events" class="row cyan accent-1 ">            
+            <div class="section col s12 m12 l6 offset-l3">
+            <!-- Tarjeta de evento -->
+            {% for event in object.event_set.all %}                    
+                {% include 'includes/event_card.html' with event=event %}
+            {% empty %}   
+            <a href="/event/add/?lat={{ lat }}&lng={{ lng }}" class="btn cyan white-text"><i class="material-icons"> add</i>  Crear un evento </a>                 
+            <p>Aun no hay eventos.</p>
+            {% endfor %}
+            </div>
+        </div> 
+        
         <!-- Productos / Servicios-->            
         {% if object.is_commercial and object.commercial.offer_set %}
         <p class="col grey-text"> Ofrece:</p>
@@ -134,7 +138,8 @@
             {% include 'showcase/components/offer_template.html' with offer=offer %}
           {% endfor %}
         {% endif %}
-    </div>
+        
+    </div><!-- Fin tarjeta evento -->
 </div>
 
 </div>
