@@ -123,6 +123,7 @@ class ProfileUpdateView(UpdateView):
 	model = User
 	fields = ('username', 'email')	
 	template_name = 'social/profile_form.html'	
+	success_url = '/'
 
 	def get_context_data(self, **kwargs):
 		context = super(ProfileUpdateView, self).get_context_data(**kwargs)		

@@ -54,6 +54,10 @@ class Commercial(models.Model):
 	address = models.CharField(max_length=100, verbose_name='Dirección')
 	webpage = models.URLField(verbose_name='página web', blank=True, null=True)
 	locality = models.OneToOneField(Locality, on_delete=models.CASCADE)		
+
+	def get_offer(self):
+		offers = Offer.objects.filter(commercial=self.locality)
+		return offers
 	
 	def __unicode__(self):
 		return self.locality.name

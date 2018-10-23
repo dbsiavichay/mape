@@ -78,8 +78,10 @@ class EventListView(ListView):
 				delta = delta.days
 
 				print(event.get_is_comming(), event.start, delta)
-				if event.get_is_comming() == 'Completado':
-					footer = '<span class="blue-text"> Completado <span>'
+				if event.get_is_comming() == 'Pasado':
+					footer = '<span class="red-text"> Completado (' + event.start.strftime("%d") + ') <span>'
+				elif event.get_is_comming() == 'Completado'  :
+					footer = '<span class="amber-text"> Completado (' + event.start.strftime("%d") + ') <span>'
 					if delta > 7 or delta < -7:
 						hide = True
 					else:
@@ -98,7 +100,6 @@ class EventListView(ListView):
 						hide = False
 				elif event.get_is_comming() == 'Por venir' and delta > 7:
 					hide = False
-					print(hide)
 
 				events.append({
 					'event_id': event.id,
@@ -300,7 +301,7 @@ class LocalityListView(ListView):
 				# if(comments_list):
 				# 	for comment in comments_list:
 				# 		comments.append({'comment': comment})
-				# print(comments)		
+				# print(comments)	
 				localities.append({
 					'id': locality.id,
 					'name': locality.name,
@@ -311,8 +312,7 @@ class LocalityListView(ListView):
 					'owner_name': locality.owner.user.username,
 					'owner_image_url': locality.owner.avatar.url if locality.owner.avatar else '#', 
 					'verified': locality.verified,
-					'hide': False if locality.is_commercial else True
-					#'comments': comments
+					'hide': False if locality.is_commercial else True,
 				})
 
 			return JsonResponse(localities, safe=False)

@@ -25,13 +25,10 @@ $(function () {
 	var center = [-2.2986156360633974,-78.12206268310548];
 
 	// Zoom limit  
-	var p_zone = 16; // or more
+	var p_zone = 18; // or more
 	var max_zoom = 4;  
 	var token = 'pk.eyJ1IjoiZGJzaWF2aWNoYXkiLCJhIjoiY2l1aDhzanVzMDExeDJ5cDR4bWtsbHA3ZCJ9.uL7b4pcnOVe1B3I0am59kQ';		
-	
 	L.mapbox.accessToken = token;
-	
-	
 	// The geocoder can return an area, like a city, or a
     // point, like an address. Here we handle both cases,
     // by fitting the map bounds to an area or zooming to a point.
@@ -43,119 +40,120 @@ $(function () {
 	    }
 	}
 
-	// Personalizacion de marca
-	var myStyle = {
-	    "color": "#ffc107",
-	};
+	
+	var mape_layer  = L.mapbox.featureLayer();
 
+	
 	// render a tileLayer on map at center 
-	var render_map = function (latlng, zLevel) {
+	var render_map = function (new_latlng, zLevel) {
 		var keepOpen = isMobile.any()?false:true;
 		map = L.mapbox.map('map').addControl(L.mapbox.geocoderControl('mapbox.places', {
 			keepOpen: keepOpen,
 			autocomplete: true
 		}));
 		L.mapbox.tileLayer('mapbox.streets').addTo(map);
-		var latlng = latlng || L.latLng(center);
+		console.log(mape_layer);
+		mape_layer.setFilter(function(e) { return e.properties["hide"] === false; }).addTo(map);
+		var latlng = latlng || L.latLng(new_latlng);
 		map.setView(latlng, zLevel);		
 		return map;
 	};
 
 	var map = render_map(center, 15);
-	var geoJson_Mape;
-	var mape_layer  = L.mapbox.featureLayer().addTo(map);
-	var commercial = L.geoJSON();
-
-	//personalizacion de marca
-	var geojsonFeature = {
-	    "type": "Feature",
-	    "properties": {
-	        "name": "Coors Field",
-	        "amenity": "Baseball Stadium",
-	        "popupContent": "This is where the Rockies play!",
-	        "icon": L.mapbox.marker.icon({
-				    	'marker-size': 'medium',
-				    	'marker-symbol': 'bus',
-		                'marker-color': '#ffc107',
-				    })
-	    },
-	    "geometry": {
-	        "type": "Point",
-	        "coordinates": [-104.99404, 39.75621]
-	    }
-	};
 
 	// Gets localities and puts like marks on map
-	$.get('/localities/', function(data) {
-		var content, marker, geoJSON_mark;
-		for (index in data) {
-				content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
+	var get_localities = function() {
+		var features = [];
+		$.get('/localities/', function(data) {
+			var popup_content, marker;
+			for (index in data) {
+				//Content of popup
+				popup_content = '<a class="" href="/locality/' + data[index].id+ '">' + data[index].name+ '</a>' +
 				'<p>' + data[index].description +
 				'</p> <p> <img class="responsive-img mape-large circle z-depth-3" src="' + data[index].locality_image_url + 
 				'" > </p> <a href="/locality/'+data[index].id+
 				'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 				'<strong> Ver </strong></a>  '
-				marker = L.marker([data[index].latitude, data[index].longitude], {
-				    icon: L.mapbox.marker.icon({
-				    	'marker-size': 'medium',
-				    	'marker-symbol': 'circle',
-		                'marker-color': '#ffc107',
-				    }),
-		            title: data[index].name,
+				console.log(data[index].name, data[index].hide );
+				//personalizacion de marca
+				features.push({ 
+					"type": "Feature",
+				    "geometry": { "type": "Point", "coordinates": [data[index].longitude, data[index].latitude]},
+				    "properties": {
+				      	"name": data[index].name,
+				        "title": data[index].name,
+				        "popupContent": popup_content,
+				        "marker-color": "#ffc107",
+				        "marker-symbol": "circle",
+				        "marker-size": "medium",
+				        "hide": data[index].hide,
+
+				        // Store the image url and caption in an array.
+				        "images": [
+				        	[data[index].locality_image_url, data[index].description],
+				            ["https://i.imgur.com/xND1MND.jpg","Ford\'s Theatre in the 19th century, site of the 1865 assassination of President Lincoln"],
+				            ["https://i.imgur.com/EKJmqui.jpg","The National Cherry Blossom Festival is celebrated around the city each spring."]
+				        ]
+				    }
 				});
-			marker.bindPopup(content);
+	        }
+			var geoJson_marks = {
+			  "type": "FeatureCollection",
+			  "features": features
+			};
+			mape_layer.setGeoJSON(geoJson_marks);
+		});
+	};
 
-			geoJSON_mark = marker.toGeoJSON()
-			geoJSON_mark['properties']= {
-				'marker-symbol': 'fast-food'
-			}
+	//console.log(JSON.parse(JSON.stringify(features)).length);
 
+   	mape_layer.on('layeradd', function(e) {
+	    var marker = e.layer;
+	    var feature = marker.feature;
+	    var images = feature.properties.images
+	    var slideshowContent = '';
 
-			
-			marker.addTo(map);
+	    for(var i = 0; i < images.length; i++) {
+	        var img = images[i];
 
-			// mark = {
-			// 	"type": "Feature",
-			// 	"geometry": {
-			// 		"type": "Point",
-			// 		"coordinates": [data[index].latitude, data[index].longitude],
-			// 		"popupContent": content
-			// 	},
-			// 	"properties": {
-			// 	    "name": data[index].name
-			// 	  }
-			// };
-			commercial.addData(geoJSON_mark, {
-			    style: myStyle
-			});
-        }
-        
+	        slideshowContent += '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+	                              '<img src="' + img[0] + '" />' +
+	                              '<div class="caption">' + img[1] + '</div>' +
+	                            '</div>';
+	    }
+	    // Create custom popup content
+	    // var popupContent =  '<div id="' + feature.properties.id + '" class="popup">' +
+	    //                         '<h2>' + feature.properties.title + '</h2>' +
+	    //                         '<div class="slideshow">' +
+	    //                             slideshowContent +
+	    //                         '</div>' +
+	    //                         '<div class="cycle">' +
+	    //                             '<a href="#" class="prev">&laquo; Previous</a>' +
+	    //                             '<a href="#" class="next">Next &raquo;</a>' +
+	    //                         '</div>'
+	    //                     '</div>';
+	     var popupContent =  feature.properties.popupContent;	 
+
+	    // http://leafletjs.com/reference.html#popup
+	    marker.bindPopup(popupContent,{
+	        closeButton: true,
+	        minWidth: 320
+	    });
 	});
 
-	commercial.addData(geojsonFeature);
 
-	// Desaparece todas las marcas en la capa mape_layer
-	mape_layer.setFilter(function(f) { return f.properties['marker-symbol'] === 'fast-food'; 
-	}).addTo(map);
 
-   
+	mape_layer.on("ready", function(e) {
+
+	});
 
 	// Fuction at ended event of zoom on map
 	map.on('zoomend', function(e) {
-		var zoom = map.getZoom();
-		map.featureLayer.setFilter(function() {return false; })
-		if(zoom > p_zone){
-			
-			mape_layer.setFilter(function() {return true; })
-			console.log("zoom" , zoom);
-			//render_map();
-			//render_events();
-		}else{
-			mape_layer.setFilter(function() {return false; })
-			return e;
-		}
-				
-	});
+		if(map.getZoom() < p_zone){
+			mape_layer.setFilter(function(e) { return e.properties["hide"] === false; })
+		}else {
+			mape_layer.setFilter(function(e) { return true; })
+		} });
 
 	// Fly on map to location at latlng
 	function fly_back(latlng) {
@@ -187,7 +185,11 @@ $(function () {
 		var var_latlng;
 
 		var msg = $.get("msg");
-		
+
+	    // var clusterGroup = new L.MarkerClusterGroup();
+	    // clusterGroup.addLayer(mape_layer);
+	    // map.addLayer(clusterGroup);
+
 		if (lat && lng) {
 			latlng = L.latLng(parseFloat(lat), parseFloat(lng));
 			map.setView(latlng);
@@ -201,7 +203,6 @@ $(function () {
 			navigator.geolocation.getCurrentPosition(function (position) {		
 		 		var_latlng = L.latLng(position.coords.latitude,position.coords.longitude);
 		 		msg = msg + "<p>Tu navegador nos indica que tu ubicación es: " + var_latlng.lat + ", " + var_latlng.lng + "</p>";
-		 		console.log(var_latlng);
 		 		if (browserType == "mobile"){
 		 			map.setView(var_latlng);
 		 			//geocoder.query('Morona, Ecuador', showMap);	
@@ -292,7 +293,8 @@ $(function () {
 					'</p> <p>  <a href="'  + data[index].event_image_url +
 					'" target="_blank" > <img class="responsive-img mape-large z-depth-3" src="' + data[index].event_image_url + '" > </a></p>' + 
 					'<p> Subido por: <a class="collection-item" href="' + url + data[index].owner_id + '">'+ data[index].event_owner +
-					' </a> <br> <strong>' + status + '</strong> </p> <a href="/event/'+data[index].event_id+'/" class="right cyan-text waves-effect waves-cyan white btn">'+
+					' </a> <br> <strong>' + status + '</strong> </p> <a href="/event/'+data[index].event_id+
+					'/" class="right cyan-text waves-effect waves-cyan white btn">'+
 					'<strong> Ver </strong></a>';
 				if (data[index].hide) {
 					marker.remove();
@@ -320,6 +322,8 @@ $(function () {
 
 	// Inits all the functions in order 
 	var init = function () {
+		get_localities();
+		console.log(mape_layer.getGeoJSON());
 		// Fix the top-margin 
 		document.body.style.margin="0px 0px";
 		// Sets the map on the place that gets the geocoder
@@ -331,6 +335,8 @@ $(function () {
 		render_events();
 		//render_localities();
 		add_context_menu();
+		// Desaparece todas las marcas en la capa mape_layer
+		//mape_layer.setFilter(function(f) { return f.properties["marker-symbol"] === "circle";}).addTo(map);
 		console.log("center", map.getCenter());
 	}
 
@@ -350,6 +356,27 @@ $(function () {
 		lng = $(this).attr('lng');
 		$(location).attr('href', '/locality/add/?lat='+lat+'&lng='+lng);
 	});	
+
+	$('#map').on('click', '.popup .cycle a', function() {
+	    var $slideshow = $('.slideshow'),
+	        $newSlide;
+
+	    if ($(this).hasClass('prev')) {
+	        $newSlide = $slideshow.find('.active').prev();
+	        if ($newSlide.index() < 0) {
+	            $newSlide = $('.image').last();
+	        }
+	    } else {
+	        $newSlide = $slideshow.find('.active').next();
+	        if ($newSlide.index() < 0) {
+	            $newSlide = $('.image').first();
+	        }
+	    }
+
+	    $slideshow.find('.active').removeClass('active').hide();
+	    $newSlide.addClass('active').show();
+	    return false;
+	});
 });
 
 

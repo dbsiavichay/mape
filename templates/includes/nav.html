@@ -2,7 +2,7 @@
 <nav class="no-margin no-padding taget pushpin" id="navigator">
     <div class="nav-wrapper row cyan navigator ">
         <!-- Espacio izquierdo -->
-        <ul id="nav-left" class="col l4 m5 s2 " >
+        <ul id="nav-left" class="col l4 m6 s2" >
             <li>
             {% if request.path == "/" %}
             <a class="no-padding navigator" href="{% url 'map' %}">
@@ -21,7 +21,7 @@
         {% endif %}
         </ul>
         <!-- Espacio central -->
-        <ul class="col l4 m4 s5 center no-margin no-padding ">
+        <ul class="col l3 m3 s5 center no-margin no-padding ">
             <li><!-- Boton de Busqueda -->
             <div class="input-field ">
                 <i class="material-icons prefix">search</i>
@@ -33,7 +33,7 @@
         </ul>
         <!-- Espacio derecho -->
         {% if user.is_anonymous %}
-        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l4 ">
+        <ul id="nav-right" class="right no-margin no-padding col s5 m3 l5 ">
             <div class="row fullscreen">
                 <li><a href="{% url 'login' %}" class="btn blue darken-1 "> Login </a></li>
                 <li><a href="{% url 'social:begin' 'facebook' %}" class="btn capitalize hide-on-med-and-down" style="background-color: #4267b2;">Inicia con facebook</a></li>
