@@ -14,7 +14,7 @@ olefile==0.44
 packaging==16.8
 Pillow==4.1.0
 psycopg2==2.7.1
-PyJWT==1.5.3
+PyJWT==2.4.0
 pyparsing==2.2.0
 python-openid==2.2.5
 pytz==2017.2
