@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 {% block css %}
     <link href='//api.mapbox.com/mapbox.js/v3.1.0/mapbox.css' rel='stylesheet' />
     <link href="{% static 'showcase/css/map.css' %}" rel="stylesheet">
@@ -60,7 +60,6 @@
 {% endblock %}
 
 {% block js %}
-	{% load staticfiles %}
 	<script src="//api.mapbox.com/mapbox.js/v3.1.0/mapbox.js"></script>
 	<script src="{% static 'showcase/js/map.js' %}"></script>
 {% endblock %}

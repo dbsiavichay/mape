@@ -37,8 +37,7 @@ class UserCreateView(CreateView):
 #------------------------------------------------------------------------
 from django.views.decorators.csrf import csrf_exempt
 
-from django.contrib.staticfiles.templatetags.staticfiles import static
-
+from django.templatetags.static import static
 
 
 def TempView(request):
@@ -50,7 +49,7 @@ def FConnectionView(request):
 	if request.is_ajax() and request.method == 'POST' and not request.user.is_authenticated():
 		profile = request.POST.get('profile')
 		duplicate = User.objects.filter(username__iexact=profile).exists()
-		print duplicate
+		print(duplicate)
 	if profile and duplicate:
 		instance = User.objects.get(username__iexact=profile)
 		#instance = User.objects.get(email__iexact=profile)
@@ -284,7 +283,7 @@ class CommercialAccountView(UpdateView):
 		return form
 
 	def get(self, request, *args, **kwargs):
-		print request.user.profile.commercial()
+		print(request.user.profile.commercial())
 		if request.user.profile.commercial() is not None:
 			return redirect('map')
 

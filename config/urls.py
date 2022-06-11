@@ -13,20 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import include, path
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 #from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),    
-    url(r'', include('notifications.urls')),
-    url(r'', include('comments.urls')),
-    url(r'', include('subscribers.urls')),
-    url(r'', include('social.urls')),
-    url(r'', include('showcase.urls')),
-    url(r'', include('shower.urls')),
+    path(r'^admin/', admin.site.urls),
+    path(r'^oauth/', include('social_django.urls', namespace='social')),    
+    path(r'', include('notifications.urls')),
+    path(r'', include('comments.urls')),
+    path(r'', include('subscribers.urls')),
+    path(r'', include('social.urls')),
+    path(r'', include('showcase.urls')),
+    path(r'', include('shower.urls')),
     #url(r'^mape/$', TemplateView.as_view(template_name='base.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

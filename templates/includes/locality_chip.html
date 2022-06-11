@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <a class="collection-item collection.available" pk="{{ locality.id }}" x="{{ locality.longitude }}"" y="{{ locality.latitude }}" href="/locality/{{ locality.id }}">
 <div class="chip z-depth-1 {% if locality.commercial %} amber lighten-2 {% endif %} hoverable">
   {% if locality.profile_image %}

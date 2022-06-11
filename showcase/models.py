@@ -31,7 +31,7 @@ class Locality(models.Model):
 	is_commercial = models.BooleanField(default=False, verbose_name='es comercial?')
 	verified = models.BooleanField(default=False,)	
 	date_joined = models.DateTimeField(auto_now_add=True)	
-	owner = models.ForeignKey('social.Profile')	
+	owner = models.ForeignKey('social.Profile', on_delete=models.CASCADE)	
 	categories = models.ManyToManyField(Category, verbose_name='categorias')
 	objects = ShowerManager()
 
@@ -72,7 +72,7 @@ class Offer(models.Model):
 	price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='precio')	
 	image = models.ImageField(upload_to='showcase/offers/', null=True, blank=True)
 	kind = models.PositiveSmallIntegerField(choices = KIND_CHOICES, verbose_name='tipo')	
-	commercial = models.ForeignKey(Commercial)
+	commercial = models.ForeignKey(Commercial, on_delete=models.CASCADE)
 	objects = ShowerManager()
 
 	def __unicode__(self):
@@ -114,7 +114,7 @@ class Event(models.Model):
 	is_public = models.BooleanField(default=False)
 	link = models.CharField(max_length=128, blank=True, null=True)
 	date_joined = models.DateTimeField(auto_now_add=True)
-	locality = models.ForeignKey(Locality, blank=True, null=True)		
+	locality = models.ForeignKey(Locality, blank=True, null=True, on_delete=models.CASCADE)		
 	status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
 	guests = models.ManyToManyField('social.Profile', through='Guest', blank=True)
 	objects = ShowerManager()

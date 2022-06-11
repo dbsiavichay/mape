@@ -42,19 +42,19 @@ class NotificationMixin(object):
         }
 
     def save_notification(self, launcher):
-    	from .models import Notification    	
+        from .models import Notification
 
         contenttype = ContentType.objects.get_for_model(self)
-        model_class = contenttype.model_class()        
+        model_class = contenttype.model_class()
         kwargs = self.get_notification_kwargs(launcher, model_class)
 
         if kwargs is None:
             return
 
-        kwargs.update({        	
+        kwargs.update({
             'status': Notification.UNREAD,
             'object_id': self.id,
-            'contenttype':contenttype
+            'contenttype': contenttype
         })
         notification = Notification.objects.create(**kwargs)
 
@@ -65,7 +65,8 @@ class NotificationMixin(object):
 
         contenttype = ContentType.objects.get_for_model(self)
         try:
-            notification = Notification.objects.get(object_id=self.id, contenttype=contenttype)
+            notification = Notification.objects.get(
+                object_id=self.id, contenttype=contenttype)
             notification.delete()
         except Notification.DoesNotExist:
             return None

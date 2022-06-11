@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from .views import *
 
 urlpatterns = [    
-    url(r'^comment/add/$', login_required(CommentCreateView.as_view()), name='add_comment'),    
-    url(r'^comment/(?P<pk>\d+)/delete/$', login_required(CommentDeleteView.as_view()), name='delete_comment'),    
+    path(r'^comment/add/$', login_required(CommentCreateView.as_view()), name='add_comment'),    
+    path(r'^comment/(?P<pk>\d+)/delete/$', login_required(CommentDeleteView.as_view()), name='delete_comment'),    
 ]

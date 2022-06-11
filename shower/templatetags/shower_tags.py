@@ -41,7 +41,7 @@ class ModelListNode(template.Node):
             'all_link': '/shower/%s/?keyword=%s' % (ctype.model_class().__name__.lower(), self.keyword),
         } 
 
-        print self.template_name       
+        print(self.template_name)
 
         t = context.template.engine.get_template(self.template_name)
         return t.render(Context(context_dict, autoescape=context.autoescape))
