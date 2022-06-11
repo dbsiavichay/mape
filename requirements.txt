@@ -2,7 +2,7 @@ amqp==1.4.9
 anyjson
 appdirs==1.4.3
 billiard==3.3.0.23
-celery==3.1.25
+celery==5.2.2
 certifi==2017.7.27.1
 chardet==3.0.4
 Django==4.0
